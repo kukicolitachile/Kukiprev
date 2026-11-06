@@ -507,3 +507,381 @@ section.section-heading p + p { margin-top: 14px; }
 @media (max-width: 760px) {
   .flow-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+/* Scene-first learning: one instruction and one primary action per moment. */
+.compact-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:10px 0;
+  font-size:12px;
+  min-height:48px}
+  .text-button{
+    border:0;
+    background:transparent;
+    color:var(--teal);
+    padding:9px 6px;
+    min-height:40px;
+    font-size:13px;
+    text-decoration:underline;
+    text-underline-offset:4px}
+    .draft-pill{
+      font-size:11px;
+      border:1px solid #9fbab0;
+      border-radius:20px;
+      padding:3px 9px;
+      color:#315b4d}
+      .simple-home{
+        min-height:65svh;
+        display:grid;
+        grid-template-columns:1.2fr 1fr;
+        align-items:center;
+        gap:40px;
+        padding:32px 0}
+        .simple-home h1{
+          font-size:clamp(38px,5vw,64px)}
+          .home-phrase{
+            font-size:clamp(18px,2vw,25px);
+            line-height:1.5;
+            max-width:500px}
+            .home-actions{
+              display:flex;
+              gap:12px;
+              flex-wrap:wrap;
+              margin-top:30px}
+              .home-kuky{
+                max-width:100%;
+                max-height:420px;
+                object-fit:contain}
+                .mission-frame{
+                  display:grid;
+                  grid-template-columns:minmax(350px,1fr) minmax(320px,1fr);
+                  grid-template-rows:auto 1fr;
+                  gap:16px 36px;
+                  padding:12px 0 20px;
+                  animation:arrive .18s ease-out}
+                  .step-title{
+                    grid-column:1/-1}
+                    .step-title span{
+                      display:block;
+                      color:var(--muted);
+                      font-size:12px;
+                      margin-bottom:6px}
+                      .step-title h1{
+                        font-size:clamp(23px,2.6vw,34px);
+                        line-height:1.25;
+                        letter-spacing:-.7px;
+                        margin:0;
+                        max-width:900px}
+                        .scene-wrap{
+                          height:min(65svh,650px);
+                          position:relative;
+                          background:#e6efea;
+                          border-radius:16px;
+                          display:flex;
+                          justify-content:center;
+                          align-items:center;
+                          overflow:hidden}
+                          .scene-wrap .scene{
+                            height:100%;
+                            width:auto;
+                            aspect-ratio:941/1672;
+                            max-width:none;
+                            margin:0}
+                            .scene-wrap .scene-art{
+                              width:100%;
+                              height:100%;
+                              object-fit:contain}
+                              .enlarge{
+                                position:absolute;
+                                right:8px;
+                                bottom:8px;
+                                background:#fffffff2;
+                                color:var(--teal);
+                                border:1px solid #75958a;
+                                border-radius:8px;
+                                padding:7px 10px;
+                                font-size:12px;
+                                min-height:38px}
+                                .activity-panel{
+                                  align-self:center;
+                                  min-width:0;
+                                  font-size:15px}
+                                  .activity-panel .choices{
+                                    gap:8px;
+                                    margin:10px 0}
+                                    .activity-panel .choice{
+                                      font-size:15px;
+                                      padding:13px 15px;
+                                      min-height:46px}
+                                      .activity-panel>.primary{
+                                        margin-top:10px;
+                                        width:100%}
+                                        .activity-panel>.action-row .primary{
+                                          flex:1}
+                                          .activity-panel p{
+                                            line-height:1.55;
+                                            margin-bottom:12px}
+                                            .role-line{
+                                              font-size:13px;
+                                              color:var(--muted)}
+                                              .why,.accessible-elements{
+                                                padding:8px 0;
+                                                border-color:#c9dacf}
+                                                .why summary,.accessible-elements summary{
+                                                  font-size:14px;
+                                                  min-height:40px;
+                                                  display:list-item;
+                                                  padding-top:5px}
+                                                  .why p{
+                                                    font-size:14px;
+                                                    margin-top:8px}
+                                                    .focus-highlight{
+                                                      position:absolute;
+                                                      z-index:2;
+                                                      border:3px solid #075e63;
+                                                      border-radius:8px;
+                                                      background:#7ce9b32b;
+                                                      pointer-events:none;
+                                                      box-shadow:0 0 0 3px #ffffffa0;
+                                                      transition:opacity .15s}
+                                                      .focus-controls{
+                                                        display:flex;
+                                                        gap:6px;
+                                                        flex-wrap:wrap;
+                                                        margin:12px 0}
+                                                        .focus-tab{
+                                                          background:#eef3eb;
+                                                          color:#244e45;
+                                                          border:1px solid #9cbaac;
+                                                          border-radius:6px;
+                                                          padding:8px;
+                                                          min-height:40px;
+                                                          font-size:12px}
+                                                          .focus-tab.active{
+                                                            background:#075e63;
+                                                            color:white}
+                                                            .animation-controls{
+                                                              display:flex;
+                                                              gap:10px;
+                                                              align-items:center;
+                                                              flex-wrap:wrap}
+                                                              .animation-controls button:disabled{
+                                                                color:#486454;
+                                                                text-decoration:none;
+                                                                opacity:1}
+                                                                .feedback{
+                                                                  border-left:3px solid #247d67;
+                                                                  padding:8px 12px;
+                                                                  background:#e7efe1;
+                                                                  font-size:14px}
+                                                                  .kuky-cue{
+                                                                    display:flex;
+                                                                    align-items:center;
+                                                                    gap:10px;
+                                                                    padding:12px 0;
+                                                                    font-size:14px}
+                                                                    .kuky-cue img{
+                                                                      object-fit:contain;
+                                                                      width:38px;
+                                                                      height:38px}
+                                                                      .possible-injury{
+                                                                        margin:0;
+                                                                        display:flex;
+                                                                        gap:15px;
+                                                                        font-size:14px}
+                                                                        .possible-injury img{
+                                                                          max-width:110px;
+                                                                          height:auto;
+                                                                          align-self:start}
+                                                                          .compact-summary,.join-panel{
+                                                                            max-width:780px;
+                                                                            margin:28px auto}
+                                                                            .compact-summary h1,.join-panel h1{
+                                                                              font-size:32px}
+                                                                              .image-dialog{
+                                                                                max-width:96vw;
+                                                                                max-height:96svh;
+                                                                                border:1px solid #9cbaac;
+                                                                                border-radius:14px;
+                                                                                padding:12px;
+                                                                                text-align:center}
+                                                                                .image-dialog .scene-art{
+                                                                                  height:calc(95svh - 140px);
+                                                                                  width:auto;
+                                                                                  max-width:100%;
+                                                                                  margin:auto;
+                                                                                  object-fit:contain}
+                                                                                  .image-dialog p{
+                                                                                    font-size:12px;
+                                                                                    margin:6px}
+                                                                                    dialog::backdrop{
+                                                                                      background:#123c3bb8}
+                                                                                      dialog{
+                                                                                        border:1px solid #9cbaac;
+                                                                                        border-radius:12px;
+                                                                                        max-width:90vw;
+                                                                                        padding:22px}
+                                                                                        .storage-note{
+                                                                                          font-size:12px}
+                                                                                          .activity-panel .choice.selected{
+                                                                                            border:2px solid #075e63;
+                                                                                            background:#e4ede5}
+                                                                                            body:has(.mission-frame) footer{
+                                                                                              margin-top:0;
+                                                                                              padding:10px 20px;
+                                                                                              font-size:11px}
+                                                                                              body:has(.mission-frame) header{
+                                                                                                min-height:65px;
+                                                                                                padding-top:12px;
+                                                                                                padding-bottom:12px}
+                                                                                                body:has(.simple-home) footer{
+                                                                                                  display:none}
+                                                                                                  @keyframes arrive{
+                                                                                                    from{
+                                                                                                      opacity:.65}
+                                                                                                      to{
+                                                                                                        opacity:1}
+                                                                                                      }
+                                                                                                      @media(max-width:760px){
+                                                                                                        header{
+                                                                                                          min-height:65px;
+                                                                                                          padding:12px 16px;
+                                                                                                          flex-wrap:nowrap}
+                                                                                                          .brand{
+                                                                                                            font-size:23px}
+                                                                                                            .brand>span{
+                                                                                                              font-size:20px}
+                                                                                                              .brand small{
+                                                                                                                font-size:10px}
+                                                                                                                .tools{
+                                                                                                                  width:auto;
+                                                                                                                  max-width:38%;
+                                                                                                                  font-size:10px}
+                                                                                                                  .tools button{
+                                                                                                                    font-size:10px;
+                                                                                                                    padding:5px}
+                                                                                                                    .tools #network{
+                                                                                                                      font-size:10px}
+                                                                                                                      main{
+                                                                                                                        padding:0 12px}
+                                                                                                                        .simple-home{
+                                                                                                                          padding-top:20px;
+                                                                                                                          min-height:auto;
+                                                                                                                          grid-template-columns:1fr;
+                                                                                                                          gap:14px;
+                                                                                                                          text-align:center}
+                                                                                                                          .simple-home h1{
+                                                                                                                            font-size:39px;
+                                                                                                                            margin-bottom:16px}
+                                                                                                                            .home-phrase{
+                                                                                                                              font-size:20px;
+                                                                                                                              margin-bottom:16px}
+                                                                                                                              .home-actions{
+                                                                                                                                display:grid;
+                                                                                                                                grid-template-columns:1fr 1fr;
+                                                                                                                                margin-top:18px;
+                                                                                                                                gap:10px}
+                                                                                                                                .home-actions>.primary{
+                                                                                                                                  grid-column:1/-1}
+                                                                                                                                  .home-kuky{
+                                                                                                                                    max-height:30svh;
+                                                                                                                                    width:auto;
+                                                                                                                                    max-width:85%;
+                                                                                                                                    justify-self:center}
+                                                                                                                                    .compact-top{
+                                                                                                                                      font-size:11px;
+                                                                                                                                      padding:3px 0;
+                                                                                                                                      min-height:42px}
+                                                                                                                                      .text-button{
+                                                                                                                                        font-size:12px;
+                                                                                                                                        padding:7px 3px}
+                                                                                                                                        .mission-frame{
+                                                                                                                                          grid-template-columns:1fr;
+                                                                                                                                          grid-template-rows:auto auto auto;
+                                                                                                                                          gap:10px;
+                                                                                                                                          padding-top:5px}
+                                                                                                                                          .step-title h1{
+                                                                                                                                            font-size:23px;
+                                                                                                                                            letter-spacing:-.4px}
+                                                                                                                                            .step-title span{
+                                                                                                                                              font-size:11px;
+                                                                                                                                              margin-bottom:4px}
+                                                                                                                                              .scene-wrap{
+                                                                                                                                                height:43svh;
+                                                                                                                                                min-height:280px;
+                                                                                                                                                max-height:470px}
+                                                                                                                                                .activity-panel{
+                                                                                                                                                  font-size:14px}
+                                                                                                                                                  .activity-panel p{
+                                                                                                                                                    margin-bottom:8px}
+                                                                                                                                                    .activity-panel .choice{
+                                                                                                                                                      font-size:14px;
+                                                                                                                                                      padding:9px 12px;
+                                                                                                                                                      line-height:1.35;
+                                                                                                                                                      min-height:44px}
+                                                                                                                                                      .activity-panel .primary{
+                                                                                                                                                        min-height:44px;
+                                                                                                                                                        padding:10px 16px;
+                                                                                                                                                        font-size:14px}
+                                                                                                                                                        .activity-panel .choices{
+                                                                                                                                                          gap:6px;
+                                                                                                                                                          margin:8px 0}
+                                                                                                                                                          .activity-panel .action-row{
+                                                                                                                                                            margin:8px 0;
+                                                                                                                                                            gap:8px}
+                                                                                                                                                            .activity-panel .action-row>.primary{
+                                                                                                                                                              flex:1}
+                                                                                                                                                              .activity-panel details{
+                                                                                                                                                                margin:0}
+                                                                                                                                                                .role-line{
+                                                                                                                                                                  font-size:12px}
+                                                                                                                                                                  .feedback{
+                                                                                                                                                                    font-size:13px;
+                                                                                                                                                                    padding:6px 10px}
+                                                                                                                                                                    .focus-controls{
+                                                                                                                                                                      margin:8px 0;
+                                                                                                                                                                      gap:5px}
+                                                                                                                                                                      .focus-tab{
+                                                                                                                                                                        min-height:36px;
+                                                                                                                                                                        padding:6px;
+                                                                                                                                                                        font-size:11px}
+                                                                                                                                                                        .animation-controls{
+                                                                                                                                                                          gap:6px}
+                                                                                                                                                                          .why p{
+                                                                                                                                                                            font-size:13px}
+                                                                                                                                                                            .compact-summary{
+                                                                                                                                                                              margin-top:16px}
+                                                                                                                                                                              .compact-summary h1{
+                                                                                                                                                                                font-size:28px}
+                                                                                                                                                                                .kuky-cue{
+                                                                                                                                                                                  padding:8px 0;
+                                                                                                                                                                                  font-size:13px}
+                                                                                                                                                                                  .mission-frame:has([data-decision]) .scene-wrap,.mission-frame.evaluation .scene-wrap{
+                                                                                                                                                                                    height:35svh;
+                                                                                                                                                                                    min-height:260px}
+                                                                                                                                                                                    .mission-frame:has([data-apply]) .scene-wrap{
+                                                                                                                                                                                      height:35svh;
+                                                                                                                                                                                      min-height:260px}
+                                                                                                                                                                                    }
+                                                                                                                                                                                    @media(prefers-reduced-motion:reduce){
+                                                                                                                                                                                      .mission-frame,.focus-highlight{
+                                                                                                                                                                                        animation:none!important;
+                                                                                                                                                                                        transition:none!important}
+                                                                                                                                                                                      }
+                                                                                                                                                                                      @media(max-width:760px){
+                                                                                                                                                                                        .mission-frame:has(.primary){
+                                                                                                                                                                                          padding-bottom:76px}
+                                                                                                                                                                                          .mission-frame .activity-panel>.primary,
+                                                                                                                                                                                          .mission-frame .activity-panel>.action-row>.primary{
+                                                                                                                                                                                            position:fixed;
+                                                                                                                                                                                            bottom:10px;
+                                                                                                                                                                                            left:12px;
+                                                                                                                                                                                            right:12px;
+                                                                                                                                                                                            width:calc(100% - 24px);
+                                                                                                                                                                                            z-index:6;
+                                                                                                                                                                                            margin:0;
+                                                                                                                                                                                            box-shadow:0 -8px 14px #f5f7f3,0 5px 18px #193e4225}
+                                                                                                                                                                                            body:has(.mission-frame) footer{
+                                                                                                                                                                                              display:none}
+                                                                                                                                                                                            }

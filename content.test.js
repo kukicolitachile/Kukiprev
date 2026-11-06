@@ -27,7 +27,8 @@ test('study, practice and assessment have complete content with unambiguous choi
     assert.equal(activity.alternativas.filter(choice => choice.correcta).length, 1);
     assert.ok(activity.alternativas.every(choice => choice.texto && choice.feedback));
   }
-  assert.equal(revision.practica.alternativas.find(choice => choice.correcta).texto.startsWith('Falta información para decidir con seguridad'), true);
+  assert.ok(revision.practica.alternativas.find(choice => choice.correcta).texto.includes('Comunico'));
+  assert.ok(revision.interaccion.aplica.alternativas.find(choice => choice.correcta).texto.startsWith('Falta información para decidir con seguridad'));
 });
 
 test('the practice targets match the retained, uncropped artwork coordinates', () => {
@@ -50,4 +51,16 @@ test('unverified references are retained for review without appearing as approve
     assert.ok(scene.referencias_pendientes.every(source => source.estado === 'no_verificada'));
   }
   assert.equal(revision.fuentes.estado, 'pendiente_validacion_tecnica_y_normativa');
+});
+
+test('brief practice offers a concrete action and reserves uncertainty for undefined work', () => {
+  const activity = revision.interaccion;
+  assert.ok(revision.practica.alternativas.find(a => a.correcta).texto.startsWith('Comunico'));
+  assert.ok(activity.aplica.contexto.includes('no están definidos'));
+  assert.equal(activity.aplica.alternativas.filter(a => a.correcta).length, 1);
+  for (const step of ['explora','decide','descubre']) assert.ok(activity[step].split(/\s+/).length <= 15);
+  for (const a of [...revision.practica.alternativas, ...activity.aplica.alternativas]) {
+    assert.ok(a.texto.split(/\s+/).length <= 12);
+    assert.ok(a.feedback.split(/\s+/).length <= 35);
+  }
 });

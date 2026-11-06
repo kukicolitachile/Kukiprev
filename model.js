@@ -1,6 +1,6 @@
 export const KEY = 'decidobien-review-v1';
 
-const VIEWS = new Set(['home', 'study', 'practice', 'evaluation', 'summary', 'review']);
+const VIEWS = new Set(['home', 'study', 'practice', 'evaluation', 'summary', 'review', 'join']);
 const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const has = (object, key) => Object.hasOwn(object, key);
 
@@ -106,8 +106,19 @@ export function validState(state, content) {
     else if (unansweredSeen) return false;
   }
 
-  if (['practice', 'evaluation', 'summary'].includes(state.view) && !state.studyRead) return false;
+
   if (['evaluation', 'summary'].includes(state.view) && (!practice.found || practice.selected === null)) return false;
   if (state.view === 'summary' && !complete) return false;
+  if (state.journey !== undefined) {
+    const j = state.journey;
+    if (!isRecord(j) || !['observe','explore','decide','discover','apply'].includes(j.stage)) return false;
+    if (j.pending !== null && !practiceIds.includes(j.pending)) return false;
+    if (typeof j.hint !== 'boolean' || !Number.isInteger(j.focus) || j.focus < 0 || j.focus > 2) return false;
+    if (j.applied !== null && !content.interaccion?.aplica.alternativas.some(a => a.id === j.applied)) return false;
+    if (typeof j.appliedConfirmed !== 'boolean' || (j.appliedConfirmed && !j.applied)) return false;
+    if (['decide','discover','apply'].includes(j.stage) && !practice.found) return false;
+    if (['discover','apply'].includes(j.stage) && !practice.selected) return false;
+    if (!Number.isInteger(j.studyIndex) || j.studyIndex < 0 || j.studyIndex > 3) return false;
+  }
   return true;
 }

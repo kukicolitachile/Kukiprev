@@ -46,3 +46,9 @@ Encartonadora y tableteadora permanecen pendientes y fuera del recorrido activo.
 - Lo hipotético y lo pendiente están visibles y separados de lo validado.
 - El formato visual, Kuky y estudio/práctica/evaluación se conservan.
 - La revisión técnica no se convierte automáticamente en aprobación por completar el cuestionario.
+
+## Revisión de interacción visual
+
+La misión se presenta en cinco momentos: observar la acumulación del ejemplo; explorar sin marcas iniciales; elegir y confirmar una respuesta desde el rol; descubrir relaciones mediante resaltados y controles estáticos; aplicar lo aprendido a una propuesta de retirada cuyo método no se conoce. La primera decisión dispone de información suficiente para comunicar sin acceder al peligro; la segunda justifica reconocer información insuficiente.
+
+Las explicaciones amplias se conservan en «¿Por qué?». Kuky interviene de forma breve al aplicar y cerrar. No se animan partes del equipo. El recorrido visual puede omitirse, pausarse o repetirse; no es una espera para cumplir tiempo. La evaluación no muestra pistas ni feedback correctivo hasta finalizar las respuestas confirmadas. La salida es explícita y no borra respuestas.

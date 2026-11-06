@@ -1,4 +1,4 @@
-const CACHE='decidobien-v3-correa-review';
+const CACHE='decidobien-v4-visual';
 const FILES=['./','./index.html','./style.css','./app.js','./model.js','./scenes.js','./manifest.webmanifest','./assets/escenarios.json','./assets/correa-revision.json','./assets/kuky.png','./assets/icon.svg','./assets/icon-192.png','./assets/icon-512.png',...Array.from({length:6},(_,i)=>['base','consecuencia'].map(kind=>`./assets/escenas/esc-${String(i+1).padStart(2,'0')}-${kind}.webp`)).flat()];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('decidobien-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});

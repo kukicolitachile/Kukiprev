@@ -19,9 +19,9 @@ Cada tarea de nube ya está aislada: utiliza el checkout existente. No crees wor
 ## Qué revisar
 
 1. Inicio: condición de borrador, alcance de 30 minutos y mapa honesto de misiones.
-2. Estudio: rol del ejercicio, límites y cuatro microlecciones.
-3. Práctica: instrucción antes de la imagen, exploración por zonas o lista textual, información insuficiente como respuesta y consecuencia posible integrada a la explicación.
-4. Evaluación: tres preguntas sin pistas durante el intento; respuestas confirmadas y guardadas al seleccionarlas. Resultado explicado al finalizar, sin umbral empresarial de aprobación.
+2. Estudio: una observación por pantalla, ilustración y detalle bajo demanda.
+3. Práctica: Observa → Explora → Decide → Descubre → Aplica. Pistas solicitadas, decisión concreta, confirmación y explicaciones visuales; información insuficiente cuando se propone una tarea no definida.
+4. Evaluación: tres preguntas sin pistas ni navegación de aprendizaje durante el intento; selección y confirmación separadas. Respuestas confirmadas guardadas y recuperables. Corrección al finalizar, sin umbral empresarial de aprobación.
 5. Revisión técnica: ocho asuntos pendientes, con las funciones que deben aclararlos; no hay botón de aprobación.
 
 La interfaz no solicita datos de trabajadores. El progreso del borrador se guarda en una clave nueva de almacenamiento local y no se convierte el puntaje anterior en una aprobación. Volver al inicio conserva decisiones y respuestas; repetir la evaluación inicia una nueva práctica local y no crea un historial empresarial.
@@ -53,10 +53,18 @@ Con el servidor activo en el puerto 4173, comprueban secuencia, recarga, persist
 
 ## PWA y actualizaciones
 
-Manifest y service worker usan rutas relativas. La caché de esta entrega es `decidobien-v3-correa-review`. Incrementa su versión al publicar una actualización. Si se abre una versión anterior desde una caché existente, espera la actualización del service worker y recarga. No se asume que una sesión de aprendizaje cambie de versión a mitad de un intento.
+Manifest y service worker usan rutas relativas. La caché de esta entrega es `decidobien-v4-visual`. Incrementa su versión al publicar una actualización. Si se abre una versión anterior desde una caché existente, espera la actualización del service worker y recarga. No se asume que una sesión de aprendizaje cambie de versión a mitad de un intento.
 
 Para uso fuera de desarrollo, hospeda los recursos estáticos en HTTPS. El almacenamiento del navegador no es un registro empresarial ni una prueba de asistencia.
 
 ## Validación técnica pendiente
 
 Confirmar equipo y movimiento, tarea/anomalía, accesos y controles, método, roles y canal de comunicación, organización, protección personal pertinente y fuentes aplicables. Hasta entonces el caso enseña reconocimiento de exposición y límites de la información; no enseña a intervenir la correa. Ninguna referencia normativa específica se muestra como aprobada.
+
+## Interacción visual
+
+El inicio muestra título, frase y accesos a sesión, estudio y práctica. El acceso a sesión explica que los códigos y el registro empresarial aún no están implementados. No hay tarjetas de misiones vacías.
+
+La imagen solo recibe resaltados después de confirmar la decisión o al solicitar una pista; no se simula movimiento de la máquina. El recorrido de resaltados es opcional, pausado/repetible y tiene controles estáticos. Con movimiento reducido no se reproduce. La ampliación de la ilustración usa un diálogo accesible.
+
+Los 30 minutos siguen siendo el alcance planificado de la capacitación guiada completa, incluidas conversación y evaluación. No se agregan esperas ni animaciones obligatorias. Las funciones administrativas y las decisiones pendientes están en Revisión técnica; el indicador de borrador permanece visible.

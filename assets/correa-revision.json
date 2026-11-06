@@ -1,5 +1,5 @@
 {
-  "version": "2.0-revision-1",
+  "version": "2.1-interaccion-1",
   "id": "esc-01",
   "titulo": "La correa: reconocer la exposición antes de actuar",
   "estado": "borrador_revisable",
@@ -48,7 +48,7 @@
     "zonas": [
       {
         "id": "zona-a",
-        "descripcion": "Zona de encuentro entre la banda y la polea del extremo",
+        "descripcion": "Banda junto a la polea del extremo",
         "correcta": true,
         "feedback": "Identificaste la zona que el ejemplo representa como posible punto de atrapamiento. La exposición puede ocurrir si las manos acceden a ese encuentro mientras existe movimiento. Su ubicación exacta en el equipo real requiere validación técnica.",
         "rect": [
@@ -60,7 +60,7 @@
       },
       {
         "id": "zona-b",
-        "descripcion": "Tramo plano de la banda, separado del extremo",
+        "descripcion": "Tramo central de la banda",
         "correcta": false,
         "feedback": "Es una parte de la tarea que también requiere revisión. En esta actividad buscamos el encuentro de superficies que podría captar una mano; no estamos declarando seguro el resto de la banda.",
         "rect": [
@@ -72,7 +72,7 @@
       },
       {
         "id": "zona-c",
-        "descripcion": "Estuches acumulados sobre la banda",
+        "descripcion": "Estuches acumulados",
         "correcta": false,
         "feedback": "La acumulación ayuda a explicar por qué alguien podría intentar aproximarse. Además de reconocerla, busca el movimiento que podría captar las manos. La causa de la acumulación sigue pendiente de revisión.",
         "rect": [
@@ -83,48 +83,48 @@
         ]
       }
     ],
-    "pregunta": "Antes de intentar retirar la acumulación, ¿qué conclusión permite la información disponible?",
+    "pregunta": "La acumulación continúa. ¿Qué haces desde tu rol?",
     "alternativas": [
       {
         "id": "alt-a",
-        "texto": "Falta información para decidir con seguridad. No intento retirar los estuches; comunico la anomalía y solicito aclarar las condiciones de esta tarea.",
+        "texto": "Comunico la anomalía sin acceder a la zona peligrosa.",
         "correcta": true,
-        "feedback": "La escena no confirma el método, los controles, el estado requerido del equipo ni quién puede realizar la tarea. Prevención y los responsables técnicos del proceso deben aclarar estos puntos según sus funciones. Comunicar permite gestionar la anomalía; no demuestra que el peligro haya desaparecido."
+        "feedback": "Comunicar gestiona la anomalía, pero no elimina el peligro. Mantener las manos fuera del acceso representado no autoriza otra tarea. Falta validar la respuesta del proceso."
       },
       {
         "id": "alt-b",
-        "texto": "Con avisar a otra persona basta para poder retirar la acumulación con la mano.",
+        "texto": "Retiro los estuches con la mano.",
         "correcta": false,
-        "feedback": "Comunicar no impide físicamente el acceso al movimiento ni confirma que la tarea pueda realizarse. La condición que permite la exposición continúa sin resolverse en la información del ejemplo. No corresponde intentar la retirada."
+        "feedback": "La exposición aparece al acceder al movimiento para resolver la acumulación. Deben revisarse acceso, controles y método; una lesión es una consecuencia posible, no inevitable."
       },
       {
         "id": "alt-c",
-        "texto": "Si la correa deja de moverse a simple vista, ya puedo acomodar la banda.",
+        "texto": "Acomodo la banda si parece detenida.",
         "correcta": false,
-        "feedback": "Una detención visible no demuestra condiciones seguras para intervenir ni define tu función. En este caso no se dispone de información validada para enseñar ajustes o desatascos. Deben aclararse el método, las condiciones del equipo y las responsabilidades antes de plantear esa tarea."
+        "feedback": "La detención visible no demuestra una condición segura para intervenir. Este rol no incluye ajustes; el método y las responsabilidades siguen pendientes."
       }
     ]
   },
   "evaluacion": [
     {
       "id": "eval-condiciones",
-      "pregunta": "En una revisión se propone retirar los estuches porque la correa parece detenida. No se ha confirmado cómo debe hacerse ni quién debe realizarlo. ¿Qué conclusión está respaldada?",
+      "pregunta": "La correa parece detenida. El método de retirada es desconocido. ¿Qué concluyes?",
       "alternativas": [
         {
           "id": "ev1-a",
-          "texto": "Falta información para decidir con seguridad: deben aclararse el método, las condiciones requeridas del equipo y las responsabilidades para esa tarea.",
+          "texto": "Falta información para decidir con seguridad.",
           "correcta": true,
           "feedback": "La falta de movimiento visible no confirma todos esos puntos. Prevención y los responsables técnicos deben validar la tarea y sus condiciones; este caso no habilita una intervención."
         },
         {
           "id": "ev1-b",
-          "texto": "La ausencia de movimiento visible es suficiente para comenzar la retirada.",
+          "texto": "Puedo retirar los estuches si no se mueve.",
           "correcta": false,
           "feedback": "El aspecto del equipo no sustituye conocer las condiciones requeridas ni el método aplicable. La información del caso es insuficiente para decidir intervenir."
         },
         {
           "id": "ev1-c",
-          "texto": "La práctica en esta aplicación ya confirma que puedo realizar la tarea real.",
+          "texto": "El ejercicio me autoriza a intervenir.",
           "correcta": false,
           "feedback": "Este ejercicio comprueba comprensión de un ejemplo. No valida condiciones del equipo real ni atribuye funciones o permisos de trabajo."
         }
@@ -132,23 +132,23 @@
     },
     {
       "id": "eval-comunicacion",
-      "pregunta": "La anomalía ya fue comunicada. ¿Qué podemos afirmar con esa información, sin añadir supuestos?",
+      "pregunta": "La anomalía fue comunicada. ¿Qué sabes con certeza?",
       "alternativas": [
         {
           "id": "ev2-a",
-          "texto": "Solo sabemos que se comunicó. Falta confirmar cómo se atendió la condición y qué debe estar resuelto antes de continuar la tarea.",
+          "texto": "Se comunicó; falta confirmar cómo se atendió.",
           "correcta": true,
           "feedback": "Informar es necesario para gestionar la anomalía, pero no demuestra que el acceso al peligro esté controlado. El destinatario, las responsabilidades y la confirmación deben definirse en el proceso real."
         },
         {
           "id": "ev2-b",
-          "texto": "El peligro quedó eliminado porque otra persona ya sabe lo que ocurre.",
+          "texto": "El peligro quedó eliminado.",
           "correcta": false,
           "feedback": "El conocimiento de otra persona no elimina el movimiento peligroso ni impide el acceso de las manos."
         },
         {
           "id": "ev2-c",
-          "texto": "Podemos suponer que la tarea está resuelta aunque no exista confirmación.",
+          "texto": "La tarea ya puede continuar.",
           "correcta": false,
           "feedback": "Una suposición no verifica el estado del proceso. Hace falta aclarar la condición y la respuesta prevista antes de continuar una tarea que exponga las manos."
         }
@@ -156,23 +156,23 @@
     },
     {
       "id": "eval-proceso",
-      "pregunta": "Para reducir la necesidad de aproximar las manos cuando se acumula material, ¿qué revisión orienta mejor el aprendizaje al proceso?",
+      "pregunta": "El material se acumula repetidamente. ¿Qué conviene revisar?",
       "alternativas": [
         {
           "id": "ev3-a",
-          "texto": "Revisar por qué se acumula material, cómo se puede alcanzar el movimiento, qué controles y método corresponden y cómo se organiza la respuesta a la anomalía.",
+          "texto": "Causa, acceso al peligro, controles y método.",
           "correcta": true,
           "feedback": "La revisión conecta equipo, accesibilidad, tarea, medios y organización. Los responsables del proceso deben contrastarla con datos reales; no basta atribuir la exposición a la atención individual."
         },
         {
           "id": "ev3-b",
-          "texto": "Pedir más atención sin revisar las condiciones del equipo ni la tarea.",
+          "texto": "Solo la atención de quien opera.",
           "correcta": false,
           "feedback": "La atención no resuelve un acceso peligroso ni explica por qué la tarea exige aproximarse. La revisión debe incluir las condiciones del proceso."
         },
         {
           "id": "ev3-c",
-          "texto": "Dar por conocido el motivo del atasco porque aparece en una ilustración.",
+          "texto": "Solo la rapidez para retirar los estuches.",
           "correcta": false,
           "feedback": "La ilustración plantea una situación hipotética. La causa, la frecuencia y el método de respuesta necesitan datos y revisión del equipo real."
         }
@@ -241,5 +241,53 @@
   "fuentes": {
     "estado": "pendiente_validacion_tecnica_y_normativa",
     "nota": "Caso ilustrativo construido a partir del material disponible. No acredita condiciones de un equipo real ni incorpora una referencia normativa como contenido aprobado. Las decisiones técnicas pendientes deben revisarse antes de usarlo como capacitación aprobada."
+  },
+  "interaccion": {
+    "observa": "La correa avanza a tirones. Se acumulan estuches.",
+    "explora": "¿Dónde podría quedar atrapada una mano?",
+    "decide": "La acumulación continúa. ¿Qué haces desde tu rol?",
+    "rol_breve": "Tu rol: reconocer y comunicar; no realizar ajustes ni desatascos.",
+    "descubre": "¿Qué condiciones explican la exposición?",
+    "focos": [
+      {
+        "zona": "zona-a",
+        "titulo": "Acceso al movimiento",
+        "texto": "El ejemplo representa un encuentro entre banda y polea. Debe comprobarse cómo puede acceder una mano."
+      },
+      {
+        "zona": "zona-c",
+        "titulo": "La tarea que lleva a acercarse",
+        "texto": "La acumulación puede motivar la aproximación. Su causa y el método de respuesta no están confirmados."
+      },
+      {
+        "zona": "zona-b",
+        "titulo": "Controles y método",
+        "texto": "La imagen no permite verificar resguardos, método ni responsabilidades. Avisar no confirma que el peligro esté resuelto."
+      }
+    ],
+    "aplica": {
+      "consigna": "Te proponen retirar estuches. ¿Qué debes aclarar?",
+      "contexto": "El método y las responsabilidades de esa tarea no están definidos.",
+      "alternativas": [
+        {
+          "id": "ap-a",
+          "texto": "Falta información para decidir con seguridad.",
+          "correcta": true,
+          "feedback": "Hay que aclarar método, condiciones del equipo y responsabilidades con prevención y los responsables técnicos. El caso no enseña a retirar estuches."
+        },
+        {
+          "id": "ap-b",
+          "texto": "Basta con comprobar que no se mueve.",
+          "correcta": false,
+          "feedback": "La detención visible no demuestra condiciones seguras para intervenir. Faltan método y responsabilidades definidos."
+        },
+        {
+          "id": "ap-c",
+          "texto": "Puedo hacerlo si otra persona está mirando.",
+          "correcta": false,
+          "feedback": "La presencia de otra persona no resuelve el acceso al peligro. Deben aclararse las condiciones de la tarea."
+        }
+      ]
+    }
   }
 }

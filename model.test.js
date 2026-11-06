@@ -190,10 +190,10 @@ test('current evaluation question and confirmed answer restore without changing 
   assert.equal(restored.evaluation.answers.information, 'clarify');
 });
 
-test('learning stages require the agreed prior steps, without preventing home or review', () => {
+test('practice is directly accessible while evaluation requires a confirmed practice decision', () => {
   const state = fresh();
   state.view = 'practice';
-  assert.equal(validState(state, content), false);
+  assert.equal(validState(state, content), true);
   state.studyRead = true;
   assert.equal(validState(state, content), true);
   state.view = 'evaluation';
@@ -207,4 +207,23 @@ test('learning stages require the agreed prior steps, without preventing home or
     unfinished.view = view;
     assert.equal(validState(unfinished, content), true);
   }
+});
+
+test('visual stages and unconfirmed decisions restore without manufacturing a confirmed answer', () => {
+  const course = {...content, interaccion: {aplica: {alternativas: [{id:'apply-limit'}]}}};
+  const state = fresh();
+  state.view = 'practice';
+  state.journey = {stage:'decide',pending:'practice-limit',hint:false,focus:0,applied:null,appliedConfirmed:false,studyIndex:0};
+  state.practice.found = true;
+  assert.equal(validState(JSON.parse(JSON.stringify(state)), course), true);
+  assert.equal(state.practice.selected, null);
+  state.journey.stage = 'discover';
+  assert.equal(validState(state, course), false);
+  state.practice.selected = 'practice-limit';
+  assert.equal(validState(state, course), true);
+  state.journey.stage = 'apply';
+  state.journey.appliedConfirmed = true;
+  assert.equal(validState(state, course), false);
+  state.journey.applied = 'apply-limit';
+  assert.equal(validState(state, course), true);
 });
