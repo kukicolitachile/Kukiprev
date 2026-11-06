@@ -1,24 +1,62 @@
-# DecidoBien
-PWA estática en español para practicar seis decisiones de prevención de riesgos. No requiere dependencias npm, backend ni credenciales.
+# DecidoBien · Manos que cuidan
 
-## Desarrollo
-En GitHub, abre **Code → Codespaces → Create codespace on main**. La configuración de `.devcontainer` inicia el servidor automáticamente y reenvía el puerto 4173. Abre **Ports → 4173 → Open in Browser** si no se abre una pestaña. El enlace dura mientras el Codespace esté activo; no es un despliegue permanente.
+PWA de capacitación guiada. Esta entrega contiene **una primera versión revisable del caso de la correa transportadora**, con estudio, práctica y evaluación de comprensión. No es contenido técnicamente aprobado, un procedimiento de intervención ni una constancia de capacitación.
 
-Con Node 24 y Python 3 disponibles:
+Se conserva la identidad teal/blanco/gris, Kuky y las doce ilustraciones existentes. El módulo mantiene un alcance de diseño de **30 minutos** y el objetivo de **seis misiones de atrapamiento**. Solo la correa está disponible para revisión; no se simula que las otras cinco estén completas.
+
+## Desarrollo y Codespaces
+
+Sin dependencias npm, backend ni credenciales; Node y Python 3 deben estar disponibles. En GitHub: **Code → Codespaces → Create codespace on main**. La configuración intenta iniciar el servidor y reenviar el puerto 4173. Si hace falta iniciarlo manualmente, desde la carpeta del proyecto:
 
 ```sh
-cd /workspace/Kukiprev
 npm start
 ```
 
-Servidor en el puerto 4173. Ejecuta `npm test` para validar escenarios, puntaje y persistencia. Abre la aplicación, completa el recorrido y espera «Lista sin conexión» para comprobar la caché. En desarrollo, usa las herramientas del navegador para desregistrar el service worker si necesitas omitir la caché.
+Luego abre **Puertos → 4173 → Abrir en el navegador**. Codespaces sirve para revisar; no es el alojamiento permanente de un registro empresarial.
 
-## Instalación y despliegue
-Publica los archivos estáticos mediante HTTPS. El manifest y service worker usan rutas relativas y soportan un subdirectorio. El botón de instalación aparece en navegadores que ofrecen `beforeinstallprompt`; en iOS usa Compartir → Agregar a inicio. La primera carga requiere conexión. El progreso se almacena únicamente en el navegador/dispositivo; no se sincroniza ni se envía a servidores.
+Cada tarea de nube ya está aislada: utiliza el checkout existente. No crees worktrees salvo solicitud explícita.
 
-Al publicar cambios, actualiza la versión de CACHE en sw.js. No se garantiza funcionamiento offline hasta completar la precarga. Los procesos de desarrollo deben iniciarse nuevamente en cada entorno.
+## Qué revisar
 
-## Alcance y pendientes
-Incluye bienvenida, búsqueda interactiva en tres zonas por escena, alternativas aleatorias, tiempo orientativo sin penalización, feedback, puntaje, medalla y revisión final. Conserva los contenidos del JSON de origen. Incluye doce ilustraciones originales en WebP (seis escenas base y seis consecuencias) en assets/escenas, precargadas para uso offline. Las consecuencias solo se muestran tras una decisión incorrecta. Las zonas están calibradas en porcentajes sobre las imágenes completas sin recorte en scenes.js y en assets/escenarios.json. Mantén ambos mapas sincronizados si cambias la composición. Los PNG originales de generación se conservan fuera del checkout en /workspace/generated_images. Las referencias normativas y recomendaciones del material fuente necesitan validación de un profesional de prevención antes de uso formativo real. La medalla no es una certificación.
+1. Inicio: condición de borrador, alcance de 30 minutos y mapa honesto de misiones.
+2. Estudio: rol del ejercicio, límites y cuatro microlecciones.
+3. Práctica: instrucción antes de la imagen, exploración por zonas o lista textual, información insuficiente como respuesta y consecuencia posible integrada a la explicación.
+4. Evaluación: tres preguntas sin pistas durante el intento; respuestas confirmadas y guardadas al seleccionarlas. Resultado explicado al finalizar, sin umbral empresarial de aprobación.
+5. Revisión técnica: ocho asuntos pendientes, con las funciones que deben aclararlos; no hay botón de aprobación.
 
-Cada tarea de nube ya está aislada: utiliza este checkout; no crees worktrees salvo solicitud explícita.
+La interfaz no solicita datos de trabajadores. El progreso del borrador se guarda en una clave nueva de almacenamiento local y no se convierte el puntaje anterior en una aprobación. Volver al inicio conserva decisiones y respuestas; repetir la evaluación inicia una nueva práctica local y no crea un historial empresarial.
+
+## Contenidos y materiales conservados
+
+- `assets/correa-revision.json`: contenido de la secuencia actual, pendientes y coordenadas de la ilustración genérica.
+- `assets/escenarios.json`: material heredado con redacción corregida y estados explícitos. Encartonadora y tableteadora pendientes de revisión; autoclave, vidrio y químicos reservados para otros módulos. Referencias heredadas no verificadas y excluidas del respaldo aprobado.
+- `assets/escenas`: se conservan las seis bases y las seis consecuencias. No se redibujó equipo ni protección sin referencias reales. Las zonas de la correa representan un ejemplo y no una validación geométrica de una máquina real.
+- `docs/CASO_CORREA_REVISION.md`: alcance y guía de revisión.
+
+No hay funciones de investigación, reporte de terreno o seguimiento de mejoras. Las preguntas de reflexión son parte del aprendizaje. Registro empresarial, relator sincronizado y constancias verificables continúan como propuestas, sin datos reales ni simulación de acreditación.
+
+## Validación
+
+```sh
+npm test
+node model.test.js
+node content.test.js
+```
+
+Las pruebas verifican recuperación de decisiones, validación del avance, resultados sin umbral de aprobación, contenidos y conservación de los activos. Las pruebas de navegador reproducibles están en `tests/browser-review.py`; requieren Playwright de Python y Chromium disponibles:
+
+```sh
+python3 tests/browser-review.py
+```
+
+Con el servidor activo en el puerto 4173, comprueban secuencia, recarga, persistencia, revisión y funcionamiento offline. La primera visita requiere conexión. Espera «Lista sin conexión» antes de probar el modo offline.
+
+## PWA y actualizaciones
+
+Manifest y service worker usan rutas relativas. La caché de esta entrega es `decidobien-v3-correa-review`. Incrementa su versión al publicar una actualización. Si se abre una versión anterior desde una caché existente, espera la actualización del service worker y recarga. No se asume que una sesión de aprendizaje cambie de versión a mitad de un intento.
+
+Para uso fuera de desarrollo, hospeda los recursos estáticos en HTTPS. El almacenamiento del navegador no es un registro empresarial ni una prueba de asistencia.
+
+## Validación técnica pendiente
+
+Confirmar equipo y movimiento, tarea/anomalía, accesos y controles, método, roles y canal de comunicación, organización, protección personal pertinente y fuentes aplicables. Hasta entonces el caso enseña reconocimiento de exposición y límites de la información; no enseña a intervenir la correa. Ninguna referencia normativa específica se muestra como aprobada.

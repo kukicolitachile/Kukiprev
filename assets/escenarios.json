@@ -1,7 +1,7 @@
 {
   "proyecto": "DecidoBien",
-  "version_esquema": "1.0",
-  "edicion": "Laboratorio Saval (farmacéutica, Chile)",
+  "version_esquema": "1.1-revision",
+  "edicion": "Material ilustrativo; empresa destinataria pendiente de confirmación",
   "idioma": "es-CL (registro neutro profesional, sin chilenismos)",
   "configuracion_global": {
     "puntos_por_acierto": 100,
@@ -9,55 +9,61 @@
     "temporizador_segundos_por_defecto": 60,
     "temporizador_castigo_al_agotarse": false,
     "orden_alternativas": "aleatorio_en_cada_intento",
-    "total_escenarios": 6
+    "total_escenarios": 6,
+    "objetivo_misiones_atrapamiento": 6,
+    "duracion_modulo_minutos": 30,
+    "casos_revisables": [
+      "esc-01"
+    ],
+    "nota_alcance": "Se conserva el objetivo de seis misiones de atrapamiento. Solo la correa dispone de una primera secuencia revisable; las demás requieren definición o revisión. Los casos de laboratorio se reservan para otros módulos."
   },
   "escenarios": [
     {
       "id": "esc-01",
-      "titulo": "La correa que se detuvo",
-      "area": "Ingeniería / Mantenimiento",
+      "titulo": "La correa: reconocer la exposición antes de actuar",
+      "area": "Producción: rol del ejercicio, pendiente de validación en el proceso real",
       "riesgo": "atrapamiento",
-      "nivel_tematico": "Intervención en falla",
+      "nivel_tematico": "Reconocer exposición y límites ante una anomalía",
       "temporizador_segundos": 60,
-      "contexto": "Estás en la sala de empaque. La correa transportadora que lleva los estuches hacia la encartonadora empieza a fallar: los estuches se acumulan y la banda se mueve a tirones.\nEl supervisor de línea te mira desde el otro extremo. El lote tiene que salir hoy.\nTe acercas a la correa. Sigue en movimiento. Ves el punto donde la banda se junta con la polea.\n¿Qué haces?",
+      "contexto": "Situación hipotética. En una sala de empaque se acumulan estuches sobre una correa que se mueve a tirones. El lote está pendiente de entrega. La ilustración muestra a una persona junto al equipo, sin tocarlo. Esta escena sirve para reconocer una posible exposición; no documenta una condición de la planta ni permite determinar cómo debe resolverse la acumulación en un equipo real.",
       "percepcion_activa": {
-        "instruccion": "Toca en la imagen el punto más peligroso para tus manos.",
+        "instruccion": "En esta ilustración, toca la zona que representa un posible punto de atrapamiento si las manos acceden al movimiento.",
         "zonas": [
           {
             "id": "zona-a",
             "es_correcta": true,
-            "descripcion": "El punto de encuentro entre la polea y la banda",
+            "descripcion": "Zona de encuentro entre la banda y la polea del extremo",
             "coordenadas": {
               "x_pct": 64,
               "y_pct": 63,
               "ancho_pct": 32,
               "alto_pct": 15
             },
-            "feedback": "Exacto. Donde la banda se junta con la polea, la máquina puede atrapar tus dedos en menos de un segundo. Ahora decide qué hacer."
+            "feedback": "Identificaste la zona que el ejemplo representa como posible punto de atrapamiento. La exposición puede ocurrir si las manos acceden a ese encuentro mientras existe movimiento. Su ubicación exacta en el equipo real requiere validación técnica."
           },
           {
             "id": "zona-b",
             "es_correcta": false,
-            "descripcion": "La superficie plana de la banda",
+            "descripcion": "Tramo plano de la banda, separado del extremo",
             "coordenadas": {
               "x_pct": 22,
               "y_pct": 44,
               "ancho_pct": 36,
               "alto_pct": 11
             },
-            "feedback": "Ahí no está el mayor peligro. Mira dónde la banda se junta con la polea: ese punto atrapa. Inténtalo de nuevo."
+            "feedback": "Es una parte de la tarea que también requiere revisión. En esta actividad buscamos el encuentro de superficies que podría captar una mano; no estamos declarando seguro el resto de la banda."
           },
           {
             "id": "zona-c",
             "es_correcta": false,
-            "descripcion": "Los estuches acumulados",
+            "descripcion": "Estuches acumulados sobre la banda",
             "coordenadas": {
               "x_pct": 0,
               "y_pct": 33,
               "ancho_pct": 25,
               "alto_pct": 10
             },
-            "feedback": "Ahí no está el mayor peligro. Mira dónde la banda se junta con la polea: ese punto atrapa. Inténtalo de nuevo."
+            "feedback": "La acumulación ayuda a explicar por qué alguien podría intentar aproximarse. Además de reconocerla, busca el movimiento que podría captar las manos. La causa de la acumulación sigue pendiente de revisión."
           }
         ]
       },
@@ -66,27 +72,24 @@
           "id": "alt-a",
           "es_correcta": true,
           "gravedad_error": null,
-          "texto": "Detienes la correa con el botón de parada, avisas al supervisor y esperas a mantenimiento sin tocar el equipo.",
-          "feedback": "Decisión segura. Hiciste las 3 cosas correctas, en el orden correcto: Detener → Avisar → No intervenir. Detuviste la máquina, avisaste, y dejaste la reparación a quien corresponde. La correa es tarea de mantenimiento. No eres tú quien interviene. La producción puede esperar unos minutos. Tus manos no se recuperan igual.",
-          "norma": {
-            "titulo": "Ver norma que te respalda",
-            "referencia": "D.S. 594/1999, Art. 40 — prohibición de exponer manos a partes móviles; Ley 16.744."
-          }
+          "texto": "Falta información para decidir con seguridad. No intento retirar los estuches; comunico la anomalía y solicito aclarar las condiciones de esta tarea.",
+          "feedback": "La escena no confirma el método, los controles, el estado requerido del equipo ni quién puede realizar la tarea. Prevención y los responsables técnicos del proceso deben aclarar estos puntos según sus funciones. Comunicar permite gestionar la anomalía; no demuestra que el peligro haya desaparecido.",
+          "norma": null
         },
         {
           "id": "alt-b",
           "es_correcta": false,
           "gravedad_error": "grave",
-          "texto": "Aprovechas que la banda se mueve lento y empujas los estuches acumulados con la mano para destrabarla, sin detenerla. \"Es un segundo\".",
-          "feedback": "La banda atrapó tus dedos entre la polea y la correa. Esto pasó de verdad: un trabajador quiso destrabar una correa en movimiento y terminó con un dedo fracturado. Semanas sin usar esa mano. Ni en el trabajo, ni en su casa. Una correa en movimiento nunca se toca. Ni \"un segundo\". Lo seguro: Detener → Avisar → No intervenir.",
+          "texto": "Con avisar a otra persona basta para poder retirar la acumulación con la mano.",
+          "feedback": "Comunicar no impide físicamente el acceso al movimiento ni confirma que la tarea pueda realizarse. La condición que permite la exposición continúa sin resolverse en la información del ejemplo. No corresponde intentar la retirada.",
           "norma": null
         },
         {
           "id": "alt-c",
           "es_correcta": false,
           "gravedad_error": "plausible",
-          "texto": "Detienes la correa, pero decides arreglarla tú mismo antes de avisar a nadie, para ganar tiempo. Metes la mano para acomodar la banda sobre la polea.",
-          "feedback": "Detuviste la correa, pero no le dijiste a nadie que estabas ahí. Si otra persona ve la línea detenida y la vuelve a encender sin saber que tu mano está adentro, el atrapamiento ocurre igual. Avisar no es un trámite: es lo que evita que te enciendan la máquina encima. Detener → Avisar → No intervenir. Los tres pasos, en ese orden, te protegen a ti.",
+          "texto": "Si la correa deja de moverse a simple vista, ya puedo acomodar la banda.",
+          "feedback": "Una detención visible no demuestra condiciones seguras para intervenir ni define tu función. En este caso no se dispone de información validada para enseñar ajustes o desatascos. Deben aclararse el método, las condiciones del equipo y las responsabilidades antes de plantear esa tarea.",
           "norma": null
         }
       ],
@@ -97,8 +100,30 @@
         "canva_consecuencia": "https://www.canva.com/d/tf9fiWXmK8LDd-_"
       },
       "animacion_interna": {
-        "activa": true,
-        "descripcion": "Rodillos de la faja girando (el movimiento ES el peligro)"
+        "activa": false,
+        "descripcion": "Representación del movimiento pendiente de cotejo con el equipo real."
+      },
+      "estado": "borrador_revisable",
+      "modulo": "atrapamiento",
+      "tipo_relato": "situacion_hipotetica",
+      "aprobacion_tecnica": false,
+      "referencias_pendientes": [
+        {
+          "texto_heredado": "D.S. 594/1999, Art. 40 — prohibición de exponer manos a partes móviles; Ley 16.744.",
+          "estado": "no_verificada",
+          "uso": "Solo revisión; no mostrar como respaldo normativo aprobado."
+        }
+      ],
+      "contenido_revisable": "assets/correa-revision.json",
+      "rol": {
+        "titulo": "Participante de producción: reconocer y comunicar una anomalía",
+        "descripcion": "En este ejercicio observas una anomalía en una correa transportadora. El caso no te asigna tareas de desatasco, ajuste o mantenimiento. Tu función y tus límites en el equipo real deben confirmarse con prevención y con los responsables que designe la empresa.",
+        "limites": [
+          "No introducir las manos ni intentar acomodar la banda o retirar la acumulación representada.",
+          "No asumir que observar el equipo detenido permite intervenirlo.",
+          "No interpretar la comunicación de la anomalía como confirmación de que el peligro está controlado.",
+          "No continuar una tarea que implique aproximar las manos al movimiento peligroso sin condiciones y método definidos para esa tarea."
+        ]
       }
     },
     {
@@ -108,7 +133,7 @@
       "riesgo": "atrapamiento",
       "nivel_tematico": "Riesgo visible/estructural",
       "temporizador_segundos": 60,
-      "contexto": "Estás en la línea de encartonado. La encartonadora cierra las cajas con un sistema de rodillos. El resguardo metálico que cubre los rodillos no está instalado — lo quitaron para un ajuste hace unos días y quedó así. La línea sigue funcionando, turno tras turno, sin él.\nTe acercas a revisar el nivel de material en la tolva, cerca de los rodillos.",
+      "contexto": "Situación hipotética pendiente de revisión técnica. El material de origen describe una encartonadora que continúa funcionando después de un ajuste, con una protección retirada. Debe confirmarse qué zona y qué protección corresponden al diseño real antes de usar el caso como enseñanza aprobada.",
       "percepcion_activa": {
         "instruccion": "Toca en la imagen lo que falta y que debería estar ahí.",
         "zonas": [
@@ -122,7 +147,7 @@
               "ancho_pct": 46,
               "alto_pct": 12
             },
-            "feedback": "Exacto. Ese resguardo evita que tus manos lleguen a los rodillos. Sin él, cualquier acercamiento es un riesgo. Ahora decide qué hacer."
+            "feedback": "El ejemplo pretende representar un acceso sin la protección prevista. La función y ubicación del resguardo deben cotejarse con el diseño real; observar rodillos no demuestra por sí solo qué protección falta."
           },
           {
             "id": "zona-b",
@@ -155,19 +180,16 @@
           "id": "alt-a",
           "es_correcta": true,
           "gravedad_error": null,
-          "texto": "Detienes la máquina, avisas que falta el resguardo, y no te acercas a los rodillos hasta que esté instalado de nuevo.",
-          "feedback": "Decisión segura. Detener → Avisar → No exponerte. La máquina no vuelve a funcionar sin el resguardo, y tú te mantienes fuera de esa zona mientras se soluciona. El resguardo no es un obstáculo — es lo que te devuelve las manos completas al final del turno.",
-          "norma": {
-            "titulo": "Ver norma que te respalda",
-            "referencia": "D.S. 594/1999, Art. 38 — resguardos de máquinas."
-          }
+          "texto": "No continúas una tarea que exponga las manos a esa zona; comunicas la condición y solicitas revisar los controles y el método aplicables.",
+          "feedback": "El objetivo es impedir el acceso al movimiento peligroso. Corresponde confirmar el diseño, la protección y las condiciones de la tarea con los responsables técnicos. Una comunicación o la colocación aparente de una pieza no confirman por sí solas que la condición esté resuelta.",
+          "norma": null
         },
         {
           "id": "alt-b",
           "es_correcta": false,
           "gravedad_error": "grave",
           "texto": "La máquina lleva días así y nunca ha pasado nada: revisas la tolva con cuidado, evitando tocar los rodillos.",
-          "feedback": "Que no haya pasado nada no significa que sea seguro. Los rodillos no distinguen entre \"ya varias veces sin problema\" y \"esta vez\". El resguardo existe para el descuido de un segundo. Detén, avisa, y no te acerques hasta que vuelva a estar instalado.",
+          "feedback": "La ausencia previa de lesiones no demuestra que el acceso al movimiento esté controlado. Hay que revisar la protección prevista, cómo se gestionó el ajuste y por qué el equipo siguió disponible en esa condición.",
           "norma": null
         },
         {
@@ -175,7 +197,7 @@
           "es_correcta": false,
           "gravedad_error": "plausible",
           "texto": "Avisas que falta el resguardo, pero mientras llega mantenimiento sigues trabajando cerca de los rodillos porque la línea no puede parar.",
-          "feedback": "Avisaste: bien. Pero seguiste trabajando cerca de los rodillos mientras el resguardo no estaba. Avisar no te protege si tu cuerpo sigue en la zona de peligro. Mientras falte el resguardo, esa zona se evita — no se visita \"con cuidado\".",
+          "feedback": "Comunicar la condición no controla el acceso de las manos al movimiento. Mantener la tarea que genera esa exposición deja pendiente el problema del proceso; deben aclararse los controles, el método y las responsabilidades.",
           "norma": null
         }
       ],
@@ -188,7 +210,18 @@
       "animacion_interna": {
         "activa": false,
         "descripcion": null
-      }
+      },
+      "estado": "pendiente_revision_tecnica",
+      "modulo": "atrapamiento",
+      "tipo_relato": "situacion_hipotetica",
+      "aprobacion_tecnica": false,
+      "referencias_pendientes": [
+        {
+          "texto_heredado": "D.S. 594/1999, Art. 38 — resguardos de máquinas.",
+          "estado": "no_verificada",
+          "uso": "Solo revisión; no mostrar como respaldo normativo aprobado."
+        }
+      ]
     },
     {
       "id": "esc-03",
@@ -197,21 +230,21 @@
       "riesgo": "atrapamiento",
       "nivel_tematico": "Tareas rutinarias \"de siempre\" (habituación)",
       "temporizador_segundos": 60,
-      "contexto": "Estás en el área de tabletas. La tableteadora está en marcha, produciendo el lote del día. Cerca de la tolva y donde giran los engranajes de la matriz se acumulan restos de polvo y tabletas mal formadas. Limpiar eso con la máquina encendida es lo que se ha hecho siempre en esa línea, desde antes de que llegaras.\nTe acercas con una espátula, como cada turno.",
+      "contexto": "Situación hipotética pendiente de revisión técnica. El material de origen plantea una necesidad de limpieza por acumulación de residuos en una tableteadora. No se han confirmado la parte accesible, el método de limpieza ni las condiciones requeridas del equipo. Esta versión no enseña una intervención.",
       "percepcion_activa": {
         "instruccion": "Toca en la imagen el punto donde tus manos corren más riesgo.",
         "zonas": [
           {
             "id": "zona-a",
             "es_correcta": true,
-            "descripcion": "Donde giran los engranajes de la matriz",
+            "descripcion": "Mecanismo representado en la zona inferior; ubicación por validar",
             "coordenadas": {
               "x_pct": 5,
               "y_pct": 49,
               "ancho_pct": 42,
               "alto_pct": 13
             },
-            "feedback": "Exacto. Ahí giran los engranajes que dan forma a las tabletas. Con la máquina en marcha, ese punto puede atrapar tus dedos en un instante. Ahora decide qué hacer."
+            "feedback": "La zona representa un posible acceso a un mecanismo móvil. Antes de explicarla deben cotejarse el mecanismo, su función y su accesibilidad durante la tarea real; no se da por validada la geometría del dibujo."
           },
           {
             "id": "zona-b",
@@ -223,7 +256,7 @@
               "ancho_pct": 19,
               "alto_pct": 16
             },
-            "feedback": "Ahí no es. El peligro está donde giran los engranajes. Inténtalo de nuevo."
+            "feedback": "La identificación del mecanismo y del acceso peligroso sigue pendiente de cotejo técnico. Este caso permanece fuera de la secuencia revisable de aprendizaje."
           },
           {
             "id": "zona-c",
@@ -235,7 +268,7 @@
               "ancho_pct": 37,
               "alto_pct": 15
             },
-            "feedback": "Ahí no es. El peligro está donde giran los engranajes. Inténtalo de nuevo."
+            "feedback": "La identificación del mecanismo y del acceso peligroso sigue pendiente de cotejo técnico. Este caso permanece fuera de la secuencia revisable de aprendizaje."
           }
         ]
       },
@@ -244,19 +277,16 @@
           "id": "alt-a",
           "es_correcta": true,
           "gravedad_error": null,
-          "texto": "Detienes la tableteadora antes de limpiar y limpias solo cuando está detenida.",
-          "feedback": "Decisión segura. Máquina detenida antes de limpiar. \"Siempre se ha hecho así\" no es lo mismo que \"es seguro\" — una máquina detenida no atrapa manos.",
-          "norma": {
-            "titulo": "Ver norma que te respalda",
-            "referencia": "D.S. 594/1999, Art. 37 — supresión de factores de peligro."
-          }
+          "texto": "Falta información para decidir con seguridad. No inicio la limpieza y solicito aclarar el método, las condiciones requeridas y mi función.",
+          "feedback": "Una máquina detenida no demuestra por sí sola que sea seguro acceder a sus mecanismos. Como este caso no dispone de un método validado, la intervención queda pendiente y no se enseña en esta versión.",
+          "norma": null
         },
         {
           "id": "alt-b",
           "es_correcta": false,
           "gravedad_error": "grave",
           "texto": "Limpias con la espátula mientras la máquina sigue en marcha, como siempre se ha hecho.",
-          "feedback": "Que sea la costumbre no cambia lo que puede pasar: los engranajes en marcha no distinguen la experiencia de quien limpia. Antes de acercar las manos a esa zona, la máquina se detiene. Siempre.",
+          "feedback": "Introducir una herramienta o aproximar las manos sin un método validado puede mantener la exposición al movimiento. Deben aclararse accesos, condiciones del equipo y método; la costumbre no confirma que estén resueltos.",
           "norma": null
         },
         {
@@ -264,7 +294,7 @@
           "es_correcta": false,
           "gravedad_error": "plausible",
           "texto": "Bajas la velocidad desde el panel de control y limpias con más cuidado, sin detenerla del todo.",
-          "feedback": "Bajar la velocidad no elimina el riesgo: los engranajes siguen girando y pueden atrapar tus dedos igual, solo un poco más lento. La única forma segura de limpiar esa zona es con la máquina detenida.",
+          "feedback": "Reducir la velocidad no confirma una tarea sin exposición. No corresponde sustituir un método pendiente por una explicación simplificada; el caso requiere revisión técnica antes de enseñar cómo limpiar.",
           "norma": null
         }
       ],
@@ -277,7 +307,18 @@
       "animacion_interna": {
         "activa": false,
         "descripcion": null
-      }
+      },
+      "estado": "pendiente_revision_tecnica",
+      "modulo": "atrapamiento",
+      "tipo_relato": "situacion_hipotetica",
+      "aprobacion_tecnica": false,
+      "referencias_pendientes": [
+        {
+          "texto_heredado": "D.S. 594/1999, Art. 37 — supresión de factores de peligro.",
+          "estado": "no_verificada",
+          "uso": "Solo revisión; no mostrar como respaldo normativo aprobado."
+        }
+      ]
     },
     {
       "id": "esc-04",
@@ -300,7 +341,7 @@
               "ancho_pct": 20,
               "alto_pct": 12
             },
-            "feedback": "Exacto. Aunque el ciclo terminó, el manómetro muestra que todavía hay presión y vapor dentro. Abrir ahora libera calor y vapor directo a tus manos y cara. Ahora decide qué hacer."
+            "feedback": "En este ejemplo se pretende representar presión residual. La lectura del instrumento y los criterios de apertura requieren cotejo con el manual y procedimiento del equipo; el manómetro no se presenta como criterio suficiente por sí solo."
           },
           {
             "id": "zona-b",
@@ -333,19 +374,16 @@
           "id": "alt-a",
           "es_correcta": true,
           "gravedad_error": null,
-          "texto": "Esperas a que el manómetro marque cero y la presión se libere por completo, y usas guantes térmicos para retirar el material.",
-          "feedback": "Decisión segura. Esperaste a que la presión llegara a cero y usaste guantes térmicos para el calor residual del material. El autoclave se abre por presión, no por tiempo — el manómetro es la señal real.",
-          "norma": {
-            "titulo": "Ver norma que te respalda",
-            "referencia": "D.S. 594/1999, Art. 37 — supresión de factores de peligro; Art. 184 Código del Trabajo; D.S. 10/2012 (autoclaves)."
-          }
+          "texto": "Falta información para decidir con seguridad. Consultas el procedimiento del equipo y sus condiciones de apertura antes de manipularlo.",
+          "feedback": "El caso queda reservado a otro módulo y pendiente de validación. El fin de ciclo y un único indicador no se presentan como autorización de apertura; deben comprobarse las condiciones que defina el procedimiento del equipo.",
+          "norma": null
         },
         {
           "id": "alt-b",
           "es_correcta": false,
           "gravedad_error": "grave",
           "texto": "La luz ya dice \"ciclo terminado\": abres la puerta apenas se apaga el temporizador, para adelantar el siguiente análisis.",
-          "feedback": "La luz de \"ciclo terminado\" indica que el tiempo de esterilización se cumplió, no que sea seguro abrir. Si aún hay presión dentro, el autoclave libera vapor a alta temperatura apenas se abre. Espera a que el manómetro marque cero antes de abrir.",
+          "feedback": "Una señal de fin de ciclo no confirma por sí sola las condiciones de apertura. La posible exposición a vapor y calor debe evaluarse según el equipo y el procedimiento antes de convertir el caso en contenido aprobado.",
           "norma": null
         },
         {
@@ -353,7 +391,7 @@
           "es_correcta": false,
           "gravedad_error": "plausible",
           "texto": "Te pones guantes térmicos y abres la puerta apenas termina el ciclo, confiando en que los guantes te protegen del calor.",
-          "feedback": "Los guantes térmicos protegen del contacto con superficies calientes, pero no del vapor a presión. Si abres antes de que el manómetro marque cero, el vapor sale con fuerza y puede quemarte las manos y el rostro aunque uses guantes. Antes de abrir, la presión debe estar en cero.",
+          "feedback": "La protección personal no sustituye verificar las condiciones de apertura. La selección de medios y el método deben validarse para ese equipo; este caso reservado no enseña cómo abrirlo.",
           "norma": null
         }
       ],
@@ -366,7 +404,18 @@
       "animacion_interna": {
         "activa": true,
         "descripcion": "Vapor del autoclave saliendo ondulante (el vapor/presión ES el peligro)"
-      }
+      },
+      "estado": "reservado_otro_modulo",
+      "modulo": "otros_riesgos_de_manos",
+      "tipo_relato": "situacion_hipotetica",
+      "aprobacion_tecnica": false,
+      "referencias_pendientes": [
+        {
+          "texto_heredado": "D.S. 594/1999, Art. 37 — supresión de factores de peligro; Art. 184 Código del Trabajo; D.S. 10/2012 (autoclaves).",
+          "estado": "no_verificada",
+          "uso": "Solo revisión; no mostrar como respaldo normativo aprobado."
+        }
+      ]
     },
     {
       "id": "esc-05",
@@ -422,12 +471,9 @@
           "id": "alt-a",
           "es_correcta": true,
           "gravedad_error": null,
-          "texto": "Retiras el matraz trizado de uso, lo separas para desecho de vidrio, y usas material en buen estado para seguir.",
-          "feedback": "Decisión segura. Retiraste el material dañado antes de que causara un corte. Un vidrio trizado no se repara lavándolo con cuidado — se desecha o se separa para revisión.",
-          "norma": {
-            "titulo": "Ver norma que te respalda",
-            "referencia": "D.S. 594/1999, Art. 37 — supresión de factores de peligro."
-          }
+          "texto": "No vuelves a utilizar el material dañado y consultas la forma de segregación y disposición que corresponda a su estado y contenido.",
+          "feedback": "Retirar de uso el material dañado evita mantener esa condición. La segregación y disposición requieren el procedimiento aplicable, especialmente si existe contaminación. Caso reservado a otro módulo y pendiente de validación.",
+          "norma": null
         },
         {
           "id": "alt-b",
@@ -455,7 +501,18 @@
       "animacion_interna": {
         "activa": false,
         "descripcion": null
-      }
+      },
+      "estado": "reservado_otro_modulo",
+      "modulo": "otros_riesgos_de_manos",
+      "tipo_relato": "situacion_hipotetica",
+      "aprobacion_tecnica": false,
+      "referencias_pendientes": [
+        {
+          "texto_heredado": "D.S. 594/1999, Art. 37 — supresión de factores de peligro.",
+          "estado": "no_verificada",
+          "uso": "Solo revisión; no mostrar como respaldo normativo aprobado."
+        }
+      ]
     },
     {
       "id": "esc-06",
@@ -512,11 +569,8 @@
           "es_correcta": true,
           "gravedad_error": null,
           "texto": "Vas a buscar el guante resistente indicado en la HDS antes de trasvasijar el solvente, aunque eso tome unos minutos más.",
-          "feedback": "Decisión segura. Buscaste el guante que la HDS indica para este solvente. No todos los guantes protegen igual: algunos materiales dejan pasar el químico como si no llevaras nada puesto. Esos minutos de espera evitan una exposición.",
-          "norma": {
-            "titulo": "Ver norma que te respalda",
-            "referencia": "D.S. 594/1999 y estándar SGA/HDS — uso de elementos de protección personal según hoja de datos de seguridad. D.S. 57 (clasificación y etiquetado de sustancias químicas, estándar SGA)."
-          }
+          "feedback": "La selección de protección requiere la información específica de la sustancia y de la tarea, junto con el método y los medios previstos. Este caso químico se reserva para otro módulo; no es una recomendación de guantes frente al atrapamiento.",
+          "norma": null
         },
         {
           "id": "alt-b",
@@ -531,7 +585,7 @@
           "es_correcta": false,
           "gravedad_error": "plausible",
           "texto": "Trasvasijas el solvente sin guantes, pero con mucho cuidado y movimientos lentos para no derramar nada sobre tu piel.",
-          "feedback": "El cuidado y la lentitud no reemplazan el guante adecuado: un salpicón, un descuido de un segundo, y el solvente toca tu piel directamente. La HDS existe justamente para saber qué protección usar antes de manipular la sustancia.",
+          "feedback": "La lentitud de una persona no controla por sí sola una posible exposición química. Deben revisarse el método de trasvasije, recipientes, medios disponibles y protección específica antes de manipular la sustancia.",
           "norma": null
         }
       ],
@@ -544,7 +598,18 @@
       "animacion_interna": {
         "activa": false,
         "descripcion": null
-      }
+      },
+      "estado": "reservado_otro_modulo",
+      "modulo": "otros_riesgos_de_manos",
+      "tipo_relato": "situacion_hipotetica",
+      "aprobacion_tecnica": false,
+      "referencias_pendientes": [
+        {
+          "texto_heredado": "D.S. 594/1999 y estándar SGA/HDS — uso de elementos de protección personal según hoja de datos de seguridad. D.S. 57 (clasificación y etiquetado de sustancias químicas, estándar SGA).",
+          "estado": "no_verificada",
+          "uso": "Solo revisión; no mostrar como respaldo normativo aprobado."
+        }
+      ]
     }
   ],
   "nombre_anterior": "Julisa (renombrado 05-08-2026 para profesionalización comercial)"

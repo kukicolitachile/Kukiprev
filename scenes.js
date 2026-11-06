@@ -25,4 +25,10 @@ export const consequences=[
  'Persona de laboratorio enjuagando una mano bajo el agua en una estación de emergencia.'
 ];
 export function imagePath(i,consequence=false){return `assets/escenas/esc-${String(i+1).padStart(2,'0')}-${consequence?'consecuencia':'base'}.webp`;}
-export function sceneMarkup(i,consequence=false){return `<img class="scene-art" src="./${imagePath(i,consequence)}" alt="${consequence?consequences[i]:descriptions[i]}" width="941" height="1672" decoding="async">`;}
+export function sceneMarkup(i, consequence = false, description = null) {
+  const text = String(description ?? (consequence ? consequences[i] : descriptions[i]));
+  const alt = text.replace(/[&<>"']/g, character => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[character]));
+  return `<img class="scene-art" src="./${imagePath(i, consequence)}" alt="${alt}" width="941" height="1672" decoding="async">`;
+}
