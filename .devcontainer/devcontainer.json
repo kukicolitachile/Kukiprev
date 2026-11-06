@@ -1,12 +1,14 @@
 {
   "name": "DecidoBien PWA",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "forwardPorts": [4173],
+  "forwardPorts": [
+    4173
+  ],
   "portsAttributes": {
     "4173": {
       "label": "DecidoBien",
       "onAutoForward": "openBrowser"
     }
   },
-  "postStartCommand": "nohup python3 -m http.server 4173 --bind 0.0.0.0 > /tmp/decidobien-server.log 2>&1 &"
+  "postStartCommand": "nohup python3 server.py > /tmp/decidobien-server.log 2>&1 &"
 }

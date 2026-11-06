@@ -25,6 +25,8 @@ export async function playSound(kind) {
 }
 export function feedback(kind,title,text='') {
  playSound(kind);
+ // The activity already provides persistent visual feedback beside the scene.
+ if(document.body.classList.contains('in-mission'))return;
  const box=document.querySelector('#interface-notice');
  if(!box)return;
  clearTimeout(noticeTimer);box.replaceChildren();
@@ -36,24 +38,25 @@ export function feedback(kind,title,text='') {
  noticeTimer=setTimeout(()=>{box.hidden=true;},3200);
 }
 export function cueKuky(mode,text) {
- const cue=document.querySelector('#kuky-moment');if(!cue)return;clearTimeout(cueTimer);
- cue.replaceChildren();cue.dataset.mood=mode;
- const image=document.createElement('img');image.src=`./assets/kuky/${mode==='advance'?'motivador':['reflect','observe'].includes(mode)?'atento':'feliz'}.png`;image.alt='Kuky';
- const phrase=document.createElement('span');phrase.textContent=text;
- const close=document.createElement('button');close.textContent='×';close.setAttribute('aria-label','Cerrar mensaje de Kuky');close.onclick=()=>cue.hidden=true;
- cue.append(image,phrase,close);cue.hidden=false;
- cueTimer=setTimeout(()=>{cue.hidden=true;},4200);
+ const cue=document.querySelector('.scene-companion');if(!cue)return;
+ cue.dataset.mood=mode;
+ const image=cue.querySelector('img');image.src=`./assets/kuky/${mode==='advance'?'motivador':'atento'}.png`;
+ cue.querySelector('p').textContent=text;
 }
 export function clearFeedback() {clearTimeout(noticeTimer);clearTimeout(cueTimer);for(const id of ['interface-notice','kuky-moment']){const item=document.getElementById(id);if(item)item.hidden=true;}}
 export function initExperience() {
  const controls=document.createElement('div');controls.className='experience-controls';
  controls.innerHTML='<button id="sound-toggle" aria-pressed="false">Activar sonido</button><button id="motion-toggle" aria-pressed="false">Pausar efectos</button>';
- document.querySelector('header').after(controls);
+ const dialog=document.createElement('dialog');dialog.id='experience-settings';
+ dialog.innerHTML='<h2>Ajustes y ayuda</h2><p>Sonidos de interfaz, sin alarmas del equipo.</p>';
+ controls.className='settings-options';dialog.append(controls);
+ const help=document.createElement('p');help.textContent='Toca los elementos o utiliza la lista accesible. En Descubre, los números explican la escena después de tu decisión. Los efectos cambian el encuadre y los resaltados; no simulan movimiento del equipo.';dialog.append(help);
+ const close=document.createElement('button');close.className='primary';close.textContent='Volver a la escena';close.onclick=()=>dialog.close();dialog.append(close);document.body.append(dialog);
+ const settings=document.createElement('button');settings.id='settings-toggle';settings.textContent='Ajustes';settings.setAttribute('aria-haspopup','dialog');settings.onclick=()=>dialog.showModal();document.querySelector('.tools').append(settings);
+ dialog.addEventListener('close',()=>settings.focus());
  const notice=document.createElement('aside');notice.id='interface-notice';notice.className='interface-notice';notice.hidden=true;notice.setAttribute('role','status');notice.setAttribute('aria-label','Aviso de la interfaz');notice.setAttribute('aria-live','polite');
- const cue=document.createElement('aside');cue.id='kuky-moment';cue.hidden=true;cue.className='kuky-moment';cue.setAttribute('aria-live','polite');
  notice.addEventListener('focusin',()=>clearTimeout(noticeTimer));
- cue.addEventListener('focusin',()=>clearTimeout(cueTimer));
- document.body.append(notice,cue);
+ document.body.append(notice);
  document.querySelector('#sound-toggle').onclick=async()=>{
   if(enabled){enabled=false;for(const s of sources){try{s.stop();}catch{}}sources.clear();syncControls();return;}
   try {

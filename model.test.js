@@ -227,3 +227,15 @@ test('visual stages and unconfirmed decisions restore without manufacturing a co
   state.journey.applied = 'apply-limit';
   assert.equal(validState(state, course), true);
 });
+
+// Previously saved draft progress remains readable; invalid detail ids are rejected.
+test('scene discovery restores without accepting duplicate or unknown details', () => {
+ const course = {...content, interaccion:{aplica:{alternativas:[{id:'apply-limit'}]}}};
+ const state=fresh();state.practice.found=true;state.practice.selected='practice-limit';
+ state.journey={stage:'discover',pending:'practice-limit',hint:false,focus:1,applied:null,appliedConfirmed:false,studyIndex:0,discovered:[0,1]};
+ assert.equal(validState(JSON.parse(JSON.stringify(state)),course),true);
+ state.journey.discovered=[0,0];assert.equal(validState(state,course),false);
+ state.journey.discovered=[3];assert.equal(validState(state,course),false);
+ delete state.journey.discovered;state.journey.compareOpen=true;state.journey.comparison='neither';
+ assert.equal(validState(state,course),true);
+});

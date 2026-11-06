@@ -14,7 +14,7 @@ with sync_playwright() as p:
  c=b.new_context(**options);c.add_init_script(HOOK);anchor={};c.expose_binding('__recordStart',lambda source:anchor.update(audio=time.monotonic()))
  start=time.monotonic();page=c.new_page();video=page.video;errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto('http://127.0.0.1:4173');page.locator('#welcome-start').wait_for()
- page.wait_for_function("document.querySelector('#network').textContent==='Lista sin conexión'")
+ page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  assert page.evaluate('__sounds.length')==0
  assert page.locator('#welcome-start').bounding_box()['y']+page.locator('#welcome-start').bounding_box()['height']<=844
  assert page.locator('.welcome-stage').bounding_box()['height']>=300
@@ -26,7 +26,7 @@ with sync_playwright() as p:
  page.locator('.welcome-spot[data-welcome="context"]').click();wait(2)
  assert page.locator('.welcome-spot.visited').count()==1
  assert page.evaluate('__sounds.length')==0
- page.locator('#sound-toggle').click();page.wait_for_function("document.querySelector('#sound-toggle').getAttribute('aria-pressed')==='true'");wait(1)
+ page.locator('#settings-toggle').click();page.locator('#sound-toggle').click();page.locator('#sound-toggle[aria-pressed="true"]').wait_for();page.get_by_role('button',name='Volver a la escena',exact=True).click();wait(1)
  page.locator('.welcome-spot[data-welcome="materials"]').click();wait(2)
  page.locator('.welcome-spot[data-welcome="person"]').click();wait(2.5)
  assert page.locator('.welcome-spot.visited').count()==3
@@ -35,7 +35,7 @@ with sync_playwright() as p:
  assert page.locator('.focus-highlight').count()==0
  page.screenshot(path=str(OUT/'bienvenida-explorada.png'),full_page=True)
  page.locator('#welcome-start').click();wait(3)
- assert 'Mira qué ocurre' in page.locator('h1').inner_text()
+ assert 'Observa la tarea' in page.locator('h1').inner_text()
  saved=page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1"))')
  assert saved['practice']['attempts']==0 and saved['practice']['found']==False
  page.screenshot(path=str(OUT/'comienzo-mision.png'),full_page=True)

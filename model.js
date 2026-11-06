@@ -113,6 +113,8 @@ export function validState(state, content) {
     const j = state.journey;
     if (!isRecord(j) || !['observe','explore','decide','discover','apply'].includes(j.stage)) return false;
     if (j.explored !== undefined && (!Array.isArray(j.explored) || new Set(j.explored).size!==j.explored.length || j.explored.some(id=>!content.practica.zonas.some(z=>z.id===id)))) return false;
+    if (j.discovered !== undefined && (!Array.isArray(j.discovered) || new Set(j.discovered).size !== j.discovered.length || j.discovered.some(id=>!Number.isInteger(id)||id<0||id>2))) return false;
+    if (j.classified !== undefined && (!isRecord(j.classified) || Object.entries(j.classified).some(([k,v])=>!['accumulation','message','response'].includes(k)||!['observed','communicated','pending'].includes(v)))) return false;
     if (j.comparison !== undefined && !['a','b','neither'].includes(j.comparison)) return false;
     if (j.compareOpen !== undefined && typeof j.compareOpen !== 'boolean') return false;
     if (j.pending !== null && !practiceIds.includes(j.pending)) return false;

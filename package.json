@@ -1,1 +1,11 @@
-{"name":"decidobien","private":true,"version":"1.0.0","type":"module","scripts":{"start":"python3 -m http.server 4173 --bind 0.0.0.0","test":"node --test"}}
+{
+  "name": "decidobien",
+  "private": true,
+  "version": "2.3.0-review.1",
+  "type": "module",
+  "scripts": {
+    "start": "python3 server.py",
+    "test": "node --test",
+    "diagnose": "python3 server.py --diagnose"
+  }
+}
