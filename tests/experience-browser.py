@@ -31,7 +31,7 @@ with sync_playwright() as p:
   page.locator(selector).click()
   if RECORD:page.wait_for_timeout(int(pause*1000))
  act('#sound-toggle');page.wait_for_function("document.querySelector('#sound-toggle').getAttribute('aria-pressed')==='true'")
- act('.simple-home [data-go="practice"]',2)
+ act('#welcome-start',2)
  act('#observe-next',2)
  assert page.locator('.explored-zone').count()==0
  act('.zone[data-zone="zona-c"]',2)
@@ -59,7 +59,7 @@ with sync_playwright() as p:
   (OUT/'audio-real.webm').write_bytes(base64.b64decode(encoded));(OUT/'offset.json').write_text(json.dumps({'seconds':max(0,anchor['audio']-start)}))
  # Muting stops future sound events; reduced mode remains an equivalent route.
  act('#sound-toggle');before=page.evaluate('__sounds.length')
- page.locator('[data-go="home"]').first.click();page.locator('.simple-home [data-go="practice"]').click()
+ page.locator('[data-go="home"]').first.click();page.locator('#welcome-start').click()
  assert page.evaluate('__sounds.length')==before
  page.locator('#motion-toggle').click();assert page.locator('body.effects-off').count()==1
  page.reload();assert page.locator('body.effects-off').count()==1

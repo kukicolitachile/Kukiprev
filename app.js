@@ -24,8 +24,27 @@ function header() {
 }
 function why(text) {return `<details class="why"><summary>¿Por qué?</summary><p>${escape(text)}</p></details>`;}
 function kuky(text) {return `<aside class="kuky-cue"><img src="./assets/kuky.png" alt="Kuky" width="38" height="38"><span>${escape(text)}</span></aside>`;}
+const welcomeSeen = new Set();
+const welcomeElements = [
+ {id:'context',name:'El entorno',x:16,y:37,text:'El entorno también aporta información sobre la tarea.'},
+ {id:'materials',name:'Los estuches',x:15,y:59,text:'Los materiales ayudan a entender qué ocurre en la escena.'},
+ {id:'person',name:'La persona',x:79,y:56,text:'Observa su posición y su relación con la tarea.'}
+];
 function homeView() {
- return `<section class="simple-home"><div><h1>Manos que cuidan</h1><p class="home-phrase">Observa la escena. Encuentra el peligro. Decide.</p><div class="home-actions"><button class="primary" data-go="join">Unirme a una capacitación</button><button class="back" data-go="study">Estudiar</button><button class="back" data-go="practice">Practicar</button></div></div><img class="home-kuky" src="./assets/kuky.png" alt="Kuky, guía de DecidoBien"></section>`;
+ const complete=welcomeSeen.size===welcomeElements.length;
+ return `<section class="welcome-home" aria-labelledby="welcome-title">
+  <div class="welcome-heading"><h1 id="welcome-title">Manos que cuidan</h1></div>
+  <div class="welcome-invitation"><img src="./assets/kuky/${complete?'motivador':'atento'}.png" alt="Kuky" width="50" height="60"><p id="welcome-invite">${complete?'Ya sabes explorar. ¿Entramos a la misión?':'¿Qué ves fuera de lugar? Explora la escena.'}</p></div>
+  <div class="welcome-stage"><div class="welcome-canvas" role="group" aria-label="Exploración de bienvenida sin puntaje">
+   <svg viewBox="0 0 941 1100" class="welcome-art" aria-hidden="true"><image href="./assets/escenas/esc-01-base.webp" width="941" height="1672"/></svg>
+   ${welcomeElements.map((el,i)=>`<button class="welcome-spot ${welcomeSeen.has(el.id)?'visited':''}" data-welcome="${el.id}" style="left:${el.x}%;top:${el.y}%" aria-label="Explorar: ${el.name}" aria-pressed="${welcomeSeen.has(el.id)}"><span aria-hidden="true">${welcomeSeen.has(el.id)?'✓':'+'}</span></button>`).join('')}
+   ${complete?'':`<span class="touch-example" aria-hidden="true">☝ Toca un + para probar</span>`}
+  </div><span class="welcome-layer" aria-hidden="true"></span></div>
+  <p class="welcome-reply" id="welcome-reply" role="status">${complete?'Exploración completa, sin puntaje. Puedes continuar.':'Toca un + o usa los controles accesibles.'}</p>
+  <div class="welcome-actions"><button class="primary ${complete?'ready':''}" id="welcome-start">Comenzar misión <span aria-hidden="true">→</span></button>
+   <div class="welcome-secondary"><button class="text-button" data-go="join">Unirme a una capacitación</button><button class="text-button" data-go="study">Estudiar</button><details class="welcome-accessible"><summary>Explorar con teclado o lista</summary>${welcomeElements.map(el=>`<button class="text-button" data-welcome="${el.id}" aria-pressed="${welcomeSeen.has(el.id)}">${el.name}</button>`).join('')}</details></div>
+  </div>
+ </section>`;
 }
 function scene({active=false, highlight=false}={}) {
  const j=journey();j.explored??=[];const focus=content.interaccion.focos[j.focus];
@@ -120,7 +139,32 @@ function showEnlarged() {
  modal.innerHTML=`<button class="back" id="close-image">Cerrar imagen</button>${sceneMarkup(0)}<p>Ilustración genérica pendiente de cotejo técnico.</p>`;
  document.body.append(modal);modal.showModal();modal.querySelector('button').onclick=()=>modal.close();modal.onclose=()=>{modal.remove();document.querySelector('#enlarge')?.focus();};
 }
+function exploreWelcome(id) {
+  const element=welcomeElements.find(el=>el.id===id);
+  const wasComplete=welcomeSeen.size===welcomeElements.length;
+  welcomeSeen.add(element.id);
+  document.querySelectorAll(`[data-welcome="${element.id}"]`).forEach(item=>{item.classList.add('visited');item.setAttribute('aria-pressed','true');const symbol=item.querySelector('span');if(symbol)symbol.textContent='✓';});
+  document.querySelector('#welcome-reply').textContent=element.text;
+  feedback('discover','Detalle explorado',element.name);
+  if(welcomeSeen.size===welcomeElements.length && !wasComplete){
+   document.querySelector('#welcome-invite').textContent='Ya sabes explorar. ¿Entramos a la misión?';
+   document.querySelector('.welcome-invitation img').src='./assets/kuky/motivador.png';
+   document.querySelector('#welcome-reply').textContent='Exploración completa, sin puntaje. Puedes continuar.';
+   document.querySelector('.touch-example')?.remove();
+   document.querySelector('#welcome-start').classList.add('ready');
+   document.querySelector('.welcome-invitation').classList.add('welcomed');
+   feedback('complete','Bienvenida explorada','Sin puntaje. La misión está disponible.');
+  }
+}
 function bindEvents() {
+ document.querySelector('#welcome-start')?.addEventListener('click',startPractice);
+ document.querySelectorAll('[data-welcome]').forEach(button=>button.addEventListener('click',()=>exploreWelcome(button.dataset.welcome)));
+ document.querySelector('.welcome-canvas')?.addEventListener('click',event=>{
+  if(event.target.closest('button'))return;
+  const rect=event.currentTarget.getBoundingClientRect();
+  const x=(event.clientX-rect.left)/rect.width,y=(event.clientY-rect.top)/rect.height;
+  exploreWelcome(x>.55 && y>.28?'person':x<.42 && y>.48?'materials':'context');
+ });
  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>b.dataset.go==='practice'?startPractice():navigate(b.dataset.go));
  document.querySelectorAll('[data-start]').forEach(b=>b.onclick=()=>navigate('study'));
  document.querySelector('#enlarge')?.addEventListener('click',showEnlarged);
@@ -168,6 +212,7 @@ function bindEvents() {
  document.querySelector('#join-review')?.addEventListener('click',()=>{if(Object.keys(state.evaluation.answers).length){navigate(evaluateAnswers(state.evaluation.answers,content.evaluacion).complete?'summary':'evaluation');}else startPractice();});
 }
 function render() {
+ document.body.classList.toggle('at-welcome',state.view==='home');
  journey();
  const views={home:homeView,study:studyView,practice:practiceView,evaluation:evaluationView,summary:summaryView,review:reviewView,join:()=>`${header()}<section class="join-panel"><h1>Unirme a una capacitación</h1><p>En esta versión revisable, continúa con tu relator en el caso de la correa.</p><button class="primary" id="join-review">Continuar el caso</button><details><summary>Ingreso por código</summary><p>El ingreso a sesiones empresariales y el registro de asistencia siguen pendientes. No se solicitan datos personales en este borrador.</p></details></section>`};
  app.innerHTML=`${state.view==='home'?header():''}${!storageAvailable?'<p class="storage-note" role="status">El avance no puede guardarse en este navegador.</p>':''}${views[state.view]()}`;

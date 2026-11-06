@@ -73,7 +73,7 @@ export function initExperience() {
  },true);
  document.addEventListener('pointerdown',event=>{
   if(!motionAllowed())return;
-  const target=event.target.closest('button,.scene-wrap');if(!target)return;
+  const target=event.target.closest('button,.scene-wrap,.welcome-stage');if(!target)return;
   const rect=target.getBoundingClientRect();const ripple=document.createElement('span');ripple.className='touch-response';ripple.style.left=`${event.clientX-rect.left}px`;ripple.style.top=`${event.clientY-rect.top}px`;
   target.append(ripple);setTimeout(()=>ripple.remove(),520);
  });

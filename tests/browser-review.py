@@ -11,10 +11,10 @@ with sync_playwright() as p:
  page=c.new_page();errors=[];failed=[]
  page.on('pageerror',lambda e:errors.append(str(e)))
  page.on('response',lambda r:failed.append(r.url) if r.status>=400 else None)
- page.goto(BASE);page.get_by_role('button',name='Practicar',exact=True).wait_for()
+ page.goto(BASE);page.locator('#welcome-start').wait_for()
  page.wait_for_function("document.querySelector('#network').textContent==='Lista sin conexión'")
  assert page.locator('.mission-card').count()==0
- assert page.locator('.simple-home button').count()==3
+ assert page.locator('#welcome-start').is_enabled()
  page.screenshot(path=str(SHOTS/'despues-inicio.png'),full_page=True)
  page.get_by_role('button',name='Estudiar',exact=True).click()
  for i in range(4):
@@ -65,7 +65,7 @@ with sync_playwright() as p:
  c.close()
  # Playback is optional, pausable, repeatable and concerns overlays only.
  normal=b.new_context(viewport={'width':390,'height':844})
- q=normal.new_page();q.goto(BASE);q.get_by_role('button',name='Practicar',exact=True).click();q.locator('#observe-next').click()
+ q=normal.new_page();q.goto(BASE);q.locator('#welcome-start').click();q.locator('#observe-next').click()
  q.locator('#hint').click();assert q.locator('.focus-highlight').count()==1
  q.locator('.zone[data-zone="zona-a"]').click();q.locator('#explore-next').click()
  q.locator('[data-decision="alt-b"]').click();q.locator('#confirm-decision').click()
@@ -81,7 +81,7 @@ with sync_playwright() as p:
  k=keyboard.new_page();k.goto(BASE)
  def enter(selector):
   k.locator(selector).focus();k.keyboard.press('Enter')
- enter('.simple-home [data-go="practice"]');enter('#observe-next')
+ enter('#welcome-start');enter('#observe-next')
  enter('.accessible-elements summary');enter('.accessible-elements [data-zone="zona-a"]')
  enter('#explore-next');enter('[data-decision="alt-a"]');enter('#confirm-decision')
  assert k.locator('#play').is_disabled()

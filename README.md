@@ -18,7 +18,7 @@ Cada tarea de nube ya está aislada: utiliza el checkout existente. No crees wor
 
 ## Qué revisar
 
-1. Inicio: condición de borrador, alcance de 30 minutos y mapa honesto de misiones.
+1. Inicio: escena explorable, invitación de Kuky y acceso directo a la misión; exploración de bienvenida sin puntaje y omisible.
 2. Estudio: una observación por pantalla, ilustración y detalle bajo demanda.
 3. Práctica: Observa → Explora → Decide → Descubre → Aplica. Pistas solicitadas, decisión concreta, confirmación y explicaciones visuales; información insuficiente cuando se propone una tarea no definida.
 4. Evaluación: tres preguntas sin pistas ni navegación de aprendizaje durante el intento; selección y confirmación separadas. Respuestas confirmadas guardadas y recuperables. Corrección al finalizar, sin umbral empresarial de aprobación.
@@ -53,7 +53,7 @@ Con el servidor activo en el puerto 4173, comprueban secuencia, recarga, persist
 
 ## PWA y actualizaciones
 
-Manifest y service worker usan rutas relativas. La caché de esta entrega es `decidobien-v5-experience`. Incrementa su versión al publicar una actualización. Si se abre una versión anterior desde una caché existente, espera la actualización del service worker y recarga. No se asume que una sesión de aprendizaje cambie de versión a mitad de un intento.
+Manifest y service worker usan rutas relativas. La caché de esta entrega es `decidobien-v6-welcome`. Incrementa su versión al publicar una actualización. Si se abre una versión anterior desde una caché existente, espera la actualización del service worker y recarga. No se asume que una sesión de aprendizaje cambie de versión a mitad de un intento.
 
 Para uso fuera de desarrollo, hospeda los recursos estáticos en HTTPS. El almacenamiento del navegador no es un registro empresarial ni una prueba de asistencia.
 
@@ -84,3 +84,15 @@ python3 tests/experience-browser.py
 ```
 
 La opción `DECIDOBIEN_RECORD=1` graba video con Playwright y audio de la salida Web Audio de la app. Requiere el ffmpeg compatible de Playwright y un navegador Chromium; no añade sonidos externos a la demostración. Las comprobaciones de reproducción no demuestran por sí solas mayor retención: eso debe observarse en el piloto con participantes.
+
+## Inicio interactivo
+
+La bienvenida usa un encuadre de la ilustración existente para explorar entorno, materiales y persona. No incluye el punto de peligro que se pregunta en la práctica. Los puntos tienen respuesta visual y frases neutrales; también puede tocarse la escena o usar la lista equivalente con teclado. Explorar no cambia los intentos ni la evaluación del caso.
+
+«Comenzar misión» siempre está disponible. Los accesos a capacitación y estudio, el audio y el movimiento tienen menor protagonismo. La sesión empresarial por código sigue pendiente; no se simula un registro real. El estado breve de borrador y Revisión técnica continúan accesibles.
+
+Demostración de apertura a misión: [MP4 con audio real](docs/demo/DecidoBien-entrada-interactiva.mp4). Prueba reproducible de entrada, omisión, teclado y tamaños móviles:
+
+```sh
+python3 tests/welcome-browser.py
+```
