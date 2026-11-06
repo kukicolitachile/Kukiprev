@@ -112,6 +112,9 @@ export function validState(state, content) {
   if (state.journey !== undefined) {
     const j = state.journey;
     if (!isRecord(j) || !['observe','explore','decide','discover','apply'].includes(j.stage)) return false;
+    if (j.explored !== undefined && (!Array.isArray(j.explored) || new Set(j.explored).size!==j.explored.length || j.explored.some(id=>!content.practica.zonas.some(z=>z.id===id)))) return false;
+    if (j.comparison !== undefined && !['a','b','neither'].includes(j.comparison)) return false;
+    if (j.compareOpen !== undefined && typeof j.compareOpen !== 'boolean') return false;
     if (j.pending !== null && !practiceIds.includes(j.pending)) return false;
     if (typeof j.hint !== 'boolean' || !Number.isInteger(j.focus) || j.focus < 0 || j.focus > 2) return false;
     if (j.applied !== null && !content.interaccion?.aplica.alternativas.some(a => a.id === j.applied)) return false;

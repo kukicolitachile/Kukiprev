@@ -53,7 +53,7 @@ Con el servidor activo en el puerto 4173, comprueban secuencia, recarga, persist
 
 ## PWA y actualizaciones
 
-Manifest y service worker usan rutas relativas. La caché de esta entrega es `decidobien-v4-visual`. Incrementa su versión al publicar una actualización. Si se abre una versión anterior desde una caché existente, espera la actualización del service worker y recarga. No se asume que una sesión de aprendizaje cambie de versión a mitad de un intento.
+Manifest y service worker usan rutas relativas. La caché de esta entrega es `decidobien-v5-experience`. Incrementa su versión al publicar una actualización. Si se abre una versión anterior desde una caché existente, espera la actualización del service worker y recarga. No se asume que una sesión de aprendizaje cambie de versión a mitad de un intento.
 
 Para uso fuera de desarrollo, hospeda los recursos estáticos en HTTPS. El almacenamiento del navegador no es un registro empresarial ni una prueba de asistencia.
 
@@ -68,3 +68,19 @@ El inicio muestra título, frase y accesos a sesión, estudio y práctica. El ac
 La imagen solo recibe resaltados después de confirmar la decisión o al solicitar una pista; no se simula movimiento de la máquina. El recorrido de resaltados es opcional, pausado/repetible y tiene controles estáticos. Con movimiento reducido no se reproduce. La ampliación de la ilustración usa un diálogo accesible.
 
 Los 30 minutos siguen siendo el alcance planificado de la capacitación guiada completa, incluidas conversación y evaluación. No se agregan esperas ni animaciones obligatorias. Las funciones administrativas y las decisiones pendientes están en Revisión técnica; el indicador de borrador permanece visible.
+
+## Respuesta audiovisual
+
+La misión incluye contornos de elementos explorados, avisos transitorios de la interfaz, un recorrido de cinco momentos y una comparación entre acumulación observada y aviso realizado. Los avisos no son alarmas del equipo. No se animan piezas ni materiales: no hay un movimiento mecánico validado para representar.
+
+El audio está desactivado al abrir la página y solo se inicia al pulsar «Activar sonido». Cuatro WAV locales distinguen selección, confirmación, información nueva y cierre. Al silenciar se detienen los sonidos activos. Cada información sonora tiene respuesta visual equivalente. En evaluación, los sonidos de selección y confirmación son iguales para todas las respuestas; no revelan corrección.
+
+«Pausar efectos» detiene el recorrido de resaltados y activa la presentación estática. Respeta movimiento reducido del sistema y conserva la preferencia local de movimiento. Kuky usa tres expresiones del material aportado, con intervenciones breves que se pueden cerrar.
+
+Prueba adicional de audio, silencio, preferencias y recursos offline:
+
+```sh
+python3 tests/experience-browser.py
+```
+
+La opción `DECIDOBIEN_RECORD=1` graba video con Playwright y audio de la salida Web Audio de la app. Requiere el ffmpeg compatible de Playwright y un navegador Chromium; no añade sonidos externos a la demostración. Las comprobaciones de reproducción no demuestran por sí solas mayor retención: eso debe observarse en el piloto con participantes.

@@ -64,3 +64,15 @@ test('brief practice offers a concrete action and reserves uncertainty for undef
     assert.ok(a.feedback.split(/\s+/).length <= 35);
   }
 });
+
+test('the four optional feedback sounds and existing Kuky expressions are available locally', () => {
+  for (const sound of ['select','confirm','discover','complete']) {
+    const wav = readFileSync(new URL(`./assets/audio/${sound}.wav`, import.meta.url));
+    assert.equal(wav.toString('ascii',0,4),'RIFF');
+    assert.equal(wav.toString('ascii',8,12),'WAVE');
+    assert.ok(wav.length > 2000 && wav.length < 30000);
+  }
+  for (const mood of ['atento','motivador','feliz']) {
+    assert.ok(existsSync(new URL(`./assets/kuky/${mood}.png`,import.meta.url)));
+  }
+});

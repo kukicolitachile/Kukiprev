@@ -40,7 +40,7 @@ with sync_playwright() as p:
  page.screenshot(path=str(SHOTS/'despues-descubre.png'),full_page=True)
  page.locator('[data-focus="1"]').focus();page.keyboard.press('Enter')
  assert 'acumulación' in page.locator('#focus-caption').inner_text()
- page.locator('#discover-next').click()
+ page.locator('#discover-next').click();page.locator('[data-compare="neither"]').click();page.locator('#discover-next').click()
  page.locator('[data-apply="ap-a"]').click();page.locator('#confirm-apply').click()
  assert 'aclarar' in page.locator('.feedback').inner_text()
  page.locator('#start-evaluation').click()
@@ -85,7 +85,7 @@ with sync_playwright() as p:
  enter('.accessible-elements summary');enter('.accessible-elements [data-zone="zona-a"]')
  enter('#explore-next');enter('[data-decision="alt-a"]');enter('#confirm-decision')
  assert k.locator('#play').is_disabled()
- enter('#discover-next');enter('[data-apply="ap-a"]');enter('#confirm-apply');enter('#start-evaluation')
+ enter('#discover-next');enter('[data-compare="neither"]');enter('#discover-next');enter('[data-apply="ap-a"]');enter('#confirm-apply');enter('#start-evaluation')
  for answer in ['ev1-a','ev2-a','ev3-a']:
   enter(f'[data-evaluation="{answer}"]');enter('#evaluation-confirm');enter('#evaluation-next')
  assert '3 de 3' in k.locator('.compact-summary').inner_text()

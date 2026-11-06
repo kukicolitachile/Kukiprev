@@ -1,3 +1,4 @@
+import {initExperience,motionAllowed,feedback,cueKuky,clearFeedback} from './experience.js';
 import { KEY, fresh, shuffle, validState, evaluateAnswers } from './model.js';
 import { sceneMarkup } from './scenes.js';
 const app = document.querySelector('#app');
@@ -5,14 +6,19 @@ const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp
 let content, state = fresh(), storageAvailable = true, message = '', playing = null;
 const stages = ['observe','explore','decide','discover','apply'];
 const names = ['Observa','Explora','Decide','Descubre','Aplica'];
-const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduced = () => !motionAllowed();
 function journey() {
   return state.journey ??= {stage:state.practice.selected?'discover':state.practice.found?'decide':'observe',pending:null,hint:false,focus:0,applied:null,appliedConfirmed:false,studyIndex:0};
 }
 function save() { try {localStorage.setItem(KEY, JSON.stringify(state));} catch {storageAvailable=false;} }
 function stop() {clearInterval(playing);playing=null;}
-function navigate(view) {stop();state.view=view;message='';save();render();app.focus();window.scrollTo(0,0);}
-function phase(stage) {journey().stage=stage;navigate('practice');}
+function navigate(view) {stop();clearFeedback();state.view=view;message='';save();render();app.focus();window.scrollTo(0,0);}
+function phase(stage) {
+ journey().stage=stage;navigate('practice');
+ const cues={explore:['explore','Explora a tu ritmo.'],decide:['reflect','Ahora, piensa desde tu rol.'],discover:['reflect','Miremos qué explica la exposición.'],};
+ if(cues[stage])cueKuky(...cues[stage]);
+ feedback(stage==='discover'?'discover':'complete',stage==='discover'?'Nueva información':`${names[stages.indexOf(stage)-1]} completado`,names[stages.indexOf(stage)]);
+}
 function header() {
  return `<div class="compact-top">${state.view==='home'?'':'<button class="text-button" data-go="home">← Inicio</button>'}<span class="draft-pill">Borrador</span><button class="text-button" data-go="review">Revisión técnica</button></div>`;
 }
@@ -22,10 +28,10 @@ function homeView() {
  return `<section class="simple-home"><div><h1>Manos que cuidan</h1><p class="home-phrase">Observa la escena. Encuentra el peligro. Decide.</p><div class="home-actions"><button class="primary" data-go="join">Unirme a una capacitación</button><button class="back" data-go="study">Estudiar</button><button class="back" data-go="practice">Practicar</button></div></div><img class="home-kuky" src="./assets/kuky.png" alt="Kuky, guía de DecidoBien"></section>`;
 }
 function scene({active=false, highlight=false}={}) {
- const j=journey();const focus=content.interaccion.focos[j.focus];
+ const j=journey();j.explored??=[];const focus=content.interaccion.focos[j.focus];
  const target=content.practica.zonas.find(z=>z.id===focus.zona);
- return `<div class="scene-wrap"><div class="scene">${sceneMarkup(0)}
- ${active? [...content.practica.zonas].sort((a,b)=>a.rect[0]-b.rect[0]).map(z=>`<button class="zone" data-zone="${escape(z.id)}" aria-label="${escape(z.descripcion)}" style="left:${z.rect[0]}%;top:${z.rect[1]}%;width:${z.rect[2]}%;height:${z.rect[3]}%"></button>`).join(''):''}
+ return `<div class="scene-wrap"><span class="scene-label">${state.view==='evaluation'?'ESCENA DEL CASO':active?'✓ '+j.explored.length+' ELEMENTOS EXPLORADOS':'ESCENA INTERACTIVA'}</span><div class="scene">${sceneMarkup(0)}
+ ${active? [...content.practica.zonas].sort((a,b)=>a.rect[0]-b.rect[0]).map(z=>`<button class="zone ${j.explored.includes(z.id)?'explored-zone':''}" data-zone="${escape(z.id)}" aria-label="${escape(z.descripcion)}" style="left:${z.rect[0]}%;top:${z.rect[1]}%;width:${z.rect[2]}%;height:${z.rect[3]}%"></button>`).join(''):''}
  ${highlight?`<div class="focus-highlight" aria-hidden="true" style="left:${target.rect[0]}%;top:${target.rect[1]}%;width:${target.rect[2]}%;height:${target.rect[3]}%"></div>`:''}
  </div><button class="enlarge" id="enlarge" aria-label="Ampliar ilustración">⤢ Ampliar</button></div>`;
 }
@@ -60,7 +66,16 @@ function practiceView() {
    <div class="animation-controls"><button class="text-button" id="play" ${reduced()?'disabled':''}>${reduced()?'Vista estática':playing?'Pausar':'Reproducir resaltados'}</button><button class="text-button" id="repeat">Volver al primer elemento</button></div>
    ${why(content.estudio[2].texto+' '+content.rol.limites.join(' '))}
    ${!selected.correcta?`<details><summary>Una consecuencia posible</summary><figure class="possible-injury">${sceneMarkup(0,true,content.consecuencia.alt)}<figcaption>${escape(content.consecuencia.texto)}</figcaption></figure></details>`:''}
-   <button class="primary" id="discover-next">Aplicar a otra situación →</button>`;
+   <button class="primary" id="discover-next">Comparar condiciones →</button>`;
+ }
+ if(stage==='discover' && j.compareOpen) {
+  const answer=j.comparison;
+  panel=`<h2 class="compare-title">¿Cuál confirma que la condición está resuelta?</h2>
+   <div class="condition-pair"><article><span aria-hidden="true" class="condition-icon">▧</span><b>A · Acumulación observada</b><p>El ejemplo muestra estuches acumulados.</p></article><article><span aria-hidden="true" class="condition-icon">✉</span><b>B · Aviso realizado</b><p>Se comunicó la anomalía. No se conoce la respuesta.</p></article></div>
+   ${choices([{id:'a',texto:'La condición A.'},{id:'b',texto:'La condición B.'},{id:'neither',texto:'Ninguna: falta confirmar cómo se atendió.'}],'compare',answer)}
+   ${answer?`<p class="feedback" role="status">${answer==='neither'?'Reconociste la diferencia.':'Observa la diferencia.'} Comunicar no demuestra que el acceso al peligro esté controlado.</p>`:''}
+   ${why('Las dos tarjetas representan información del ejemplo, no dos estados técnicos verificados de una máquina. La respuesta del proceso y los controles aplicables siguen pendientes de aclaración.')}
+   <button class="primary" id="discover-next" ${answer?'':'disabled'}>Aplicar a otra situación →</button>`;
  }
  if(stage==='apply') {
   const task=content.interaccion.aplica,answer=task.alternativas.find(a=>a.id===j.applied);
@@ -68,7 +83,7 @@ function practiceView() {
   ${j.appliedConfirmed?`<p class="feedback" role="status">${escape(answer.feedback)}</p>${why(content.practica.alternativas[0].feedback)}
   ${kuky('¿Qué necesitarías aclarar con el relator en tu trabajo?')}<div class="action-row"><button class="primary" id="start-evaluation">Ir a la evaluación →</button><button class="text-button" id="retry-apply">Revisar otra respuesta</button></div>`:`<button class="primary" id="confirm-apply" ${j.applied?'':'disabled'}>Confirmar respuesta →</button>`}`;
  }
- return `${header()}<section class="mission-frame"><div class="step-title"><span>${names[index]} · ${index+1}/5</span><h1>${escape(titles[stage])}</h1></div>${scene({active:stage==='explore',highlight:stage==='discover'||(stage==='explore'&&j.hint)})}<div class="activity-panel">${panel}</div></section>`;
+ return `${header()}<section class="mission-frame"><div class="step-title"><div class="stage-progress" aria-label="${names[index]}, momento ${index+1} de 5">${names.map((n,i)=>`<span class="${i<index?'done':i===index?'current':''}" ${i===index?'aria-current="step"':''}><b>${i<index?'✓':i+1}</b><small>${n}</small></span>`).join('')}</div><span>${names[index]} · ${index+1}/5</span><h1>${escape(titles[stage])}</h1></div>${scene({active:stage==='explore',highlight:(stage==='discover'&&!j.compareOpen)||(stage==='explore'&&j.hint)})}<div class="activity-panel">${panel}</div></section>`;
 }
 function evaluationView() {
  const q=content.evaluacion[state.evaluation.current],answer=state.evaluation.answers[q.id];
@@ -99,7 +114,7 @@ function reviewView() {
 }
 
 function prepareEvaluation() {for(const q of content.evaluacion)state.evaluation.orders[q.id]??=shuffle(q.alternativas.map(a=>a.id));}
-function startPractice(){journey();state.practice.order.length||(state.practice.order=shuffle(content.practica.alternativas.map(a=>a.id)));navigate('practice');}
+function startPractice(){journey();state.practice.order.length||(state.practice.order=shuffle(content.practica.alternativas.map(a=>a.id)));navigate('practice');if(journey().stage==='observe')cueKuky('observe','Observa qué ocurre antes de elegir.');}
 function showEnlarged() {
  const modal=document.createElement('dialog');modal.className='image-dialog';
  modal.innerHTML=`<button class="back" id="close-image">Cerrar imagen</button>${sceneMarkup(0)}<p>Ilustración genérica pendiente de cotejo técnico.</p>`;
@@ -113,9 +128,9 @@ function bindEvents() {
  document.querySelector('#study-back')?.addEventListener('click',()=>{journey().studyIndex--;navigate('study');});
  document.querySelector('#observe-next')?.addEventListener('click',()=>phase('explore'));
  document.querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>{
-  const z=content.practica.zonas.find(z=>z.id===b.dataset.zone);state.practice.attempts++;state.practice.found ||= z.correcta;
+  const z=content.practica.zonas.find(z=>z.id===b.dataset.zone);journey().explored??=[];if(!journey().explored.includes(z.id))journey().explored.push(z.id);state.practice.attempts++;state.practice.found ||= z.correcta;
   message=z.correcta?'Zona reconocida. Continúa con una decisión.':'Observa cómo se encuentran las superficies. Puedes pedir una pista.';save();render();
-  document.querySelector('#explore-status')?.focus();
+  document.querySelector('#explore-status')?.focus();feedback('discover','Elemento explorado',z.descripcion);
  });
  document.querySelector('#explore-status')?.setAttribute('tabindex','-1');
  document.querySelector('#hint')?.addEventListener('click',()=>{journey().hint=true;journey().focus=0;message='Busca el encuentro de la banda con la polea representada.';save();render();document.querySelector('#explore-status')?.focus();});
@@ -139,14 +154,15 @@ function bindEvents() {
   render();document.querySelector('#play').focus();
  });
  document.querySelector('#repeat')?.addEventListener('click',()=>{stop();journey().focus=0;save();render();document.querySelector('#repeat').focus();});
- document.querySelector('#discover-next')?.addEventListener('click',()=>phase('apply'));
+ document.querySelectorAll('[data-compare]').forEach(b=>b.onclick=()=>{journey().comparison=b.dataset.compare;save();render();feedback('discover','Información para revisar','Un aviso no confirma por sí solo la solución.');document.querySelector('#discover-next').focus();});
+ document.querySelector('#discover-next')?.addEventListener('click',()=>{if(!journey().compareOpen){journey().compareOpen=true;save();render();app.focus();feedback('discover','Compara dos condiciones');}else if(journey().comparison){phase('apply');}});
  document.querySelectorAll('[data-apply]').forEach(b=>b.onclick=()=>{if(journey().appliedConfirmed)return;journey().applied=b.dataset.apply;save();render();document.querySelector('#confirm-apply').focus();});
- document.querySelector('#confirm-apply')?.addEventListener('click',()=>{if(!journey().applied)return;journey().appliedConfirmed=true;save();render();document.querySelector('#start-evaluation').focus();});
+ document.querySelector('#confirm-apply')?.addEventListener('click',()=>{if(!journey().applied)return;journey().appliedConfirmed=true;save();render();document.querySelector('#start-evaluation').focus();feedback('complete','Actividad completada','Revisa lo que necesitas aclarar.');cueKuky('advance','Reconocer un dato pendiente también es aprender.');});
  document.querySelector('#retry-apply')?.addEventListener('click',()=>{journey().appliedConfirmed=false;journey().applied=null;navigate('practice');});
  document.querySelector('#start-evaluation')?.addEventListener('click',()=>{prepareEvaluation();evaluationPending=null;navigate('evaluation');});
  document.querySelectorAll('[data-evaluation]').forEach(b=>b.onclick=()=>{const q=content.evaluacion[state.evaluation.current];if(state.evaluation.answers[q.id])return;evaluationPending=b.dataset.evaluation;render();document.querySelector('#evaluation-confirm').focus();});
- document.querySelector('#evaluation-confirm')?.addEventListener('click',()=>{if(!evaluationPending)return;const q=content.evaluacion[state.evaluation.current];state.evaluation.answers[q.id]=evaluationPending;evaluationPending=null;save();render();document.querySelector('#evaluation-next').focus();});
- document.querySelector('#evaluation-next')?.addEventListener('click',()=>{evaluationPending=null;if(state.evaluation.current<content.evaluacion.length-1){state.evaluation.current++;navigate('evaluation');}else navigate('summary');});
+ document.querySelector('#evaluation-confirm')?.addEventListener('click',()=>{if(!evaluationPending)return;const q=content.evaluacion[state.evaluation.current];state.evaluation.answers[q.id]=evaluationPending;evaluationPending=null;save();render();document.querySelector('#evaluation-next').focus();feedback('confirm','Respuesta confirmada');});
+ document.querySelector('#evaluation-next')?.addEventListener('click',()=>{evaluationPending=null;if(state.evaluation.current<content.evaluacion.length-1){state.evaluation.current++;navigate('evaluation');}else {navigate('summary');feedback('complete','Recorrido completado');cueKuky('advance','Ahora revisa tu comprensión.');}});
  document.querySelector('#exit-evaluation')?.addEventListener('click',()=>{const d=document.createElement('dialog');d.innerHTML='<p>Las respuestas confirmadas se conservan. ¿Quieres salir?</p><button id="stay" class="primary">Continuar evaluación</button><button id="leave" class="back">Salir al inicio</button>';document.body.append(d);d.showModal();d.querySelector('#stay').onclick=()=>d.close();d.querySelector('#leave').onclick=()=>{d.close();navigate('home');};d.onclose=()=>d.remove();});
  document.querySelector('#retry-evaluation')?.addEventListener('click',()=>{state.evaluation={answers:{},orders:{},current:0};prepareEvaluation();evaluationPending=null;navigate('evaluation');});
  document.querySelector('#join-review')?.addEventListener('click',()=>{if(Object.keys(state.evaluation.answers).length){navigate(evaluateAnswers(state.evaluation.answers,content.evaluacion).complete?'summary':'evaluation');}else startPractice();});
@@ -157,7 +173,9 @@ function render() {
  app.innerHTML=`${state.view==='home'?header():''}${!storageAvailable?'<p class="storage-note" role="status">El avance no puede guardarse en este navegador.</p>':''}${views[state.view]()}`;
  bindEvents();
 }
-matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',()=>{stop();if(content)render();});
+initExperience();
+window.addEventListener('decidobien:motion',()=>{stop();if(content)render();});
+window.addEventListener('decidobien:pause',()=>{stop();if(content)render();});
 function updateNetwork() {
   document.querySelector('#network').textContent = navigator.onLine ? 'Con conexión' : 'Modo sin conexión';
 }
