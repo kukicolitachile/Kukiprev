@@ -1,0 +1,9 @@
+{
+  "release": "2.5.0-demo.2",
+  "base": "93dec85",
+  "source_hash": "4155fd49b2476e5b",
+  "branch": "implementation/correa-phaser-demo",
+  "status": "borrador; validación preventiva pendiente",
+  "technical_zone_pixels": "unchanged in decision background regression check",
+  "codespace": "not directly verified"
+}

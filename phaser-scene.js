@@ -1,4 +1,4 @@
-import {WORLD,LAYERS,splitArtwork} from './scene-layers.js';
+import {WORLD,LAYERS,splitArtwork,decisionBackdrop} from './scene-layers.js';
 let game=null,plant=null,foreground=null,host=null,current=null,resizeObserver=null,ready=false,readyPromise=null;
 let actionCallback=()=>{},debugSnapshot='';
 const targets={
@@ -7,6 +7,16 @@ const targets={
  'zona-c':{x:117,y:635,width:235,height:167}
 };
 function instant(){return current?.reduced===true;}
+function compactLandscape(){return matchMedia('(orientation:landscape) and (max-height:600px)').matches;}
+// Fit the upper-body shot to its available height. Width must never enlarge it past that limit.
+export function portraitLayout(width,height,{compact=false,captionBottom=144}={}){
+ const regionWidth=compact?width*.56:width;
+ const reserved=compact?24:234;
+ const scale=Math.min(regionWidth*.94/243,Math.max(80,height-reserved)/400,1.65);
+ const x=regionWidth*.57-243*scale/2;
+ const y=compact?12:Math.max(12,captionBottom+12-95*scale);
+ return {x,y,scale,face:{x:x+60*scale,y:y+95*scale,width:120*scale,height:85*scale}};
+}
 function updateDebug(){
  if(!host||!plant)return;
  const c=plant.cameras.main;
@@ -25,8 +35,8 @@ function aim(id){
  const detail=plant.detailCamera,show=current.mode==='explore'&&Boolean(id);
  detail.visible=show;
  if(show){
-  const w=host.clientWidth,h=host.clientHeight,wide=w>h*1.3;
-  const rect=wide?{x:w*.06,y:92,width:w*.43,height:h*.48}:{x:w*.18,y:132,width:w*.74,height:Math.min(h*.31,225)};
+  const w=host.clientWidth,h=host.clientHeight,wide=compactLandscape(),sceneWidth=wide?w*.56:w;
+  const rect=wide?{x:sceneWidth*.06,y:92,width:sceneWidth*.88,height:h*.48}:{x:w*.18,y:132,width:w*.74,height:Math.min(h*.31,225)};
   detail.setViewport(rect.x,rect.y,rect.width,rect.height);const t=targets[id];
   const zoom=Math.min(rect.width/(t.width*1.3),rect.height/(t.height*1.5),2.2);
   detail.panEffect.reset();detail.zoomEffect.reset();
@@ -39,10 +49,10 @@ function aim(id){
 function layout(){
  if(!game||!plant||!host)return;
  const {width,height}=host.getBoundingClientRect();game.scale.resize(Math.round(width),Math.round(height));
- const decision=current.mode==='decide';const landscape=width>height*1.3;
- plant.operator?.setVisible(!decision);
+ const decision=current.mode==='decide';const landscape=compactLandscape();
+ plant.operator?.setVisible(!decision);plant.reverseShot?.setVisible(decision);
  const reserve=decision?(landscape?0:205):(landscape?70:130);
- plant.cameras.main.setViewport(0,0,width,Math.max(190,height-reserve));
+ plant.cameras.main.setViewport(0,0,landscape?width*.56:width,Math.max(190,height-reserve));
  aim(current.focus);
  foreground?.layout(width,height,decision);
 }
@@ -59,6 +69,7 @@ export async function mountScene(element,settings,onAction){
    plant=this;if(!this.textures.exists('original')){reject(Error('scene-image-unavailable'));return;}const source=this.textures.get('original').getSourceImage();if(source.width!==WORLD.width||source.height!==WORLD.height){reject(Error('scene-size-mismatch'));return;}
    const layers=splitArtwork(source);
    for(const {id,canvas,x,y} of layers){this.textures.addCanvas(id,canvas);const sprite=this.add.image(x,y,id).setOrigin(0);if(id==='operaria')this.operator=sprite;}
+   this.textures.addCanvas('reverse-shot',decisionBackdrop(source));this.reverseShot=this.add.image(0,0,'reverse-shot').setOrigin(0).setVisible(false);
    this.mark=this.add.graphics();this.detailCamera=this.cameras.add(0,0,100,100);this.detailCamera.visible=false;
    this.input.on('pointerup',pointer=>{
     if(current.mode!=='explore')return;
@@ -87,9 +98,10 @@ export async function mountScene(element,settings,onAction){
   layout(w,h,decision){
    if(!this.portrait)return;this.portrait.setVisible(decision);this.edge.clear();if(!decision){if(plant?.detailRect){const r=plant.detailRect;this.edge.lineStyle(7,0x062a36,1);this.edge.strokeRoundedRect(r.x-5,r.y-5,r.width+10,r.height+10,17);this.edge.lineStyle(4,0xffca30,1);this.edge.strokeRoundedRect(r.x-2,r.y-2,r.width+4,r.height+4,14);this.edge.lineStyle(3,0xf0fff8,1);const l=19;for(const [x,y,sx,sy] of [[r.x+12,r.y+12,1,1],[r.x+r.width-12,r.y+12,-1,1],[r.x+12,r.y+r.height-12,1,-1],[r.x+r.width-12,r.y+r.height-12,-1,-1]]){this.edge.beginPath();this.edge.moveTo(x,y+sy*l);this.edge.lineTo(x,y);this.edge.lineTo(x+sx*l,y);this.edge.strokePath();}}return;}
    // Comic foreground is a change of shot, not an action by the operator.
-   const available=h-(w>h*1.3?100:205);
-   const scale=Math.max(w*.96/243,available/450);
-   const px=w*.57-243*scale/2,py=Math.max(6,available*.04);
+   const caption=document.querySelector('.demo-experience>h1')?.getBoundingClientRect();
+   const captionBottom=caption?caption.bottom-host.getBoundingClientRect().top:144;
+   const shot=portraitLayout(w,h,{compact:compactLandscape(),captionBottom});
+   const {scale,x:px,y:py}=shot;host.dataset.portrait=JSON.stringify(shot);
    this.edge.lineStyle(6,0x032431,1);this.edge.beginPath();
    LAYERS[3].polygon.forEach(([x,y],i)=>{const xx=px+(x-654)*scale,yy=py+(y-321)*scale;i?this.edge.lineTo(xx,yy):this.edge.moveTo(xx,yy);});this.edge.closePath();this.edge.strokePath();
    this.portrait.setScale(scale).setPosition(px,py);

@@ -1,4 +1,4 @@
-export const RELEASE='2.5.0-demo.1';
+export const RELEASE='2.5.0-demo.2';
 export async function initVersion(){
  const button=document.createElement('button');button.id='version-info';button.className='text-button';button.textContent='Revisión '+RELEASE;document.querySelector('footer').append(button);
  button.onclick=()=>location.assign('./recovery.html');

@@ -1,7 +1,7 @@
 {
   "name": "decidobien",
   "private": true,
-  "version": "2.5.0-demo.1",
+  "version": "2.5.0-demo.2",
   "type": "module",
   "scripts": {
     "start": "python3 server.py",

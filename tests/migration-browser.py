@@ -52,3 +52,17 @@ with sync_playwright() as p:
  page.locator('#network').filter(has_text='Lista sin conexión').wait_for();c.set_offline(True);page.reload();assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
  print(json.dumps({'base_24bb4af_to_implementation':'passed','confirmed_answer_unchanged':True,'offline_after_update':True,'foreign_cache_preserved':True}))
  c.close();b.close()
+
+
+# Reported demo.1 Codespace cache upgrades without restarting a confirmed assessment.
+mode.write_text('demo1')
+with sync_playwright() as p:
+ b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);c=b.new_context();page=c.new_page();page.goto('http://127.0.0.1:4175');page.locator('#welcome-start').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
+ assert page.evaluate('async()=>(await caches.keys()).includes("decidobien-v12-phaser")')
+ page.evaluate('(s)=>{localStorage.setItem("decidobien-review-v1",JSON.stringify(s));sessionStorage.setItem("decidobien-participant-v1",JSON.stringify({firstName:"Persona",lastName:"Prueba"}));}',confirmed)
+ mode.write_text('new');page.goto('http://127.0.0.1:4175/recovery.html');page.locator('#recover').click();page.locator('[data-evaluation="ev1-b"]').wait_for(timeout=30000)
+ assert page.locator('[data-evaluation="ev1-b"]').is_disabled();assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).evaluation')==confirmed['evaluation']
+ page.locator('#network').filter(has_text='Lista sin conexión').wait_for();assert page.evaluate('async()=>(await caches.keys()).includes("decidobien-v13-responsive")')
+ assert not page.evaluate('async()=>(await caches.keys()).includes("decidobien-v12-phaser")')
+ c.set_offline(True);page.reload();assert page.locator('[data-evaluation="ev1-b"]').is_disabled();c.close();b.close()
+ print(json.dumps({'demo_1_to_demo_2':'passed','confirmed_answer':'preserved','offline_after_update':True,'v13_cache':True}))

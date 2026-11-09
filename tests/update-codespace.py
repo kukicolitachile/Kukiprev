@@ -23,10 +23,10 @@ try:
   if process.poll() is not None:raise RuntimeError((base/'actualizacion.log').read_text())
   try:
    with opener.open('http://127.0.0.1:4190/__runtime.json',timeout=.3) as r:active=json.load(r)
-   if active.get('release')=='2.5.0-demo.1':break
+   if active.get('release')=='2.5.0-demo.2':break
   except Exception:pass
   time.sleep(.1)
- assert active and active['release']=='2.5.0-demo.1' and active['branch']=='implementation/correa-phaser-demo' and not active['modified'],active
+ assert active and active['release']=='2.5.0-demo.2' and active['branch']=='implementation/correa-phaser-demo' and not active['modified'],active
  assert run('git','-C',str(root),'rev-parse','main')==original_main
  assert 'MODIFICACION_LOCAL' in run('git','-C',str(root),'show','stash@{0}:README.md')
  assert 'ARCHIVO_SIN_SEGUIMIENTO' in run('git','-C',str(root),'show','stash@{0}^3:nota-local.txt')

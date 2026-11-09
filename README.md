@@ -1,6 +1,6 @@
 # DecidoBien — Manos que cuidan
 
-**2.5.0-demo.1**, rama `implementation/correa-phaser-demo`, creada exactamente desde `2f8275d` de `implementation/correa-interactiva-2.4`. Primera entrega jugable: **Comenzar misión → Nombre y apellido → Contexto → Explora → Decide → confirmar**. La escena es conceptual y el contenido sigue siendo un borrador pendiente de validación preventiva.
+**2.5.0-demo.2**, rama `implementation/correa-phaser-demo`, creada exactamente desde `2f8275d` de `implementation/correa-interactiva-2.4`. Corrección de encuadre de escritorio y orientación, con escala acotada y controles visibles. Primera entrega jugable: **Comenzar misión → Nombre y apellido → Contexto → Explora → Decide → confirmar**. La escena es conceptual y el contenido sigue siendo un borrador pendiente de validación preventiva.
 
 ## Abrir
 
@@ -25,7 +25,7 @@ bash /tmp/decidobien-update.sh
 
 El script preserva commits locales, guarda cambios registrados y archivos sin seguimiento en un stash identificado con su rama de origen, y no lo reaplica automáticamente. No sobrescribe archivos ignorados que colisionen, no descarta divergencias y no modifica `main`. Solo reinicia un servidor reconocido de este proyecto en 4173; se detiene ante un proceso desconocido. Los cambios anteriores pueden revisarse con `git stash list`; no aplicar `stash pop` sobre esta revisión sin examinarlos.
 
-Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.5.0-demo.1`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v12-phaser`.
+Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.5.0-demo.2`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v13-responsive`.
 
 En cualquier momento: **Revisión técnica → Comprobar versión, servidor y caché**. En terminal, `npm run diagnose`. La app mantiene las respuestas confirmadas anteriores. Si falta la identificación de esta pestaña, la pide antes de recuperar la actividad; no reinicia la evaluación.
 
@@ -57,6 +57,7 @@ La primera descarga requiere conexión; espera «Lista sin conexión». Después
 npm test
 python3 tests/browser-review.py
 python3 tests/welcome-browser.py
+python3 tests/decision-layout.py
 python3 tests/experience-browser.py
 python3 tests/server-security.py
 python3 tests/security-browser.py

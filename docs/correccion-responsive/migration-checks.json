@@ -1,0 +1,25 @@
+[
+  {
+    "old_cache_mismatch_reproduced": true,
+    "explicit_recovery": "passed",
+    "legacy_progress_unchanged": true,
+    "offline_after_recovery": "passed"
+  },
+  {
+    "recent_PWA_confirmed_answer_preserved": true,
+    "recovery_does_not_restart_assessment": true,
+    "offline_assessment_resume": true
+  },
+  {
+    "base_24bb4af_to_implementation": "passed",
+    "confirmed_answer_unchanged": true,
+    "offline_after_update": true,
+    "foreign_cache_preserved": true
+  },
+  {
+    "demo_1_to_demo_2": "passed",
+    "confirmed_answer": "preserved",
+    "offline_after_update": true,
+    "v13_cache": true
+  }
+]

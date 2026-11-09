@@ -42,3 +42,14 @@ Julisa debe confirmar criterio y umbral, si aplica. Prevención debe validar el 
 El entorno probado sirve el código de esta rama con `npm start`, puerto 4173. No se ha verificado el Codespace `scaling-happiness-xr99457w97r7f69pw`; una publicación Git no prueba qué versión sirve. README contiene una sola secuencia de actualización segura y comprobación de runtime/caché.
 
 El video dura 22 segundos, con imagen H.264 a 390×844 y audio AAC capturado de la app. Se grabó el commit de fuentes `e21c34d`; el commit de entrega agrega evidencia y prueba del actualizador sin modificar los recursos públicos. Huella de fuentes: `965e10baf3f0a2e5`. Los informes JSON adjuntos permiten comparar esa huella y los controles ejecutados.
+
+
+## Corrección 2.5.0-demo.2
+
+La captura del usuario reveló un error real de responsive: el máximo entre la escala por ancho y por alto producía una operaria gigantesca. Las comprobaciones anteriores del recorrido no comprobaban la visibilidad de su rostro en escritorio. Ahora el primer plano se ajusta a la altura disponible, limita su escala a 1.65 y mantiene los ojos/boca fuera de la consigna, Kuky y la bandeja. El área de juego deja de estirarse sin límite horizontal en escritorio. En teléfonos horizontales la pregunta y las acciones quedan junto a la escena y los controles de cámara quedan separados de Kuky. Instalar app se mantiene en Ajustes para no desbordar el encabezado compacto.
+
+Se corrige también el fondo tras la operaria del primer plano: el vacío de la máscara ya no aparece como otra silueta oscura. Solo para ese encuadre, se prolongan fragmentos del mismo muro/ventana vacío con píxeles de la ilustración existente. No se añade maquinaria ni se modifica ningún píxel de las tres zonas técnicas de interacción. En exploración se conserva la recomposición exacta original.
+
+Pruebas adicionales: 1900×988 (captura reportada), 1920×1080, 1365×768, 1024×768, 768×1024, 390×844, 360×640 y 844×390; rostro dentro de pantalla y sin superposición de controles, cambio de tamaño/orientación y confirmación por teclado. La caché v13 separa esta corrección de la demo v12 y conserva respuestas confirmadas. Evidencias en `docs/correccion-responsive/`. Las capturas/video anteriores de `docs/demo-2.5/` corresponden a la primera entrega demo.1.
+
+[Antes en escritorio](correccion-responsive/antes-escritorio.png) · [Después en escritorio](correccion-responsive/decide-1900x988.png) · [Celular](correccion-responsive/decide-390x844.png) · [Horizontal](correccion-responsive/decide-844x390.png). Huella de recursos corregidos: `4155fd49b2476e5b`.

@@ -27,3 +27,14 @@ export function splitArtwork(image){
  }
  return outputs.map((data,n)=>{const canvas=document.createElement('canvas');canvas.width=data.width;canvas.height=data.height;canvas.getContext('2d').putImageData(data,0,0);return {id:LAYERS[n].id,canvas,x:bounds[n].x,y:bounds[n].y};});
 }
+
+// Reverse shot only: continue the existing empty wall/window behind the enlarged portrait.
+// These rectangles stay above the conveyor and outside all three interaction zones.
+// Sampling the same rows preserves their colours; no equipment or controls are added.
+export function decisionBackdrop(image){
+ const canvas=document.createElement('canvas');canvas.width=WORLD.width;canvas.height=WORLD.height;
+ const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0);
+ ctx.drawImage(image,640,318,8,370,648,318,254,370);
+ ctx.drawImage(image,932,688,8,212,648,688,254,212);
+ return canvas;
+}
