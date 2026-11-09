@@ -12,7 +12,7 @@ with sync_playwright() as p:
   intersections=q.locator('.context-action').evaluate_all('''els=>els.map(e=>{let r=e.getBoundingClientRect(),g=document.querySelector('.scene-companion p').getBoundingClientRect(),d=document.querySelector('.scene-dock').getBoundingClientRect();let area=b=>Math.max(0,Math.min(r.right,b.right)-Math.max(r.left,b.left))*Math.max(0,Math.min(r.bottom,b.bottom)-Math.max(r.top,b.top));return {guide:area(g),dock:area(d)}})''')
   assert all(x['guide']==0 and x['dock']==0 for x in intersections),(w,h,intersections)
   core=q.locator('.game-board .scene').bounding_box();assert core['width']>=190,(w,h,core)
-  q.locator('.scene [data-decision="alt-a"]').click();q.locator('#confirm-decision').click();q.locator('.scene [data-focus="1"]').click();q.locator('.scene [data-focus="2"]').click();q.locator('#discover-next').click()
+  q.locator('.scene [data-decision="alt-a"]').focus();q.keyboard.press('Enter');focus=q.locator('#confirm-decision').bounding_box();assert focus['y']>=0 and focus['y']+focus['height']<=h+1,(w,h,focus);q.keyboard.press('Enter');q.locator('.scene [data-focus="1"]').click();q.locator('.scene [data-focus="2"]').click();q.locator('#discover-next').click()
   q.locator('.scene [data-inquiry="method"]').click();assert 'Incluido en tu consulta.' in q.locator('#scene-caption').inner_text()
   q.locator('.scene [data-inquiry="method"]').click();assert 'No incluido en tu consulta.' in q.locator('#scene-caption').inner_text();assert q.locator('#confirm-inquiry').is_disabled()
   q.reload();q.locator('#scene-caption').wait_for();assert 'No incluido en tu consulta.' in q.locator('#scene-caption').inner_text()

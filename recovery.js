@@ -18,7 +18,7 @@ document.querySelector('#recover').onclick=async()=>{
    (reg.active||navigator.serviceWorker.controller).postMessage('REFRESH_STATIC',[channel.port2]);
   });
   // Remove obsolete application resources only; preserve the refreshed bundle and all progress.
-  for(const key of await caches.keys())if(['decidobien-v2-art','decidobien-v3-correa-review','decidobien-v4-visual','decidobien-v5-experience','decidobien-v6-welcome','decidobien-v7-integrated','decidobien-v8-scene','decidobien-v9-context'].includes(key)&&key!==refreshed.cache)await caches.delete(key);
+  for(const key of await caches.keys())if(['decidobien-v2-art','decidobien-v3-correa-review','decidobien-v4-visual','decidobien-v5-experience','decidobien-v6-welcome','decidobien-v7-integrated','decidobien-v8-scene','decidobien-v9-context','decidobien-v10-layout'].includes(key)&&key!==refreshed.cache)await caches.delete(key);
   location.replace('./');
  }catch(error){document.querySelector('#diagnostic').textContent='No se actualizó: '+error.message;b.disabled=false;}
 };

@@ -12,6 +12,11 @@ function journey() {
   return state.journey ??= {stage:state.practice.selected?'discover':state.practice.found?'decide':'observe',pending:null,hint:false,focus:0,applied:null,appliedConfirmed:false,studyIndex:0};
 }
 function save() { try {localStorage.setItem(KEY, JSON.stringify(state));} catch {storageAvailable=false;} }
+function focusVisible(selector) {
+ const item=document.querySelector(selector);if(!item)return;
+ item.focus({preventScroll:true});const box=item.getBoundingClientRect();
+ if(box.top<8||box.bottom>innerHeight-8||box.left<0||box.right>innerWidth)item.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
+}
 function navigate(view) {clearFeedback();state.view=view;message='';save();render();app.focus();window.scrollTo(0,0);}
 function phase(stage) {
  journey().stage=stage;navigate('practice');
@@ -124,11 +129,11 @@ function bindEvents() {
   const j=journey(),item=inquiries(content).find(i=>i.id===b.dataset.inquiry);if(!item)return;
   j.inquiries??=[];j.inquiryFocus=item.id;j.inquiries=j.inquiries.includes(item.id)?j.inquiries.filter(id=>id!==item.id):[...j.inquiries,item.id];
   if(j.appliedConfirmed)j.appliedConfirmed=false;
-  save();render();document.querySelector('#scene-caption')?.focus({preventScroll:true});feedback('discover',j.inquiries.includes(item.id)?'Asunto incluido en tu consulta':'Asunto retirado de tu consulta');
+  save();render();focusVisible('#scene-caption');feedback('discover',j.inquiries.includes(item.id)?'Asunto incluido en tu consulta':'Asunto retirado de tu consulta');
  });
  document.querySelector('#confirm-inquiry')?.addEventListener('click',()=>{
   if(!journey().inquiries?.length)return;journey().applied='ap-a';journey().appliedConfirmed=true;save();render();
-  document.querySelector('#start-evaluation').focus({preventScroll:true});feedback('complete','Consulta preparada');
+  focusVisible('#start-evaluation');feedback('complete','Consulta preparada');
  });
 
  document.querySelector('#welcome-start')?.addEventListener('click',startPractice);
@@ -148,18 +153,18 @@ function bindEvents() {
  document.querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>{
   const z=content.practica.zonas.find(z=>z.id===b.dataset.zone);journey().explored??=[];if(!journey().explored.includes(z.id))journey().explored.push(z.id);state.practice.attempts++;state.practice.found ||= z.correcta;
   message=z.correcta?'Este encuentro puede captar una mano si accede al movimiento.':z.id==='zona-c'?'La acumulación puede motivar acercarse. Busca también dónde podría quedar atrapada una mano.':'Ese tramo también requiere revisión. Busca el encuentro entre superficies.';save();render();
-  document.querySelector('#explore-status')?.focus({preventScroll:true});feedback('discover','Elemento explorado',z.descripcion);
+  focusVisible('#explore-status');feedback('discover','Elemento explorado',z.descripcion);
  });
  document.querySelector('#explore-status')?.setAttribute('tabindex','-1');
- document.querySelector('#hint')?.addEventListener('click',()=>{journey().hint=true;journey().focus=0;message='Busca el encuentro de la banda con la polea representada.';save();render();document.querySelector('#explore-status')?.focus({preventScroll:true});});
+ document.querySelector('#hint')?.addEventListener('click',()=>{journey().hint=true;journey().focus=0;message='Busca el encuentro de la banda con la polea representada.';save();render();focusVisible('#explore-status');});
  document.querySelector('.scene-art')?.addEventListener('click',()=>{if(state.view==='practice'&&journey().stage==='explore'){document.querySelector('#explore-status').textContent='Explora los elementos o abre la alternativa de lista y teclado.';}});
  document.querySelector('#explore-next')?.addEventListener('click',()=>{if(state.practice.found)phase('decide');});
- document.querySelectorAll('[data-decision]').forEach(b=>b.onclick=()=>{journey().pending=b.dataset.decision;save();render();document.querySelector('#confirm-decision').focus({preventScroll:true});});
+ document.querySelectorAll('[data-decision]').forEach(b=>b.onclick=()=>{journey().pending=b.dataset.decision;save();render();focusVisible('#confirm-decision');});
  document.querySelector('#confirm-decision')?.addEventListener('click',()=>{if(!journey().pending)return;state.practice.selected=journey().pending;journey().focus=0;journey().discovered=[0];phase('discover');});
  document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{
   const j=journey();j.focus=Number(b.dataset.focus);j.discovered??=[];
   if(!j.discovered.includes(j.focus))j.discovered.push(j.focus);
-  save();render();document.querySelector(`.scene-discovery[data-focus="${j.focus}"]`)?.focus({preventScroll:true});feedback('discover','Detalle explorado');
+  save();render();focusVisible(`.scene-discovery[data-focus="${j.focus}"]`);feedback('discover','Detalle explorado');
  });
  document.querySelector('#discover-next')?.addEventListener('click',()=>{if(journey().discovered?.length===3)phase('apply');});
  document.querySelector('#retry-apply')?.addEventListener('click',()=>{journey().appliedConfirmed=false;journey().applied=null;navigate('practice');});

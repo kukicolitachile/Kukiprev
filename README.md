@@ -1,6 +1,6 @@
 # DecidoBien — Manos que cuidan
 
-PWA de capacitación guiada, **2.4.0-review.2**, rama `implementation/correa-interactiva-2.4`, desarrollada desde la base `24bb4af`. Una misión completa de correa transportadora con interacción sobre la escena. **Borrador para validación preventiva**, sin acreditación empresarial ni instrucciones de intervención.
+PWA de capacitación guiada, **2.4.0-review.3**, rama `implementation/correa-interactiva-2.4`, desarrollada desde la base `24bb4af`. Una misión completa de correa transportadora con interacción sobre la escena. **Borrador para validación preventiva**, sin acreditación empresarial ni instrucciones de intervención.
 
 Se mantienen logo, Kuky, paleta, títulos y recursos originales. Solo la correa está disponible; el objetivo de seis misiones y los casos reservados permanecen pendientes. La ilustración es conceptual.
 
@@ -33,7 +33,7 @@ bash /tmp/decidobien-update.sh
 
 El script conserva commits locales; guarda modificaciones y archivos sin seguimiento en un stash identificado; nunca lo aplica automáticamente sobre la revisión. Los archivos ignorados no se sobrescriben si generan conflicto. Solo permite avanzar la rama local sin descartar commits. `main` no se modifica. Se detiene ante un proceso no reconocido en 4173 o una divergencia Git. No utiliza paquetes ni otra copia de aplicación.
 
-El comando final deja `npm start` activo. Abre la misma URL reenviada de 4173, en el mismo navegador y perfil, con `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. La caché actual es `decidobien-v10-layout`; el diagnóstico debe coincidir con el SHA remoto y release `2.4.0-review.2`.
+El comando final deja `npm start` activo. Abre la misma URL reenviada de 4173, en el mismo navegador y perfil, con `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. La caché actual es `decidobien-v11-focus`; el diagnóstico debe coincidir con el SHA remoto y release `2.4.0-review.3`.
 
 Los cambios anteriores quedan en `git stash list`, identificados con su rama de origen. No hagas `stash pop` sobre esta revisión sin examinar y resolver esos cambios. El script no hace reset, clean, borrado de stash ni publicación. La configuración de Codespaces inicia el servidor de esta misma carpeta al arrancar.
 

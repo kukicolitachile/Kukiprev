@@ -1,4 +1,4 @@
-# Primera misión contextual — 2.4.0-review.2
+# Primera misión contextual — 2.4.0-review.3
 
 Desarrollada desde `24bb4af`, en `implementation/correa-interactiva-2.4`. La referencia de composición guía el protagonismo de la escena, los controles integrados y Kuky; el equipo ilustrado sigue siendo conceptual y no está validado.
 
