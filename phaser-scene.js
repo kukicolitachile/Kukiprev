@@ -1,6 +1,6 @@
 import {WORLD,LAYERS,splitArtwork,decisionBackdrop} from './scene-layers.js';
-let game=null,plant=null,foreground=null,host=null,current=null,resizeObserver=null,ready=false,readyPromise=null;
-let actionCallback=()=>{},debugSnapshot='';
+let game=null,plant=null,foreground=null,host=null,current=null,resizeObserver=null,ready=false,readyPromise=null,frameReady=false;
+let actionCallback=()=>{},debugSnapshot='',cameraKey='',cameraMode='',feedbackKey='',mainCameraKey='';
 const targets={
  'zona-a':{x:753,y:1178,width:301,height:251},
  'zona-b':{x:376,y:828,width:339,height:184},
@@ -20,7 +20,7 @@ export function portraitLayout(width,height,{compact=false,captionBottom=144}={}
 function updateDebug(){
  if(!host||!plant)return;
  const c=plant.cameras.main;
- host.dataset.ready=String(ready);host.dataset.mode=current.mode;host.dataset.zoom=String(plant.detailCamera?.visible?plant.detailCamera.zoom:c.zoom);host.classList.toggle('detail-open',Boolean(plant.detailCamera?.visible));host.dataset.focus=current.focus||'general';host.dataset.layers='fondo,correa,cajas,operaria';
+ host.dataset.ready=String(ready&&frameReady);host.dataset.mode=current.mode;host.dataset.zoom=String(plant.detailCamera?.visible?plant.detailCamera.zoom:c.zoom);host.classList.toggle('detail-open',Boolean(plant.detailCamera?.visible));host.dataset.focus=current.focus||'general';host.dataset.layers='fondo,correa,cajas,operaria';
  const snapshot=[c.width,c.height,c.zoom,c.worldView.x,c.worldView.y,host.dataset.zoom,current.mode,current.focus].join(':');
  if(snapshot!==debugSnapshot){debugSnapshot=snapshot;host.dispatchEvent(new CustomEvent('scene:camera',{bubbles:true}));}
 }
@@ -31,7 +31,17 @@ function viewFor(id){
 }
 function aim(id){
  if(!plant||!ready)return;
- const c=plant.cameras.main,view=viewFor(null);c.panEffect.reset();c.zoomEffect.reset();c.setZoom(view.zoom);c.centerOn(view.x,view.y);
+ const c=plant.cameras.main,view=viewFor(null);
+ const key=[current.mode,id,current.found,c.width,c.height,instant()].join(':');
+ if(key===cameraKey){foreground?.layout(host.clientWidth,host.clientHeight,current.mode==='decide');updateDebug();return;}
+ const from=cameraMode,first=!cameraKey;cameraKey=key;cameraMode=current.mode;
+ const mainKey=[current.mode,c.width,c.height,instant()].join(':');
+ if(mainKey!==mainCameraKey){
+  mainCameraKey=mainKey;c.panEffect.reset();c.zoomEffect.reset();
+  if(!instant()&&!first&&from!==current.mode&&['decide','discover'].includes(current.mode)){
+   c.pan(view.x,view.y,320,'Cubic.easeInOut');c.zoomTo(view.zoom,320,'Cubic.easeInOut');
+  }else{c.setZoom(view.zoom);c.centerOn(view.x,view.y);}
+ }
  const detail=plant.detailCamera,show=current.mode==='explore'&&current.found&&id==='zona-a';
  detail.visible=show;
  if(show){
@@ -40,21 +50,27 @@ function aim(id){
   detail.setViewport(rect.x,rect.y,rect.width,rect.height);const t=targets[id];
   const zoom=Math.min(rect.width/(t.width*1.3),rect.height/(t.height*1.5),2.2);
   detail.panEffect.reset();detail.zoomEffect.reset();
-  if(instant()){detail.setZoom(zoom);detail.centerOn(t.x,t.y);}else{detail.setZoom(view.zoom);detail.centerOn(t.x,t.y);detail.zoomTo(zoom,360,'Sine.easeInOut');}
+  if(instant()){detail.setZoom(zoom);detail.centerOn(t.x,t.y);}else{detail.setZoom(view.zoom);detail.centerOn(t.x,t.y);detail.zoomTo(zoom,360,'Cubic.easeInOut');}
   plant.detailRect=rect;
  }else plant.detailRect=null;
- if(current.mode==='discover'&&id){const t=targets[id];c.setZoom(view.zoom);c.centerOn(view.x,view.y);plant.explainTarget=t;}else plant.explainTarget=null;
+ if(current.mode==='discover'&&id){const t=targets[id];plant.explainTarget=t;}else plant.explainTarget=null;
  foreground?.layout(host.clientWidth,host.clientHeight,current.mode==='decide');updateDebug();
 }
 function layout(){
  if(!game||!plant||!host)return;
- const {width,height}=host.getBoundingClientRect();game.scale.resize(Math.round(width),Math.round(height));
+ const {width,height}=host.getBoundingClientRect();if(game.scale.width!==Math.round(width)||game.scale.height!==Math.round(height))game.scale.resize(Math.round(width),Math.round(height));
  const decision=current.mode==='decide';const landscape=compactLandscape();
  plant.operator?.setVisible(!decision);plant.reverseShot?.setVisible(decision);
  const reserve=decision?(landscape?0:205):(landscape?70:130);
  plant.cameras.main.setViewport(0,0,landscape?width*.56:width,Math.max(190,height-reserve));
  aim(current.focus);
  foreground?.layout(width,height,decision);
+ const key=[current.mode,current.focus,current.touchSequence].join(':');
+ if(key!==feedbackKey||instant()){
+  feedbackKey=key;plant.tweens.killTweensOf(plant.mark);plant.tweens.killTweensOf(plant);plant.mark.setAlpha(1);plant.touchRadius=6;
+  if(!instant()&&current.mode==='discover'){plant.mark.setAlpha(.3);plant.tweens.add({targets:plant.mark,alpha:1,duration:210,ease:'Cubic.easeOut'});}
+  if(!instant()&&['home','explore'].includes(current.mode)&&current.lastTouch){plant.touchRadius=12;plant.tweens.add({targets:plant,touchRadius:6,duration:190,ease:'Cubic.easeOut'});}
+ }
 }
 export async function mountScene(element,settings,onAction){
  host=element;current=settings;actionCallback=onAction;
@@ -70,30 +86,37 @@ export async function mountScene(element,settings,onAction){
    const layers=splitArtwork(source);
    for(const {id,canvas,x,y} of layers){this.textures.addCanvas(id,canvas);const sprite=this.add.image(x,y,id).setOrigin(0);if(id==='operaria')this.operator=sprite;}
    this.textures.addCanvas('reverse-shot',decisionBackdrop(source));this.reverseShot=this.add.image(0,0,'reverse-shot').setOrigin(0).setVisible(false);
-   this.mark=this.add.graphics();this.detailCamera=this.cameras.add(0,0,100,100);this.detailCamera.visible=false;
+   this.mark=this.add.graphics();this.touchRadius=6;this.detailCamera=this.cameras.add(0,0,100,100);this.detailCamera.visible=false;
    this.input.on('pointerup',pointer=>{
-    if(current.mode!=='explore')return;
+    if(!['home','explore'].includes(current.mode))return;
     const d=this.detailCamera,inside=d.visible&&pointer.x>=d.x&&pointer.x<=d.x+d.width&&pointer.y>=d.y&&pointer.y<=d.y+d.height;
     const camera=inside?d:this.cameras.main;
     const p=camera.getWorldPoint(pointer.x,pointer.y);if(p.x<0||p.y<0||p.x>WORLD.width||p.y>WORLD.height)return;
+    if(current.mode==='home'){actionCallback('welcome',{x:p.x,y:p.y});return;}
     // Keep c4aa98c's detector and tolerance; this correction changes guidance, not the answer map.
     const hit=Object.entries(targets).find(([,t])=>Math.abs(p.x-t.x)<=t.width/2+24&&Math.abs(p.y-t.y)<=t.height/2+24);
     actionCallback(hit?.[0]||null,{x:p.x,y:p.y});
    });
-   this.events.on('postupdate',()=>{this.drawMarks();updateDebug();});
-   ready=true;this.scene.launch('Foreground');layout();resolve();
+   this.events.on('postupdate',()=>this.drawMarks());
+   this.sys.game.events.on('postrender',()=>{frameReady=true;updateDebug();});
+   this.sys.game.events.once('postrender',resolve);
+   ready=true;this.scene.launch('Foreground');layout();
   }
   drawMarks(){
-   this.mark.clear();if(current.mode==='discover'&&plant.explainTarget){const t=plant.explainTarget;this.mark.lineStyle(6,0xffca30,.95);this.mark.strokeRoundedRect(t.x-t.width/2,t.y-t.height/2,t.width,t.height,10);return;}if(current.mode!=='explore')return;
-   if(current.lastTouch){const p=current.lastTouch,size=6/this.cameras.main.zoom;this.mark.lineStyle(2/this.cameras.main.zoom,0xf2fff9,1);this.mark.strokeCircle(p.x,p.y,size);}
-   if(current.found&&current.focus==='zona-a'){const t=targets['zona-a'];this.mark.lineStyle(5,0xffca36,1);this.mark.strokeRoundedRect(t.x-t.width/2,t.y-t.height/2,t.width,t.height,8);}
+   this.mark.clear();if(current.mode==='discover'&&plant.explainTarget){const t=plant.explainTarget;this.mark.lineStyle(6,0xffca30,.95);this.mark.strokeRoundedRect(t.x-t.width/2,t.y-t.height/2,t.width,t.height,10);return;}if(!['home','explore'].includes(current.mode))return;
+   if(current.lastTouch){const p=current.lastTouch,size=this.touchRadius/this.cameras.main.zoom;this.mark.lineStyle(2/this.cameras.main.zoom,0xf2fff9,1);this.mark.strokeCircle(p.x,p.y,size);}
+   if(current.mode==='explore'&&current.found&&current.focus==='zona-a'){const t=targets['zona-a'];this.mark.lineStyle(5,0xffca36,1);this.mark.strokeRoundedRect(t.x-t.width/2,t.y-t.height/2,t.width,t.height,8);}
   }
  }
  class Foreground extends P.Scene{
   constructor(){super('Foreground');}
   create(){foreground=this;this.edge=this.add.graphics();this.portrait=this.add.image(0,0,'operaria').setOrigin(0);this.layout(host.clientWidth,host.clientHeight,current.mode==='decide');}
   layout(w,h,decision){
-   if(!this.portrait)return;this.portrait.setVisible(decision);this.edge.clear();if(!decision){if(plant?.detailRect){const r=plant.detailRect;this.edge.lineStyle(7,0x062a36,1);this.edge.strokeRoundedRect(r.x-5,r.y-5,r.width+10,r.height+10,17);this.edge.lineStyle(4,0xffca30,1);this.edge.strokeRoundedRect(r.x-2,r.y-2,r.width+4,r.height+4,14);this.edge.lineStyle(3,0xf0fff8,1);const l=19;for(const [x,y,sx,sy] of [[r.x+12,r.y+12,1,1],[r.x+r.width-12,r.y+12,-1,1],[r.x+12,r.y+r.height-12,1,-1],[r.x+r.width-12,r.y+r.height-12,-1,-1]]){this.edge.beginPath();this.edge.moveTo(x,y+sy*l);this.edge.lineTo(x,y);this.edge.lineTo(x+sx*l,y);this.edge.strokePath();}}return;}
+   if(!this.portrait)return;
+   const entering=decision&&!this.wasDecision;this.wasDecision=decision;
+   if(instant()||!decision){this.tweens.killTweensOf([this.portrait,this.edge]);this.portrait.setAlpha(1);this.edge.setAlpha(1);}
+   if(entering&&!instant()){this.portrait.setAlpha(0);this.edge.setAlpha(0);this.tweens.add({targets:[this.portrait,this.edge],alpha:1,duration:280,ease:'Cubic.easeOut'});}
+   this.portrait.setVisible(decision);this.edge.clear();if(!decision){if(plant?.detailRect){const r=plant.detailRect;this.edge.lineStyle(7,0x062a36,1);this.edge.strokeRoundedRect(r.x-5,r.y-5,r.width+10,r.height+10,17);this.edge.lineStyle(4,0xffca30,1);this.edge.strokeRoundedRect(r.x-2,r.y-2,r.width+4,r.height+4,14);this.edge.lineStyle(3,0xf0fff8,1);const l=19;for(const [x,y,sx,sy] of [[r.x+12,r.y+12,1,1],[r.x+r.width-12,r.y+12,-1,1],[r.x+12,r.y+r.height-12,1,-1],[r.x+r.width-12,r.y+r.height-12,-1,-1]]){this.edge.beginPath();this.edge.moveTo(x,y+sy*l);this.edge.lineTo(x,y);this.edge.lineTo(x+sx*l,y);this.edge.strokePath();}}return;}
    // Comic foreground is a change of shot, not an action by the operator.
    const caption=document.querySelector('.demo-experience>h1')?.getBoundingClientRect();
    const captionBottom=caption?caption.bottom-host.getBoundingClientRect().top:144;
@@ -112,9 +135,11 @@ export async function mountScene(element,settings,onAction){
  return readyPromise;
 }
 export function updateScene(settings,onAction){current=settings;actionCallback=onAction;layout();}
-export function unmountScene(){resizeObserver?.disconnect();resizeObserver=null;if(game){game.destroy(true);game=null;}plant=foreground=host=null;ready=false;readyPromise=null;}
+export function unmountScene(){resizeObserver?.disconnect();resizeObserver=null;if(game){game.destroy(true);game=null;}plant=foreground=host=null;ready=false;frameReady=false;readyPromise=null;cameraKey=cameraMode=feedbackKey=mainCameraKey='';}
 export function pauseScene(){game?.loop.sleep();}
 export function layerEvidence(){return {layers:LAYERS.map(l=>l.id),targets};}
 
 export function projectTargets(){if(!plant||!ready)return {};const c=plant.cameras.main;return Object.fromEntries(Object.entries(targets).map(([id,t])=>[id,{x:(t.x-c.worldView.x)*c.zoom+c.x,y:(t.y-c.worldView.y)*c.zoom+c.y}]));}
 export function resumeScene(){game?.loop.wake();}
+
+export function projectScenePoint(x,y){if(!plant||!ready)return null;const c=plant.cameras.main;return {x:(x-c.worldView.x)*c.zoom+c.x,y:(y-c.worldView.y)*c.zoom+c.y};}

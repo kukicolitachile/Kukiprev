@@ -25,7 +25,7 @@ with sync_playwright() as p:
    if keyboard:
     act('[data-open-options]');act(f'#scene-options [data-{kind}="{value}"]')
    elif kind=='zone':touch_scene(q,zone=value)
-   else:act(f"{ {'decision':'.decision-tray button','focus':'.discovery-tray button'}.get(kind,'.scene button')}[data-{kind}=\"{value}\"]")
+   else:act(f"{ {'decision':'.decision-tray button','focus':'.scene-focus-controls button'}.get(kind,'.inquiry-controls button')}[data-{kind}=\"{value}\"]")
   canvas();act('#welcome-start');assert q.locator('#identity-form').is_visible()
   q.locator('#first-name').fill('María José');q.locator('#last-name').fill('Muñoz');act('#identity-form .primary');canvas()
   assert 'Tu rol: reconocer y comunicar; no realizar ajustes ni desatascos.' in q.locator('h1').inner_text()
@@ -48,7 +48,7 @@ with sync_playwright() as p:
   q.reload();canvas();assert q.locator(f'.decision-tray [data-decision="{choice}"]').get_attribute('aria-pressed')=='true'
   act('#confirm-decision');canvas();assert next(a['feedback'] for a in data['practica']['alternativas'] if a['id']==choice) in q.locator('main').inner_text()
   option('focus','1');q.reload();canvas();option('focus','2');assert q.locator('#discover-next').is_enabled()
-  act('#discover-next');assert q.locator('.game-board').is_visible();assert q.locator('#confirm-inquiry').is_disabled()
+  act('#discover-next');assert q.locator('.demo-experience[data-stage="apply"]').is_visible();assert q.locator('#confirm-inquiry').is_disabled()
   option('inquiry','method');option('inquiry','roles');act('#confirm-inquiry');assert 'No se ha enviado' in q.locator('#scene-caption').inner_text();act('#start-evaluation')
   for answer in ['ev1-b','ev2-a','ev3-a']:
    assert q.locator('#phaser-host,.focus-highlight,.scene-companion,#hint,.why').count()==0

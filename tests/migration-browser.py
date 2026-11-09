@@ -62,7 +62,7 @@ with sync_playwright() as p:
  page.evaluate('(s)=>{localStorage.setItem("decidobien-review-v1",JSON.stringify(s));sessionStorage.setItem("decidobien-participant-v1",JSON.stringify({firstName:"Persona",lastName:"Prueba"}));}',confirmed)
  mode.write_text('new');page.goto('http://127.0.0.1:4175/recovery.html');page.locator('#recover').click();page.locator('[data-evaluation="ev1-b"]').wait_for(timeout=30000)
  assert page.locator('[data-evaluation="ev1-b"]').is_disabled();assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).evaluation')==confirmed['evaluation']
- page.locator('#network').filter(has_text='Lista sin conexión').wait_for();assert page.evaluate('async()=>(await caches.keys()).includes("decidobien-v14-explore")')
+ page.locator('#network').filter(has_text='Lista sin conexión').wait_for();assert page.evaluate('async()=>(await caches.keys()).includes("decidobien-v15-motion")')
  assert not page.evaluate('async()=>(await caches.keys()).includes("decidobien-v12-phaser")')
  c.set_offline(True);page.reload();assert page.locator('[data-evaluation="ev1-b"]').is_disabled();c.close();b.close()
  print(json.dumps({'demo_1_to_current':'passed','confirmed_answer':'preserved','offline_after_update':True,'current_cache':True}))

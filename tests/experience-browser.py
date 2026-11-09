@@ -42,8 +42,8 @@ with sync_playwright() as p:
  # Same route state supports muted offline reload and instantly reduced camera response.
  act('#settings-toggle',0);act('#sound-toggle',0);act('#motion-toggle',0);act('#experience-settings .primary',0);before=page.evaluate('__sounds.length');assert page.locator('body.effects-off').count()==1
  c.set_offline(True);page.reload();page.locator('#phaser-host[data-ready="true"]').wait_for();assert page.locator('body.effects-off').count()==1
- act('.discovery-tray [data-focus="1"]',0);assert page.evaluate('__sounds.length')==0
- act('#settings-toggle',0);act('#sound-toggle',0);page.locator('#sound-toggle[aria-pressed="true"]').wait_for();act('#experience-settings .primary',0);act('.discovery-tray [data-focus="2"]',0);assert page.evaluate('__sounds.includes("discover")')
+ act('.scene-focus-controls [data-focus="1"]',0);assert page.evaluate('__sounds.length')==0
+ act('#settings-toggle',0);act('#sound-toggle',0);page.locator('#sound-toggle[aria-pressed="true"]').wait_for();act('#experience-settings .primary',0);act('.scene-focus-controls [data-focus="2"]',0);assert page.evaluate('__sounds.includes("discover")')
  assert not errors,errors;page.close();c.close()
  if RECORD:(OUT/'video-path.txt').write_text(str(video.path()))
  b.close();result={'demo':'opening → identity → context → explore/camera → choose → confirm','audio':kinds,'mute':'passed','reduced_motion':'persisted','offline_audio_and_canvas':'passed','recorded':RECORD,'errors':errors};(OUT/'audiovisual-checks.json').write_text(json.dumps(result,ensure_ascii=False,indent=2));print(json.dumps(result))

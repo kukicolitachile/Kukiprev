@@ -4,7 +4,7 @@ from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit,unquote
 ROOT=Path(__file__).resolve().parent
-PUBLIC={'vendor/PHASER-LICENSE.md','vendor/PDF-LIB-LICENSE.md','phaser-scene.js','phaser-board.js','phaser-demo.css','scene-layers.js','participant.js','certificate.js','certificate-policy.json','vendor/phaser-3.90.0.min.js','vendor/pdf-lib-1.17.1.min.js','index.html','app.js','mission-scene.js','experience.js','model.js','scenes.js','version-client.js','recovery.js','recovery.html','style.css','mission-scene.css','manifest.webmanifest','sw.js','release.json'}
+PUBLIC={'motion.css','vendor/PHASER-LICENSE.md','vendor/PDF-LIB-LICENSE.md','phaser-scene.js','phaser-board.js','phaser-demo.css','scene-layers.js','participant.js','certificate.js','certificate-policy.json','vendor/phaser-3.90.0.min.js','vendor/pdf-lib-1.17.1.min.js','index.html','app.js','mission-scene.js','experience.js','model.js','scenes.js','version-client.js','recovery.js','recovery.html','style.css','mission-scene.css','manifest.webmanifest','sw.js','release.json'}
 ASSETS={'assets/correa-revision.json','assets/kuky.png','assets/icon.svg','assets/icon-192.png','assets/icon-512.png',*(f'assets/kuky/{x}.png' for x in ['atento','motivador','feliz']),*(f'assets/audio/{x}.wav' for x in ['select','confirm','discover','complete']),*(f'assets/escenas/esc-01-{x}.webp' for x in ['base','consecuencia'])}
 CSP="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'none'; frame-src 'none'"
 def git(*args):

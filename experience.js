@@ -8,6 +8,7 @@ let noticeTimer, cueTimer;
 export function motionAllowed() {return motion && !matchMedia('(prefers-reduced-motion: reduce)').matches;}
 function syncControls() {
  document.body.classList.toggle('effects-off', !motionAllowed());
+ if(!motionAllowed())settleMotion();
  const audio = document.querySelector('#sound-toggle');
  if(audio){audio.textContent=enabled?'Sonido: activo':'Activar sonido';audio.setAttribute('aria-pressed',String(enabled));}
  const effects = document.querySelector('#motion-toggle');
@@ -82,6 +83,43 @@ export function initExperience() {
   const rect=target.getBoundingClientRect();const ripple=document.createElement('span');ripple.className='touch-response';ripple.style.left=`${event.clientX-rect.left}px`;ripple.style.top=`${event.clientY-rect.top}px`;
   target.append(ripple);setTimeout(()=>ripple.remove(),520);
  });
- document.addEventListener('visibilitychange',()=>{if(document.hidden){clearFeedback();window.dispatchEvent(new Event('decidobien:pause'));}});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){clearFeedback();settleMotion();window.dispatchEvent(new Event('decidobien:pause'));}});
  syncControls();
+}
+
+// One finite motion language for the existing route. No timers advance activities.
+const routeAnimations=new Set();
+let lastMoment='',lastEvent='';
+function animateElement(element,frames,duration=240,delay=0){
+ if(!motionAllowed()||!element?.animate)return;
+ const animation=element.animate(frames,{duration,delay,easing:'cubic-bezier(.22,.7,.25,1)',fill:'none'});
+ routeAnimations.add(animation);
+ const clean=()=>routeAnimations.delete(animation);animation.onfinish=clean;animation.oncancel=clean;
+ return animation;
+}
+export function settleMotion(){
+ for(const animation of routeAnimations){try{animation.cancel();}catch{}}
+ routeAnimations.clear();
+}
+export function animateMoment({view,stage,event=''}){
+ const key=view==='practice'?stage:view;
+ const changed=key!==lastMoment,from=lastMoment;
+ // Detaching old controls must not leave animations or delayed effects running.
+ for(const animation of routeAnimations)if(!animation.effect?.target?.isConnected){animation.cancel();routeAnimations.delete(animation);}
+ if(view==='evaluation'){lastMoment=key;lastEvent=event;return;}
+ if(changed){
+  const selectors=view==='home'?['#welcome-title','.home-invite','.home-start']:view==='identify'?['.identity-card']:view==='summary'?['.result-heading','.result-guide','.work-transfer']:['.demo-experience>h1','.demo-guide','.demo-bottom','.step-title','.scene-companion','.scene-dock'];
+  selectors.forEach((selector,i)=>document.querySelectorAll(selector).forEach(el=>animateElement(el,[{opacity:.45,translate:'0 9px'},{opacity:1,translate:'0 0'}],260,Math.min(i*25,60))));
+  document.querySelectorAll('.motion-progress .done:last-of-type,.motion-progress [aria-current="step"]').forEach(el=>animateElement(el,[{scale:'.75'},{scale:'1.12',offset:.65},{scale:'1'}],280));
+  const guide=document.querySelector(view==='summary'?'.result-guide img':'.demo-guide>img,.scene-companion img');
+  animateElement(guide,[{opacity:.5,translate:'0 7px'},{opacity:1,translate:'0 0'}],320,35);
+  if(view==='summary')animateElement(document.querySelector('.completion-badge svg'),[{strokeDashoffset:60},{strokeDashoffset:0}],450);
+  if(from==='decide'&&stage==='discover')animateElement(document.querySelector('.demo-response'),[{boxShadow:'0 0 0 4px #ffca3080'},{boxShadow:'0 0 0 0px #ffca3000'}],360);
+ }else if(event!==lastEvent){
+  if(view==='home')animateElement(document.querySelector('.home-invite'),[{opacity:.65},{opacity:1}],180);
+  if(stage==='decide')animateElement(document.querySelector('.tray-choice.selected'),[{scale:'.96'},{scale:'1.02',offset:.65},{scale:'1'}],210);
+  if(stage==='explore'||stage==='discover')animateElement(document.querySelector('.demo-response'),[{opacity:.65},{opacity:1}],160);
+  if(stage==='apply'){animateElement(document.querySelector('.demo-response'),[{opacity:.65},{opacity:1}],160);document.querySelectorAll('.inquiry-action.included').forEach(el=>animateElement(el,[{opacity:.65},{opacity:1}],160));}
+ }
+ lastMoment=key;lastEvent=event;
 }

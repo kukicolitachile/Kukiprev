@@ -1,6 +1,8 @@
 # DecidoBien — Manos que cuidan
 
-**2.5.0-demo.3**, rama `implementation/correa-phaser-demo`, creada exactamente desde `2f8275d` de `implementation/correa-interactiva-2.4`. Entrega acotada a Explora: entrada sin marcas, toque directo, pista textual y visor después del hallazgo. [Auditoría completa y evidencias](docs/AUDITORIA_MISION_Y_EXPLORA.md). Primera entrega jugable: **Comenzar misión → Nombre y apellido → Contexto → Explora → Decide → confirmar**. La escena es conceptual y el contenido sigue siendo un borrador pendiente de validación preventiva.
+**2.6.0-review.1**, rama `implementation/correa-phaser-demo`, desarrollada desde `ab954dd`. Una misión de correa con escena persistente desde Contexto hasta Aplica, movimiento controlado por acciones, progreso de siete momentos y evaluación separada hasta Resultado. Mantiene nombre, logo, Kuky, textos y criterios del ejercicio. **Borrador pendiente de validación preventiva**, sin emisión empresarial.
+
+[Movimiento y recorrido integrados: alcance, pruebas y video](docs/MOVIMIENTO_2_6.md). [Auditoría histórica y requisitos contrastados](docs/AUDITORIA_MISION_Y_EXPLORA.md).
 
 ## Abrir
 
@@ -25,17 +27,19 @@ bash /tmp/decidobien-update.sh
 
 El script preserva commits locales, guarda cambios registrados y archivos sin seguimiento en un stash identificado con su rama de origen, y no lo reaplica automáticamente. No sobrescribe archivos ignorados que colisionen, no descarta divergencias y no modifica `main`. Solo reinicia un servidor reconocido de este proyecto en 4173; se detiene ante un proceso desconocido. Los cambios anteriores pueden revisarse con `git stash list`; no aplicar `stash pop` sobre esta revisión sin examinarlos.
 
-Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.5.0-demo.3`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v14-explore`.
+Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.6.0-review.1`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v15-motion`.
 
 En cualquier momento: **Revisión técnica → Comprobar versión, servidor y caché**. En terminal, `npm run diagnose`. La app mantiene las respuestas confirmadas anteriores. Si falta la identificación de esta pestaña, la pide antes de recuperar la actividad; no reinicia la evaluación.
 
 ## Qué cambió
 
-Escena a pantalla completa, barra compacta, azul profundo/turquesa, logo y Kuky originales. La ilustración original se separa en cuatro máscaras: fondo, correa, cajas y operaria. Phaser controla selección, cámara de detalle y encuadre de historieta. La recomposición es idéntica al original; no se anima la mecánica.
+El inicio responde a explorar la planta, por toque o con una lista accesible, sin puntaje ni intentos de práctica. Comenzar misión sigue disponible. Una transición breve conduce a nombre/apellido y luego al contexto con el rol existente.
 
-El contexto presenta el rol existente. Un botón discreto sobre los estuches permite entrar directamente a explorar. En Explora se señala un punto sin marcas previas; la pista es textual. El visor y el acercamiento se abren después del hallazgo y permiten volver al plano general. Las alternativas **Comunicar, Retirar y Ajustar** tienen igual peso visual; seleccionar muestra el texto original de la alternativa. La explicación aparece después de confirmar.
+**Observa → Explora → Decide → Descubre → Aplica** utiliza una misma superficie Phaser. En Explora no hay marcas iniciales: el toque recibe una respuesta neutra y la pista es textual. El visor y el acercamiento aparecen después del hallazgo. Decide cambia al encuadre de historieta; las tres acciones tienen igual peso, se seleccionan y se confirman. Descubre permite tocar los elementos explicados sobre la imagen. Aplica conserva las preguntas existentes de método, condiciones y responsables, y prepara una consulta sin enviarla ni cambiar el equipo.
 
-Descubre mantiene la escena y los focos existentes. Aplica, evaluación y resultado conservan sus actividades anteriores; no se presentan como una extensión ya terminada de toda la referencia visual. Preparar una consulta no la envía ni cambia el estado del equipo. La evaluación sigue separada, sin pistas y con recuperación de respuestas confirmadas.
+Un progreso común conecta los cinco momentos con Evaluación y Resultado. La evaluación mantiene tres preguntas sin pistas ni señales correctivas; selección y confirmación son neutras. El cierre muestra el avance completo de esta misión y a Kuky con una expresión original. El distintivo representa completar el recorrido, no aprobar una capacitación ni emitir un certificado.
+
+Las entradas, pulsaciones, encuadres y cambios de foco son finitos y de interfaz; se pueden desactivar. No hay avance automático, cuenta regresiva o movimiento mecánico. Se conservan el alcance de módulo guiado de 30 minutos y el objetivo futuro de seis misiones, sin inventar las cinco restantes.
 
 ## Identificación y certificado
 
@@ -59,6 +63,7 @@ python3 tests/browser-review.py
 python3 tests/welcome-browser.py
 python3 tests/decision-layout.py
 python3 tests/explore-browser.py
+python3 tests/motion-browser.py
 python3 tests/audit-mission.py
 python3 tests/experience-browser.py
 python3 tests/server-security.py
@@ -73,7 +78,7 @@ Pruebas de navegador: Python Playwright, Chromium en `/usr/bin/chromium` y `npm 
 Grabación con la salida real de Web Audio:
 
 ```sh
-DECIDOBIEN_RECORD=1 DECIDOBIEN_DEMO_DIR=/ruta/salida python3 tests/experience-browser.py
+DECIDOBIEN_RECORD=1 DECIDOBIEN_MOTION_DIR=/ruta/salida python3 tests/motion-browser.py
 ```
 
 La captura de video requiere el ffmpeg de Playwright; se combina el audio grabado con el video respetando `offset.json`.

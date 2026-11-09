@@ -1,14 +1,16 @@
-import {demoBoard} from './phaser-board.js';
-import {mountScene,unmountScene,projectTargets,pauseScene,resumeScene} from './phaser-scene.js';
+import {demoBoard,journeyProgress,journeyMoments} from './phaser-board.js';
+import {mountScene,unmountScene,projectTargets,projectScenePoint,pauseScene,resumeScene} from './phaser-scene.js';
 import {loadParticipant,saveParticipant,clearParticipant,normalizeParticipant} from './participant.js';
 import {certificateStatus,downloadPreview} from './certificate.js';
-import {missionBoard,inquiries,artwork} from './mission-scene.js';
+import {inquiries,artwork} from './mission-scene.js';
 import {initVersion} from './version-client.js';
-import {initExperience,motionAllowed,feedback,cueKuky,clearFeedback} from './experience.js';
+import {initExperience,motionAllowed,feedback,cueKuky,clearFeedback,animateMoment} from './experience.js';
 import { KEY, fresh, shuffle, validState, evaluateAnswers } from './model.js';
 import { sceneMarkup } from './scenes.js';
 const app = document.querySelector('#app');
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let welcomeReply='',welcomeTouch=null,welcomeSequence=0;
+const welcomeDetails=[{id:'context',name:'El entorno',text:'El entorno también aporta información sobre la tarea.'},{id:'materials',name:'Los estuches',text:'Los materiales ayudan a entender qué ocurre en la escena.'},{id:'person',name:'La persona',text:'Observa su posición y su relación con la tarea.'}];
 let content, state = fresh(), storageAvailable = true, message = '',participant=loadParticipant(),certificatePolicy=null;
 const stages = ['observe','explore','decide','discover','apply'];
 const names = ['Observa','Explora','Decide','Descubre','Aplica'];
@@ -27,9 +29,9 @@ function header() {
  return `<div class="compact-top">${state.view==='home'?'':'<button class="text-button" data-go="home">← Inicio</button>'}<span class="draft-pill">Borrador</span><button class="text-button" data-go="review">Revisión técnica</button></div>`;
 }
 function why(text) {return `<details class="why"><summary>¿Por qué?</summary><p>${escape(text)}</p></details>`;}
-function kuky(text) {return `<aside class="kuky-cue"><img src="./assets/kuky.png" alt="Kuky" width="38" height="38"><span>${escape(text)}</span></aside>`;}
+function kuky(text) {return `<aside class="kuky-cue result-guide"><img src="./assets/kuky/feliz.png" alt="Kuky" width="90" height="120"><span>${escape(text)}</span></aside>`;}
 function homeView() {
- return `<section class="demo-experience demo-home" aria-labelledby="welcome-title"><div id="phaser-host" aria-hidden="true"></div><h1 id="welcome-title">Manos que cuidan</h1><div class="home-invite"><img src="./assets/kuky/atento.png" alt="Kuky" width="110" height="145"><p>¿Qué ves fuera de lugar? Explora la escena.</p></div><div class="home-start"><button class="primary" id="welcome-start">Comenzar misión →</button><div class="welcome-secondary"><button class="text-button" data-go="join">Unirme a una capacitación</button><button class="text-button" data-go="study">Estudiar</button></div></div></section>`;
+ return `<section class="demo-experience demo-home" aria-labelledby="welcome-title"><div id="phaser-host" aria-hidden="true"></div><h1 id="welcome-title">Manos que cuidan</h1><div class="home-invite"><img src="./assets/kuky/atento.png" alt="Kuky" width="110" height="145"><p id="welcome-reply" role="status" tabindex="-1">${escape(welcomeReply||'¿Qué ves fuera de lugar? Explora la escena.')}</p></div><button class="welcome-explore" id="welcome-explore" aria-label="Explorar la escena con controles accesibles">Explorar la escena</button><dialog id="welcome-options" class="scene-options" aria-labelledby="welcome-options-title"><h2 id="welcome-options-title">Elementos y acciones</h2><div class="choices">${welcomeDetails.map(item=>`<button class="choice" data-welcome="${item.id}">${item.name}</button>`).join('')}</div><button class="back" id="close-welcome-options">Volver a la escena</button></dialog><div class="home-start"><button class="primary" id="welcome-start">Comenzar misión →</button><div class="welcome-secondary"><button class="text-button" data-go="join">Unirme a una capacitación</button><button class="text-button" data-go="study">Estudiar</button></div></div></section>`;
 }
 function identifyView(){
  return `<section class="identity-screen"><form id="identity-form" class="identity-card"><img src="./assets/kuky/atento.png" alt="Kuky" width="80" height="100"><h1>Nombre y apellido</h1><p>Se guardan durante esta pestaña. No se envían a la empresa.</p><label for="first-name">Nombre</label><input id="first-name" name="firstName" autocomplete="given-name" maxlength="80" required value="${escape(participant?.firstName||'')}"><label for="last-name">Apellido</label><input id="last-name" name="lastName" autocomplete="family-name" maxlength="80" required value="${escape(participant?.lastName||'')}"><p id="identity-error" role="status"></p><button class="primary" type="submit">Continuar →</button><button class="text-button" type="button" data-go="home">← Inicio</button></form></section>`;
@@ -37,9 +39,7 @@ function identifyView(){
 function scene() {
  return `<div class="scene-wrap"><div class="scene">${artwork()}</div><button class="enlarge" id="enlarge" aria-label="Ampliar ilustración completa">⤢</button></div>`;
 }
-function progress(index) {
- return `<div class="stage-progress" aria-label="${names[index]}, momento ${index+1} de 5">${names.map((n,i)=>`<span class="${i<index?'done':i===index?'current':''}" ${i===index?'aria-current="step"':''}><b>${i<index?'✓':i+1}</b><small>${n}</small></span>`).join('')}</div>`;
-}
+
 function choices(items,kind,selected,locked=false) {
  return `<div class="choices">${items.map(a=>`<button class="choice ${selected===a.id?'selected':''}" data-${kind}="${escape(a.id)}" aria-pressed="${selected===a.id}" ${locked?'disabled':''}>${escape(a.texto)}</button>`).join('')}</div>`;
 }
@@ -51,17 +51,13 @@ function studyView() {
  ${why(lesson.texto+' '+(j.studyIndex===0?content.rol.descripcion:''))}
  <div class="action-row">${j.studyIndex>0?'<button class="text-button" id="study-back">← Anterior</button>':''}<button class="primary" id="study-next">${j.studyIndex<3?'Siguiente observación':'Practicar este caso'} →</button></div></div></section>`;
 }
-function practiceView() {
- const j=journey(),index=stages.indexOf(j.stage);
- const titles={observe:'Observa la tarea antes de actuar.',explore:content.interaccion.explora,decide:content.interaccion.decide,discover:'Toca los detalles. Conecta lo que ocurre.',apply:content.interaccion.aplica.consigna};
- if(['observe','explore','decide','discover'].includes(j.stage))return demoBoard(content,state,message);
- return `${header()}<section class="mission-frame immersive-mission" data-stage="${j.stage}"><div class="step-title">${progress(index)}<h1>${escape(titles[j.stage])}</h1></div>${missionBoard(content,state,message)}</section>`;
-}
+function practiceView() {return demoBoard(content,state,message);}
+
 function evaluationView() {
  const q=content.evaluacion[state.evaluation.current],answer=state.evaluation.answers[q.id];
  const order=state.evaluation.orders[q.id]||q.alternativas.map(a=>a.id);
  return `<div class="compact-top"><button class="text-button" id="exit-evaluation">Salir de la evaluación</button><span class="draft-pill">Borrador</span><span>Evaluación · ${state.evaluation.current+1}/${content.evaluacion.length}</span></div>
- <section class="mission-frame evaluation"><div class="step-title"><h1>${escape(q.pregunta)}</h1></div>${scene()}<div class="activity-panel">
+ ${journeyProgress('evaluation')}<section class="mission-frame evaluation"><div class="step-title"><h1>${escape(q.pregunta)}</h1></div>${scene()}<div class="activity-panel">
  ${choices(order.map(id=>q.alternativas.find(a=>a.id===id)),'evaluation',answer||evaluationPending,Boolean(answer))}
  ${answer?`<p role="status">Respuesta confirmada. Continúa para completar la evaluación.</p><button class="primary" id="evaluation-next">${state.evaluation.current===content.evaluacion.length-1?'Ver resultado':'Siguiente pregunta'} →</button>`:`<p class="action-requirement">${evaluationPending?'Selección lista para confirmar.':'Selecciona una respuesta.'}</p><button class="primary" id="evaluation-confirm" ${evaluationPending?'':'disabled'}>Confirmar respuesta →</button>`}
  </div></section>`;
@@ -69,10 +65,10 @@ function evaluationView() {
 let evaluationPending=null;
 function summaryView() {
  const result=evaluateAnswers(state.evaluation.answers,content.evaluacion);
- return `${header()}<section class="compact-summary"><h1>Revisa lo que descubriste.</h1><p>${result.correct} de ${result.total} respuestas coinciden con este borrador.</p>
- <p class="fine">No acredita aprobación ni asistencia. Contenido pendiente de validación técnica.</p><section class="work-transfer">${journey().inquiries?.length?`<div class="prepared-inquiry"><h2>La consulta que preparaste</h2>${inquiries(content).filter(i=>journey().inquiries.includes(i.id)).map(i=>`<p>${escape(i.question)}</p>`).join('')}<small>Para conversar con el relator; no se ha enviado un aviso.</small></div>`:''}<h2>Una conversación para tu trabajo</h2><p>Abre una pregunta que puedas conversar con el relator.</p>${[['La tarea','¿Qué hace necesario aproximar las manos?'],['El método','¿Qué condiciones y medios deben estar definidos?'],['La respuesta','¿Quién confirma cómo se atendió la anomalía?']].map(([a,b])=>`<details><summary>${a}</summary><p>${b}</p></details>`).join('')}</section>
+ return `${header()}<section class="compact-summary">${journeyProgress('summary')}<div class="result-heading"><span class="completion-badge" role="img" aria-label="Recorrido completado"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m12 25 8 8 17-19"/></svg></span><h1>Revisa lo que descubriste.</h1></div><p>${result.correct} de ${result.total} respuestas coinciden con este borrador.</p>
+ <p class="fine">No acredita aprobación ni asistencia. Contenido pendiente de validación técnica.</p>${kuky('¿Qué debe estar resuelto antes de una tarea parecida?')}<section class="work-transfer">${journey().inquiries?.length?`<div class="prepared-inquiry"><h2>La consulta que preparaste</h2>${inquiries(content).filter(i=>journey().inquiries.includes(i.id)).map(i=>`<p>${escape(i.question)}</p>`).join('')}<small>Para conversar con el relator; no se ha enviado un aviso.</small></div>`:''}<h2>Una conversación para tu trabajo</h2><p>Abre una pregunta que puedas conversar con el relator.</p>${[['La tarea','¿Qué hace necesario aproximar las manos?'],['El método','¿Qué condiciones y medios deben estar definidos?'],['La respuesta','¿Quién confirma cómo se atendió la anomalía?']].map(([a,b])=>`<details><summary>${a}</summary><p>${b}</p></details>`).join('')}</section>
  ${content.evaluacion.map(q=>{const a=q.alternativas.find(a=>a.id===state.evaluation.answers[q.id]);return `<details><summary>${a.correcta?'✓':'↻'} ${escape(q.pregunta)}</summary><p>${escape(a.feedback)}</p><p><strong>Para revisar:</strong> ${escape(q.alternativas.find(a=>a.correcta).texto)}</p></details>`;}).join('')}
- ${certificatePanel()}${kuky('¿Qué debe estar resuelto antes de una tarea parecida?')}<div class="action-row"><button class="primary" data-go="home">Volver al inicio</button><button class="back" id="retry-evaluation">Repetir evaluación</button></div></section>`;
+ ${certificatePanel()}<div class="action-row"><button class="primary" data-go="home">Volver al inicio</button><button class="back" id="retry-evaluation">Repetir evaluación</button></div></section>`;
 }
 function certificatePanel(){
  const status=certificateStatus(state,content,participant,certificatePolicy||{},navigator.onLine);
@@ -98,6 +94,11 @@ function showEnlarged() {
  document.body.append(modal);modal.showModal();modal.querySelector('button').onclick=()=>modal.close();modal.onclose=()=>{modal.remove();document.querySelector('#enlarge')?.focus();};
 }
 function selectZone(id,point=null){
+ if(state.view==='home'){
+  const key=id==='welcome'?(point.x>580&&point.y<1080?'person':point.x<300&&point.y>500&&point.y<800?'materials':'context'):id;
+  const item=welcomeDetails.find(x=>x.id===key);if(!item)return;
+  welcomeReply=item.text;welcomeTouch=point;welcomeSequence++;render();document.querySelector('#welcome-reply')?.focus({preventScroll:true});feedback('discover','Detalle explorado',item.name);return;
+ }
  if(state.view!=='practice'||journey().stage!=='explore')return;
  const z=content.practica.zonas.find(z=>z.id===id);if(!z&&!point)return;
  const j=journey();j.explored??=[];
@@ -108,6 +109,7 @@ function selectZone(id,point=null){
  save();render();document.querySelector('#explore-status')?.focus({preventScroll:true});feedback('discover','Elemento explorado',z?.descripcion||'Punto señalado');
 }
 function syncCameraTargets(){
+ document.querySelectorAll('[data-scene-x]').forEach(element=>{const point=projectScenePoint(Number(element.dataset.sceneX),Number(element.dataset.sceneY));if(point){element.style.left=point.x+'px';element.style.top=point.y+'px';element.style.visibility='visible';}});
  const positions=projectTargets();document.body.classList.toggle('detail-open',Boolean(document.querySelector('#phaser-host.detail-open')));document.querySelectorAll('[data-camera-zone]').forEach(button=>{const point=positions[button.dataset.cameraZone];if(point){button.style.left=point.x+'px';button.style.top=point.y+'px';button.style.visibility='visible';}});
 }
 function syncVisualScene(){
@@ -115,9 +117,13 @@ function syncVisualScene(){
  const j=journey(),mode=state.view==='home'?'home':j.stage;
  const focus=mode==='discover'?content.interaccion.focos[j.focus].zona:j.cameraFocus||null;
  element.addEventListener('scene:camera',syncCameraTargets);
- mountScene(element,{mode,focus,found:state.practice.found,lastTouch:j.lastTouch||null,visited:j.explored||[],reduced:!motionAllowed()},selectZone).then(syncCameraTargets).catch(()=>{element.dataset.failed='true';element.innerHTML='<img src="./assets/escenas/esc-01-base.webp" alt="Ilustración conceptual de la correa">';document.querySelectorAll('[data-camera-zone]').forEach(b=>b.hidden=true);});
+ mountScene(element,{mode,focus,found:state.practice.found,lastTouch:state.view==='home'?welcomeTouch:j.lastTouch||null,touchSequence:state.view==='home'?welcomeSequence:state.practice.attempts,visited:j.explored||[],reduced:!motionAllowed()},selectZone).then(syncCameraTargets).catch(()=>{element.dataset.failed='true';element.innerHTML='<img src="./assets/escenas/esc-01-base.webp" alt="Ilustración conceptual de la correa">';document.querySelectorAll('[data-camera-zone]').forEach(b=>b.hidden=true);});
 }
 function bindEvents() {
+ document.querySelector('#welcome-explore')?.addEventListener('click',()=>document.querySelector('#welcome-options').showModal());
+ document.querySelector('#close-welcome-options')?.addEventListener('click',()=>document.querySelector('#welcome-options').close());
+ document.querySelectorAll('[data-welcome]').forEach(button=>button.addEventListener('click',()=>selectZone(button.dataset.welcome)));
+
  document.querySelector('#identity-form')?.addEventListener('submit',event=>{
   event.preventDefault();const form=event.currentTarget;const p=normalizeParticipant(form.elements.firstName.value,form.elements.lastName.value);
   if(!p){document.querySelector('#identity-error').textContent='Revisa nombre y apellido.';return;}
@@ -174,13 +180,16 @@ function bindEvents() {
 }
 function render() {
  document.body.classList.toggle('at-welcome',state.view==='home');
- const immersive=state.view==='home'||state.view==='identify'||(state.view==='practice'&&['observe','explore','decide','discover'].includes(journey().stage));document.body.classList.toggle('phaser-active',immersive);
- document.querySelector('#mission-label').textContent=state.view==='identify'?'Nombre y apellido':state.view==='practice'?(names[stages.indexOf(journey().stage)]||''):'';
+ document.body.classList.toggle('at-assessment',['evaluation','summary'].includes(state.view));
+ const immersive=state.view==='home'||state.view==='identify'||state.view==='practice';document.body.classList.toggle('phaser-active',immersive);
+ document.querySelector('#mission-label').textContent=state.view==='identify'?'Nombre y apellido':state.view==='practice'?(names[stages.indexOf(journey().stage)]||''):state.view==='evaluation'?'Evaluación':state.view==='summary'?'Resultado':'';
  document.body.classList.toggle('in-mission',['practice','study','evaluation'].includes(state.view));
  journey();
  const views={home:homeView,identify:identifyView,study:studyView,practice:practiceView,evaluation:evaluationView,summary:summaryView,review:reviewView,join:()=>`${header()}<section class="join-panel"><h1>Unirme a una capacitación</h1><p>En esta versión revisable, continúa con tu relator en el caso de la correa.</p><button class="primary" id="join-review">Continuar el caso</button><details><summary>Ingreso por código</summary><p>El ingreso a sesiones empresariales y el registro de asistencia siguen pendientes. Nombre y apellido se guardan durante esta pestaña para el recorrido.</p></details></section>`};
  app.innerHTML=`${['home','identify','practice'].includes(state.view)&&document.body.classList.contains('phaser-active')?'<div class="demo-nav"><button class="text-button" data-go="home" aria-label="Inicio">⌂</button><span class="draft-pill">Borrador</span><button class="text-button" data-go="review" aria-label="Revisión técnica">ⓘ</button></div>':''}${!storageAvailable?'<p class="storage-note" role="status">El avance no puede guardarse en este navegador.</p>':''}${views[state.view]()}`;
  bindEvents();syncVisualScene();
+ const moment=state.view==='practice'?journey().stage:state.view;document.querySelector('#mission-label').dataset.count=(journeyMoments.indexOf(moment)+1)+'/7';
+ animateMoment({view:state.view,stage:journey().stage,event:JSON.stringify([journey().pending,journey().focus,journey().inquiries,state.practice.attempts,journey().exploreEvent,journey().appliedConfirmed,welcomeSequence])});
 }
 initExperience();
 initVersion();
@@ -190,7 +199,7 @@ window.addEventListener('decidobien:close-journey',()=>{
  document.body.append(d);d.showModal();d.querySelector('#keep-progress').onclick=()=>d.close();
  d.querySelector('#clear-progress').onclick=()=>{
   try{localStorage.removeItem(KEY);}catch{d.querySelector('p').textContent='No se pudo eliminar el avance. No prepares esta tablet para otra persona todavía.';return;}
-  d.close();clearParticipant();participant=null;state=fresh();evaluationPending=null;navigate('home');feedback('confirm','Recorrido cerrado','Se eliminó el avance de este ejercicio.');
+  d.close();clearParticipant();participant=null;welcomeReply='';welcomeTouch=null;welcomeSequence=0;state=fresh();evaluationPending=null;navigate('home');feedback('confirm','Recorrido cerrado','Se eliminó el avance de este ejercicio.');
  };
  d.onclose=()=>{d.remove();document.querySelector('#settings-toggle').focus();};
 });
