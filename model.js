@@ -1,6 +1,6 @@
 export const KEY = 'decidobien-review-v1';
 
-const VIEWS = new Set(['home', 'study', 'practice', 'evaluation', 'summary', 'review', 'join']);
+const VIEWS = new Set(['home', 'study', 'practice', 'evaluation', 'summary', 'review', 'join', 'identify']);
 const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const has = (object, key) => Object.hasOwn(object, key);
 
@@ -109,10 +109,12 @@ export function validState(state, content) {
 
   if (['evaluation', 'summary'].includes(state.view) && (!practice.found || practice.selected === null)) return false;
   if (state.view === 'summary' && !complete) return false;
+  if (state.identityReturn!==undefined&&!['practice','summary','evaluation'].includes(state.identityReturn))return false;
   if (state.journey !== undefined) {
     const j = state.journey;
     if (!isRecord(j) || !['observe','explore','decide','discover','apply'].includes(j.stage)) return false;
     if (j.explored !== undefined && (!Array.isArray(j.explored) || new Set(j.explored).size!==j.explored.length || j.explored.some(id=>!content.practica.zonas.some(z=>z.id===id)))) return false;
+    if (j.cameraFocus!==undefined&&j.cameraFocus!==null&&!['zona-a','zona-b','zona-c'].includes(j.cameraFocus))return false;
     if (j.inquiries !== undefined && (!Array.isArray(j.inquiries) || new Set(j.inquiries).size!==j.inquiries.length || j.inquiries.some(id=>!['method','condition','roles'].includes(id)))) return false;
     if (j.inquiryFocus !== undefined && !['method','condition','roles'].includes(j.inquiryFocus)) return false;
     if (j.discovered !== undefined && (!Array.isArray(j.discovered) || new Set(j.discovered).size !== j.discovered.length || j.discovered.some(id=>!Number.isInteger(id)||id<0||id>2))) return false;

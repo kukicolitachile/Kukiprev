@@ -27,7 +27,7 @@ for line in objects:
  for kind,pattern in patterns.items():
   if pattern.search(text):candidates.append({'object':oid[:12],'file':name,'kind':kind})
 for file in ROOT.rglob('*'):
- if '.git' in file.parts or not file.is_file() or file.stat().st_size>2_000_000 or '__pycache__' in file.parts:continue
+ if '.git' in file.parts or 'node_modules' in file.parts or not file.is_file() or file.stat().st_size>2_000_000 or '__pycache__' in file.parts:continue
  try:text=file.read_text()
  except (OSError,UnicodeError):continue
  if '\0' in text:continue

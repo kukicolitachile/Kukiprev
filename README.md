@@ -1,69 +1,57 @@
 # DecidoBien — Manos que cuidan
 
-PWA de capacitación guiada, **2.4.0-review.1**, rama `implementation/correa-interactiva-2.4`, desarrollada desde la base `24bb4af`. Una misión completa de correa transportadora con interacción sobre la escena. **Borrador para validación preventiva**, sin acreditación empresarial ni instrucciones de intervención.
+**2.5.0-demo.1**, rama `implementation/correa-phaser-demo`, creada exactamente desde `2f8275d` de `implementation/correa-interactiva-2.4`. Primera entrega jugable: **Comenzar misión → Nombre y apellido → Contexto → Explora → Decide → confirmar**. La escena es conceptual y el contenido sigue siendo un borrador pendiente de validación preventiva.
 
-Se mantienen logo, Kuky, paleta, títulos y recursos originales. Solo la correa está disponible; el objetivo de seis misiones y los casos reservados permanecen pendientes. La ilustración es conceptual.
-
-## Abrir y comprobar
-
-Con Node y Python 3, sin dependencias npm:
+## Abrir
 
 ```sh
 npm start
 ```
 
-En Codespaces abre **Puertos → 4173 → Abrir en el navegador**. Utiliza el servidor incluido: limita los archivos públicos y fija su raíz al proyecto. El Codespace del usuario y el entorno de desarrollo son instancias distintas; publicar una rama no actualiza por sí solo la instancia.
+Solo requiere Python 3 para servir la app (Node permite usar los comandos npm). Phaser 3.90.0 y pdf-lib 1.17.1 se distribuyen localmente en `vendor/`, con sus licencias. No se requieren descargas npm ni CDN para jugar; `npm ci` permite reconstruir/verificar las dependencias de desarrollo.
 
-```sh
-npm run diagnose
-```
+En Codespaces: **Puertos → 4173 → Abrir en el navegador**. El Codespace del usuario y este entorno son instancias distintas. Publicar esta rama no actualiza automáticamente su instancia.
 
-Muestra release, commit, rama, cambios pendientes, raíz y huella de recursos públicos. La respuesta de `/__runtime.json` identifica el proceso que realmente responde, sin mostrar su carpeta. En la app: **Revisión técnica → Comprobar versión, servidor y caché**.
+## Actualizar el Codespace conservando cambios y progreso
 
-## Actualizar el Codespace desde Git
-
-Confirma la respuesta en curso si corresponde y cierra otras pestañas del ejercicio. En una terminal nueva, dentro del repositorio:
+Confirma las respuestas en curso y cierra otras pestañas del ejercicio. En una terminal nueva:
 
 ```sh
 cd /workspaces/Kukiprev
-git fetch origin refs/heads/implementation/correa-interactiva-2.4:refs/remotes/origin/implementation/correa-interactiva-2.4
-git show origin/implementation/correa-interactiva-2.4:scripts/update-codespace.sh > /tmp/decidobien-update.sh
+git fetch origin refs/heads/implementation/correa-phaser-demo:refs/remotes/origin/implementation/correa-phaser-demo
+git show origin/implementation/correa-phaser-demo:scripts/update-codespace.sh > /tmp/decidobien-update.sh
 bash /tmp/decidobien-update.sh
 ```
 
-El script conserva commits locales; guarda modificaciones y archivos sin seguimiento en un stash identificado; nunca lo aplica automáticamente sobre la revisión. Los archivos ignorados no se sobrescriben si generan conflicto. Solo permite avanzar la rama local sin descartar commits. `main` no se modifica. Se detiene ante un proceso no reconocido en 4173 o una divergencia Git. No utiliza paquetes ni otra copia de aplicación.
+El script preserva commits locales, guarda cambios registrados y archivos sin seguimiento en un stash identificado con su rama de origen, y no lo reaplica automáticamente. No sobrescribe archivos ignorados que colisionen, no descarta divergencias y no modifica `main`. Solo reinicia un servidor reconocido de este proyecto en 4173; se detiene ante un proceso desconocido. Los cambios anteriores pueden revisarse con `git stash list`; no aplicar `stash pop` sobre esta revisión sin examinarlos.
 
-El comando final deja `npm start` activo. Abre la misma URL reenviada de 4173, en el mismo navegador y perfil, con `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. La caché actual es `decidobien-v9-context`; el diagnóstico debe coincidir con el SHA remoto y release `2.4.0-review.1`.
+Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.5.0-demo.1`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v12-phaser`.
 
-Los cambios anteriores quedan en `git stash list`, identificados con su rama de origen. No hagas `stash pop` sobre esta revisión sin examinar y resolver esos cambios. El script no hace reset, clean, borrado de stash ni publicación. La configuración de Codespaces inicia el servidor de esta misma carpeta al arrancar.
+En cualquier momento: **Revisión técnica → Comprobar versión, servidor y caché**. En terminal, `npm run diagnose`. La app mantiene las respuestas confirmadas anteriores. Si falta la identificación de esta pestaña, la pide antes de recuperar la actividad; no reinicia la evaluación.
 
-## Qué hace el participante
+## Qué cambió
 
-Inicio explorable sin puntaje y **Comenzar misión** siempre disponible. **Observa → Explora → Decide → Descubre → Aplica** mantiene la escena como superficie de interacción. Las acciones se eligen junto a persona, materiales y banda; requieren confirmación. La explicación posterior destaca relaciones sin animar maquinaria. En Aplica se prepara una consulta sobre método, condiciones o responsables, y se conserva para conversar con el relator. No se envía un aviso real.
+Escena a pantalla completa, barra compacta, azul profundo/turquesa, logo y Kuky originales. La ilustración original se separa en cuatro máscaras: fondo, correa, cajas y operaria. Phaser controla selección, cámara de detalle y encuadre de historieta. La recomposición es idéntica al original; no se anima la mecánica.
 
-La evaluación es independiente: tres preguntas, sin pistas o corrección anticipada, respuestas confirmadas guardadas y resultado al cierre. El puntaje demuestra comprensión del borrador; no acredita asistencia o aprobación.
+El contexto presenta el rol existente. Un botón discreto sobre los estuches permite entrar directamente a explorar. Se puede ampliar un detalle y volver al plano general. Las alternativas **Comunicar, Retirar y Ajustar** tienen igual peso visual; seleccionar muestra el texto original de la alternativa. La explicación aparece después de confirmar.
 
-Los 30 minutos son el alcance del módulo guiado con conversación y evaluación, no la duración de la demostración grabada. No hay esperas obligatorias, rankings ni premios por rapidez.
+Descubre mantiene la escena y los focos existentes. Aplica, evaluación y resultado conservan sus actividades anteriores; no se presentan como una extensión ya terminada de toda la referencia visual. Preparar una consulta no la envía ni cambia el estado del equipo. La evaluación sigue separada, sin pistas y con recuperación de respuestas confirmadas.
+
+## Identificación y certificado
+
+Nombre y apellido se guardan en `sessionStorage` de la pestaña; no se incluyen en el progreso de `localStorage`, URLs ni solicitudes empresariales. Pueden corregirse desde el resultado. Ajustes permite cerrar el recorrido con confirmación y elimina la identificación de la pestaña y el avance actual; conserva otras claves. No hay autenticación ni aislamiento entre personas del mismo perfil.
+
+`certificate-policy.json` deja el criterio pendiente de Julisa: `completion` o `minimum_score` (0–100). La emisión también requiere validación preventiva y registro/folio en un servidor empresarial. **Ese servidor aún no está implementado**. No se genera un folio local ni se convierte el puntaje del navegador en evidencia confiable.
+
+Se puede descargar una **vista previa PDF**, con nombre, módulo, fecha y marca visible de borrador sin emisión empresarial. Offline, el resultado indica **Certificado pendiente de sincronización**; no existe aún una cola empresarial de sincronización. La vista previa es una imagen dentro del PDF y no es un certificado PDF etiquetado accesible; el resultado web conserva su equivalente textual.
 
 ## Accesibilidad, audio y offline
 
-Todos los objetivos de la escena tienen botones y una lista equivalente en diálogo, utilizables con teclado. Kuky acompaña con frases breves. Ajustes agrupa sonido, pausa de efectos y ayuda. Cuatro WAV locales se activan por acción del usuario; silenciar detiene su reproducción. El movimiento reducido del sistema y la preferencia local desactivan las animaciones.
+Controles por teclado y lista equivalente a tocar la escena; foco visible, mensajes de estado y selección sin arrastre. Ajustes agrupa sonido opcional y pausa de efectos. Las animaciones de cámara respetan la preferencia de movimiento reducido. Ningún sonido comunica por sí solo una respuesta. Cuatro WAV locales; sin audio automático.
 
-La primera descarga requiere conexión. Espera «Lista sin conexión» y luego puede completarse el recorrido offline. La actualización es explícita y preserva el progreso guardado; no recupera selecciones que una versión antigua nunca guardó.
+La primera descarga requiere conexión; espera «Lista sin conexión». Después se puede completar y recuperar el recorrido offline. La actualización de caché preserva el progreso. En tablets compartidas debe cerrarse el recorrido antes de otra persona; el cierre no es borrado forense ni cierre empresarial.
 
-Ajustes permite **Cerrar recorrido en esta tablet**, con confirmación antes de borrar únicamente el avance actual. Cancelar lo conserva. No es autenticación, cierre de sesión empresarial ni garantía de borrar información heredada u otros datos del navegador.
-
-## Seguridad y validación pendiente
-
-El repositorio es público: sus respuestas y materiales son inspeccionables. La corrección offline y `localStorage` pueden modificarse; no se oculta esa limitación. No se solicitan identidades ni se construyó un backend de empresa. Las constancias verificables requieren identidad, autorización y validación en servidor.
-
-El servidor no expone `.git`, documentos, scripts, pruebas o casos reservados. Rechaza enlaces simbólicos, traversal y métodos de escritura. La auditoría describe pruebas, correcciones y configuración que no pudo comprobarse: [auditoría de seguridad](docs/AUDITORIA_SEGURIDAD_2_4.md).
-
-Siguen pendientes equipo/geometría, tarea/anomalía, accesos/controles, método, roles/comunicación, organización, protección personal por tarea y fuentes. No se recomiendan guantes de forma general frente al atrapamiento; informar no confirma una condición resuelta y ver el equipo detenido no demuestra seguridad para intervenir. Autoclave, vidrio y químicos se conservan para otros módulos.
-
-[Implementación y capturas](docs/IMPLEMENTACION_2_4.md). Los documentos anteriores se conservan como historial de desarrollo.
-
-## Comprobaciones reproducibles
+## Comprobaciones
 
 ```sh
 npm test
@@ -73,16 +61,19 @@ python3 tests/experience-browser.py
 python3 tests/server-security.py
 python3 tests/security-browser.py
 python3 scripts/security-audit.py
+npm audit --omit=dev
 ```
 
-Las pruebas de navegador requieren Playwright de Python y Chromium en `/usr/bin/chromium`, con `npm start` activo. Cubren ruta completa, teclado, movimiento reducido, audio/silencio, persistencia, consultas, evaluación y offline en 360×800, 390×844, 768×1024 y 1365×1000. No sustituyen el piloto con trabajadores o los dispositivos reales.
+Pruebas de navegador: Python Playwright, Chromium en `/usr/bin/chromium` y `npm start` activo. Prueban 360×800, 390×844, 768×1024 y 844×390, teclado, las tres decisiones, offline, PDF de borrador y evaluación. Para migración histórica: `python3 tests/migration-proxy.py` y, en otra terminal, `python3 tests/migration-browser.py`. Este fixture es exclusivamente de pruebas, no otra forma de servir la app al usuario.
 
-Para migraciones, en otra terminal de pruebas inicia `python3 tests/migration-proxy.py`, luego ejecuta `python3 tests/migration-browser.py`. Ese fixture histórico usa solo un origen local aislado y no es un procedimiento de actualización de la app.
-
-Para grabar video y la salida real Web Audio, sin banda sonora añadida:
+Grabación con la salida real de Web Audio:
 
 ```sh
 DECIDOBIEN_RECORD=1 DECIDOBIEN_DEMO_DIR=/ruta/salida python3 tests/experience-browser.py
 ```
 
-La grabación necesita el ffmpeg de Playwright. La validación de retención, la aprobación preventiva y la revisión de configuración privada bloqueada permanecen separadas de estas comprobaciones técnicas.
+La captura de video requiere el ffmpeg de Playwright; se combina el audio grabado con el video respetando `offset.json`.
+
+[Implementación, alcance y evidencias](docs/IMPLEMENTACION_PHASER_2_5.md). [Revisión de seguridad actual](docs/AUDITORIA_SEGURIDAD_2_5.md). Los documentos 2.4 y anteriores son historial, no el estado actual.
+
+Pendientes separados: **validación preventiva del equipo y contenido**, **prueba con trabajadores/personas nuevas**, **dispositivos reales**, **Codespace del usuario** y **seguridad empresarial del futuro backend**. No se declara aprobación técnica, acreditación ni cumplimiento normativo a partir de esta demo.

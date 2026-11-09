@@ -29,9 +29,11 @@ with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);c=b.new_context();page=c.new_page();page.goto('http://127.0.0.1:4175');page.locator('#welcome-start').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  confirmed={'version':1,'view':'evaluation','practice':{'found':True,'attempts':1,'selected':'alt-a','order':[]},'evaluation':{'answers':{'eval-condiciones':'ev1-b'},'orders':{},'current':0},'reflection':[],'studyRead':True}
  page.evaluate('(s)=>localStorage.setItem("decidobien-review-v1",JSON.stringify(s))',confirmed)
- mode.write_text('new');page.goto('http://127.0.0.1:4175/recovery.html');page.locator('#recover').click();page.locator('[data-evaluation="ev1-b"]').wait_for(timeout=30000)
+ mode.write_text('new');page.goto('http://127.0.0.1:4175/recovery.html');page.locator('#recover').click();page.locator('#identity-form').wait_for(timeout=30000)
+ assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).evaluation.answers')==confirmed['evaluation']['answers']
+ page.locator('#first-name').fill('Persona');page.locator('#last-name').fill('Prueba');page.locator('#identity-form .primary').click();page.locator('[data-evaluation="ev1-b"]').wait_for()
  assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
- assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1"))')==confirmed
+ assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).evaluation')==confirmed['evaluation']
  page.locator('#network').filter(has_text='Lista sin conexión').wait_for();c.set_offline(True);page.reload();assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
  print(json.dumps({'recent_PWA_confirmed_answer_preserved':True,'recovery_does_not_restart_assessment':True,'offline_assessment_resume':True}))
  c.close();b.close()
@@ -42,9 +44,11 @@ mode.write_text('review')
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);c=b.new_context();page=c.new_page();page.goto('http://127.0.0.1:4175');page.locator('#welcome-start').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  page.evaluate('(s)=>localStorage.setItem("decidobien-review-v1",JSON.stringify(s))',confirmed)
- mode.write_text('new');page.goto('http://127.0.0.1:4175/recovery.html');page.locator('#recover').click();page.locator('[data-evaluation="ev1-b"]').wait_for(timeout=30000)
+ mode.write_text('new');page.goto('http://127.0.0.1:4175/recovery.html');page.locator('#recover').click();page.locator('#identity-form').wait_for(timeout=30000)
+ assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).evaluation.answers')==confirmed['evaluation']['answers']
+ page.locator('#first-name').fill('Persona');page.locator('#last-name').fill('Prueba');page.locator('#identity-form .primary').click();page.locator('[data-evaluation="ev1-b"]').wait_for()
  assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
- assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1"))')==confirmed
+ assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).evaluation')==confirmed['evaluation']
  page.locator('#network').filter(has_text='Lista sin conexión').wait_for();c.set_offline(True);page.reload();assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
  print(json.dumps({'base_24bb4af_to_implementation':'passed','confirmed_answer_unchanged':True,'offline_after_update':True,'foreign_cache_preserved':True}))
  c.close();b.close()

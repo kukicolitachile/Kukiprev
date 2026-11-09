@@ -17,13 +17,13 @@ with sync_playwright() as p:
  page.add_init_script("window.__lcp=[];new PerformanceObserver(l=>{for(const e of l.getEntries())__lcp.push(e.startTime)}).observe({type:'largest-contentful-paint',buffered:true});")
  page.goto(BASE);page.locator('#welcome-start').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  performance=page.evaluate("({domReady:performance.getEntriesByType('navigation')[0].domContentLoadedEventEnd,lcp:Math.max(0,...__lcp),requests:performance.getEntriesByType('resource').length})")
- caches=page.evaluate("async()=>{const c=await caches.open('decidobien-v9-context');const keys=await c.keys();let bytes=0;for(const k of keys)bytes+=(await (await c.match(k)).arrayBuffer()).byteLength;return {files:keys.length,bytes,archived:keys.some(k=>k.url.endsWith('/assets/escenarios.json')),documents:keys.some(k=>k.url.includes('/docs/'))};}")
+ caches=page.evaluate("async()=>{const c=await caches.open('decidobien-v12-phaser');const keys=await c.keys();let bytes=0;for(const k of keys)bytes+=(await (await c.match(k)).arrayBuffer()).byteLength;return {files:keys.length,bytes,archived:keys.some(k=>k.url.endsWith('/assets/escenarios.json')),documents:keys.some(k=>k.url.includes('/docs/'))};}")
  assert caches['archived']==False and caches['documents']==False
  # The answer key needed by this offline demonstration is intentionally inspectable.
  forge=page.evaluate("""async()=>{
  const d=await(await fetch('./assets/correa-revision.json')).json();
  const s={version:1,view:'summary',practice:{found:true,attempts:1,selected:'alt-a',order:[]},evaluation:{answers:Object.fromEntries(d.evaluacion.map(q=>[q.id,q.alternativas.find(a=>a.correcta).id])),orders:{},current:0},reflection:[],studyRead:true};
- localStorage.setItem('decidobien-review-v1',JSON.stringify(s));return d.evaluacion.length;
+ sessionStorage.setItem('decidobien-participant-v1',JSON.stringify({firstName:'Persona',lastName:'Prueba'}));localStorage.setItem('decidobien-review-v1',JSON.stringify(s));return d.evaluacion.length;
  }""")
  page.reload();page.locator('.compact-summary').wait_for();assert f'{forge} de {forge}' in page.locator('.compact-summary').inner_text()
  assert 'No acredita' in page.locator('.compact-summary').inner_text()
@@ -35,6 +35,7 @@ with sync_playwright() as p:
  assert page.evaluate("localStorage.getItem('decidobien-review-v1')")==before
  page.locator('#settings-toggle').click();page.locator('#close-journey').click();page.locator('#clear-progress').click()
  assert page.locator('#welcome-start').is_visible()
+ assert page.evaluate("sessionStorage.getItem('decidobien-participant-v1')") is None
  assert page.evaluate("JSON.parse(localStorage.getItem('decidobien-review-v1')).evaluation.answers")=={}
  assert page.evaluate("localStorage.getItem('unrelated-progress')")=='keep'
  assert page.evaluate("localStorage.getItem('decidobien-progress-v1')")=='legacy-keep'

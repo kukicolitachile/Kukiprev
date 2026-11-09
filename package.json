@@ -1,11 +1,15 @@
 {
   "name": "decidobien",
   "private": true,
-  "version": "2.4.0-review.1",
+  "version": "2.5.0-demo.1",
   "type": "module",
   "scripts": {
     "start": "python3 server.py",
     "test": "node --test",
     "diagnose": "python3 server.py --diagnose"
+  },
+  "dependencies": {
+    "pdf-lib": "1.17.1",
+    "phaser": "3.90.0"
   }
 }

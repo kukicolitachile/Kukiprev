@@ -2,11 +2,11 @@
 # Source is obtained only from the repository's review branch. No ZIP, clone or alternative server.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
-review_branch='implementation/correa-interactiva-2.4'
+review_branch='implementation/correa-phaser-demo'
 review_ref="refs/remotes/origin/$review_branch"
 git fetch origin "refs/heads/$review_branch:$review_ref"
 review_sha=$(git rev-parse "$review_ref")
-git merge-base --is-ancestor 24bb4af "$review_sha" || { echo 'La rama no parte de la base acordada.'; exit 1; }
+git merge-base --is-ancestor 2f8275d "$review_sha" || { echo 'La rama no parte de la base acordada.'; exit 1; }
 if git show-ref --verify --quiet "refs/heads/$review_branch"; then
   git merge-base --is-ancestor "$review_branch" "$review_ref" || { echo 'La rama local contiene commits divergentes. Se conservó sin sobrescribir.'; exit 1; }
 fi
@@ -14,7 +14,7 @@ fi
 python3 - <<'PY'
 import os,signal,subprocess,time
 from pathlib import Path
-root=Path.cwd().resolve();allowed={root,root.parent/'DecidoBien-review-24bb4af'}
+root=Path.cwd().resolve();allowed={root,root.parent/'DecidoBien-review-2f8275d'}
 result=subprocess.run(['lsof','-nP','-t','-iTCP:4173','-sTCP:LISTEN'],capture_output=True,text=True)
 if result.returncode not in {0,1}:raise SystemExit('No se pudo identificar el puerto. No se detuvo ningún proceso.')
 pids=set(int(x) for x in result.stdout.split())
@@ -38,7 +38,7 @@ else:raise SystemExit('El servidor anterior no cerró el puerto. No se usó term
 PY
 previous_branch=$(git symbolic-ref --short -q HEAD || git rev-parse HEAD)
 if [ -n "$(git status --porcelain=v1 --untracked-files=all)" ]; then
-  git stash push --include-untracked -m "Antes de actualizar DecidoBien 2.4; origen=$previous_branch"
+  git stash push --include-untracked -m "Antes de actualizar DecidoBien 2.5; origen=$previous_branch"
   printf 'Cambios locales conservados en stash: %s\n' "$(git rev-parse refs/stash)"
 fi
 if git show-ref --verify --quiet "refs/heads/$review_branch"; then
@@ -57,7 +57,7 @@ test "$(git rev-parse HEAD)" = "$review_sha"
 python3 - <<'PY'
 import json,subprocess
 v=json.loads(subprocess.check_output(['python3','server.py','--diagnose'],text=True))
-assert v['release']=='2.4.0-review.1' and v['source_hash']=='b6fef79c477c9188' and not v['modified'], 'El contenido local no coincide con la base.'
+assert v['release']=='2.5.0-demo.1' and v['source_hash']=='965e10baf3f0a2e5' and not v['modified'], 'El contenido local no coincide con la base.'
 print(json.dumps(v,indent=2),flush=True)
 PY
 npm start

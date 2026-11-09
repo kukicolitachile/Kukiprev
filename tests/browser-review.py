@@ -1,73 +1,71 @@
-"""End-to-end mission: contextual choices, accessible lists, inquiries, assessment and offline."""
+"""Playable Phaser path and retained later stages; real canvas, keyboard and offline."""
 import json,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 BASE=os.environ.get('DECIDOBIEN_TEST_URL','http://127.0.0.1:4173')
-OUT=Path(os.environ.get('DECIDOBIEN_DEMO_DIR','/workspace/entrega-correa-2.4'));OUT.mkdir(parents=True,exist_ok=True)
+OUT=Path(os.environ.get('DECIDOBIEN_DEMO_DIR','/workspace/demo-phaser-entrega'));OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
- def route(width,height,keyboard=False,offline=False,wrong=False):
-  c=b.new_context(viewport={'width':width,'height':height},reduced_motion='reduce' if keyboard else 'no-preference');q=c.new_page();errors=[];q.on('pageerror',lambda e:errors.append(str(e)))
-  q.goto(BASE);q.locator('#welcome-start').wait_for();q.locator('#network').filter(has_text='Lista sin conexión').wait_for()
+ def route(width,height,keyboard=False,offline=False,choice='alt-a'):
+  c=b.new_context(viewport={'width':width,'height':height},reduced_motion='reduce' if keyboard else 'no-preference');q=c.new_page();errors=[];console=[]
+  q.on('pageerror',lambda e:errors.append(str(e)));q.on('console',lambda m:console.append(m.text) if m.type=='error' and 'ERR_INTERNET_DISCONNECTED' not in m.text else None)
+  q.goto(BASE);q.locator('#network').filter(has_text='Lista sin conexión').wait_for()
   if offline:c.set_offline(True);q.reload()
   def act(selector):
    target=q.locator(selector)
    if keyboard:target.focus();q.keyboard.press('Enter')
    else:target.click()
-  def scene():
-   box=q.locator('.game-board').bounding_box();assert box and box['height']>=400
-   assert box['y']+box['height']<=height+5,(width,height,box)
-   assert q.locator('.game-board .scene').is_visible()
+  def canvas():
+   q.locator('#phaser-host[data-ready="true"]').wait_for();q.wait_for_timeout(100)
+   box=q.locator('#phaser-host').bounding_box();assert box['height']>=height*.65
    assert q.evaluate('document.documentElement.scrollWidth<=innerWidth')
+   assert q.evaluate('scrollY')==0
   def option(kind,value):
    if keyboard:
     act('[data-open-options]');act(f'#scene-options [data-{kind}="{value}"]')
-   else:act(f'.scene [data-{kind}="{value}"]')
-  act('#welcome-start');scene();act('#observe-next');scene()
-  assert q.locator('.focus-highlight,.scene-discovery').count()==0
-  assert q.locator('#explore-next').is_disabled()
-  option('zone','zona-c');assert q.locator('#explore-next').is_disabled()
-  assert q.locator('.focus-highlight').count()==0
-  option('zone','zona-a');assert q.locator('.explored-zone').count()==1 or q.locator('.explored-zone').count()==2
-  act('#explore-next');scene()
-  assert q.locator('#confirm-decision').is_disabled()
-  assert 'no realizar ajustes' in q.locator('.scene-companion').inner_text()
-  option('decision','alt-b' if wrong else 'alt-a')
-  assert q.locator('.focus-highlight,.scene-relation').count()==0
-  assert q.locator('.scene .context-action.selected').count()==1
-  act('#confirm-decision');scene();assert q.locator('.focus-highlight').count()==1
-  assert ('Exposición posible' if wrong else 'Aviso ≠ solución') in q.locator('.scene-relation').inner_text()
-  option('focus','1');assert 'acumulación' in q.locator('#focus-caption').inner_text()
-  if offline:q.reload();assert q.locator('.scene-discovery.visited').count()==2
-  option('focus','2');assert q.locator('#discover-next').is_enabled()
-  q.screenshot(path=str(OUT/f'descubre-{width}.png'))
-  act('#discover-next');scene();assert q.locator('#confirm-inquiry').is_disabled()
-  option('inquiry','method');option('inquiry','method');assert q.locator('#confirm-inquiry').is_disabled();option('inquiry','method');assert 'método' in q.locator('#scene-caption').inner_text()
-  assert q.locator('#confirm-inquiry').is_enabled()
-  if offline:q.reload();assert q.locator('.inquiry-action.included').count()==1
-  option('inquiry','roles');act('#confirm-inquiry');scene()
-  assert 'No se ha enviado' in q.locator('#scene-caption').inner_text()
-  assert q.locator('.scene-relation').inner_text()=='Por aclarar'
-  act('#start-evaluation')
+   else:act(f"{ {'zone':'.camera-target','decision':'.decision-tray button','focus':'.discovery-tray button'}.get(kind,'.scene button')}[data-{kind}=\"{value}\"]")
+  canvas();act('#welcome-start');assert q.locator('#identity-form').is_visible()
+  q.locator('#first-name').fill('María José');q.locator('#last-name').fill('Muñoz');act('#identity-form .primary');canvas()
+  assert 'Tu rol: reconocer y comunicar; no realizar ajustes ni desatascos.' in q.locator('h1').inner_text()
+  assert q.locator('.context-cue').is_visible()
+  # First touch is on the environment; no tutorial and no correct-answer marker.
+  base_zoom=float(q.locator('#phaser-host').get_attribute('data-zoom'))
+  act('[data-context-explore]');canvas();assert q.locator('#phaser-host').get_attribute('data-focus')=='zona-c'
+  assert q.locator('#explore-next').is_disabled();assert q.locator('[data-zone="zona-c"]').first.get_attribute('class').find('visited')>=0
+  zoom=float(q.locator('#phaser-host').get_attribute('data-zoom'));assert zoom>base_zoom
+  act('#camera-reset');assert q.locator('#phaser-host').get_attribute('data-focus')=='general'
+  option('zone','zona-a');assert q.locator('#explore-next').is_enabled();act('#explore-next');canvas()
+  assert q.locator('.decision-tray .tray-choice').count()==3;assert q.locator('#confirm-decision').is_disabled()
+  assert [t.inner_text() for t in q.locator('.tray-choice b').all()]==['Comunicar','Retirar','Ajustar']
+  widths=[t.bounding_box()['width'] for t in q.locator('.tray-choice').all()];assert max(widths)-min(widths)<1
+  data=q.evaluate('async()=>await(await fetch("./assets/correa-revision.json")).json()')
+  option('decision',choice);assert q.locator('#confirm-decision').is_enabled()
+  assert not any(a['feedback'] in q.locator('main').inner_text() for a in data['practica']['alternativas'])
+  q.reload();canvas();assert q.locator(f'.decision-tray [data-decision="{choice}"]').get_attribute('aria-pressed')=='true'
+  act('#confirm-decision');canvas();assert next(a['feedback'] for a in data['practica']['alternativas'] if a['id']==choice) in q.locator('main').inner_text()
+  option('focus','1');q.reload();canvas();option('focus','2');assert q.locator('#discover-next').is_enabled()
+  act('#discover-next');assert q.locator('.game-board').is_visible();assert q.locator('#confirm-inquiry').is_disabled()
+  option('inquiry','method');option('inquiry','roles');act('#confirm-inquiry');assert 'No se ha enviado' in q.locator('#scene-caption').inner_text();act('#start-evaluation')
   for answer in ['ev1-b','ev2-a','ev3-a']:
-   assert q.locator('.focus-highlight,.scene-companion,.scene-discovery,#hint,.why').count()==0
+   assert q.locator('#phaser-host,.focus-highlight,.scene-companion,#hint,.why').count()==0
+   before=q.locator('main').inner_text()
    act(f'[data-evaluation="{answer}"]');act('#evaluation-confirm');q.reload()
    assert q.locator(f'[data-evaluation="{answer}"]').is_disabled()
    assert q.locator('.feedback,.focus-highlight').count()==0
    act('#evaluation-next')
-  assert '2 de 3' in q.locator('.compact-summary').inner_text()
-  assert q.locator('.prepared-inquiry').is_visible()
-  c.set_offline(True);q.reload();assert '2 de 3' in q.locator('.compact-summary').inner_text()
-  act('[data-go="review"]');assert q.locator('.validation-list li').count()==8
-  act('.learning-top [data-go="home"]');act('.welcome-secondary [data-go="join"]');act('#join-review')
-  assert '2 de 3' in q.locator('.compact-summary').inner_text()
-  assert not errors,errors;c.close()
- for size in [(360,800),(390,844),(768,1024),(1365,1000)]:route(*size,keyboard=True,offline=True)
- route(390,844,wrong=True)
- c=b.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');q=c.new_page();q.goto(BASE);q.locator('[data-go="study"]').click()
- for i in range(4):assert q.locator('.scene-wrap').is_visible();q.locator('#study-next').click()
- q.locator('#observe-next').click();q.locator('#hint').click();assert q.locator('.focus-highlight').count()==1
- q.locator('#enlarge').click();assert q.locator('.image-dialog').is_visible();q.keyboard.press('Escape')
- q.locator('#settings-toggle').click();q.locator('#motion-toggle').click();q.keyboard.press('Escape');assert q.locator('body.effects-off').count()==1
- c.close();b.close()
- print(json.dumps({'mission':'home to result; one complete contextual mission','keyboard':'all actions through equivalent lists','offline':'entire route; reload in inquiry/discovery/assessment','assessment':'neutral feedback; confirmed responses recover','responsive':'360/390/768/1365','reduced_motion':'full route','wrong_choice':'exposure explanation without automatic injury','inquiry':'prepared, never sent; condition stays unconfirmed','errors':[]}))
+  assert '2 de 3' in q.locator('.compact-summary').inner_text();assert q.locator('.prepared-inquiry').is_visible()
+  assert q.evaluate('!localStorage.getItem("decidobien-review-v1").includes("Muñoz")')
+  c.set_offline(True);q.reload();assert 'pendiente de sincronización' in q.locator('#certificate-status').inner_text()
+  act('#edit-participant');q.locator('#first-name').fill('María');act('#identity-form .primary');assert 'María Muñoz' in q.locator('.certificate-panel').inner_text()
+  with q.expect_download() as download:act('#preview-certificate')
+  assert Path(download.value.path()).read_bytes().startswith(b'%PDF-')
+  assert q.locator('.certificate-panel .primary').is_disabled()
+  c.set_offline(False);q.wait_for_timeout(200);assert 'Julisa' in q.locator('#certificate-status').inner_text()
+  assert not errors,errors;assert not console,console;c.close()
+ for size in [(360,800),(390,844),(768,1024),(844,390)]:route(*size,keyboard=True,offline=True)
+ for choice in ['alt-a','alt-b','alt-c']:route(390,844,choice=choice)
+ # The separate pixel masks reconstruct the exact original, not a regenerated machine.
+ c=b.new_context();q=c.new_page();q.goto(BASE);q.locator('#welcome-start').wait_for()
+ pixels=q.evaluate('''async()=>{const {WORLD,splitArtwork}=await import('./scene-layers.js');const img=new Image();img.src='./assets/escenas/esc-01-base.webp';await img.decode();const c=document.createElement('canvas');c.width=WORLD.width;c.height=WORLD.height;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);const original=ctx.getImageData(0,0,c.width,c.height).data;ctx.clearRect(0,0,c.width,c.height);const layers=splitArtwork(img);for(const l of layers)ctx.drawImage(l.canvas,l.x,l.y);const result=ctx.getImageData(0,0,c.width,c.height).data;let diff=0;for(let i=0;i<result.length;i++)if(original[i]!==result[i])diff++;return {layers:layers.map(l=>l.id),differentBytes:diff};}''')
+ assert pixels['differentBytes']==0,pixels;c.close();b.close()
+ print(json.dumps({'routes':7,'viewports':['360x800','390x844','768x1024','844x390'],'keyboard':'equivalent controls','offline':'complete/reload/recovery/PDF','practice':'all 3 decisions; feedback only after confirm','assessment':'neutral, confirmed answers recovered','name':'session only, editable before PDF','layers':pixels,'errors':[]}))
