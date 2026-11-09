@@ -1,0 +1,90 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "states": [
+      "entrada",
+      "otro",
+      "pista",
+      "hallazgo"
+    ],
+    "full_scene": {
+      "left": 2,
+      "top": 70,
+      "x": 12.28708133971292,
+      "y": 0,
+      "zoom": 0.3839712918660287,
+      "imageRight": 373.60406698564594,
+      "imageBottom": 642,
+      "width": 386,
+      "height": 772,
+      "targets": {
+        "zona-a": {
+          "x": 301.4174641148325,
+          "y": 452.3181818181818
+        },
+        "zona-b": {
+          "x": 156.6602870813397,
+          "y": 317.92822966507174
+        },
+        "zona-c": {
+          "x": 57.211722488038276,
+          "y": 243.8217703349282
+        }
+      }
+    },
+    "direct_touch_any_point": true,
+    "equal_accessible_options": true,
+    "hint_text_only": true,
+    "correct_zoom": "0.5976095617529881",
+    "offline_recovery": true,
+    "keyboard_equivalent": true,
+    "errors": []
+  },
+  {
+    "viewport": [
+      1900,
+      988
+    ],
+    "states": [
+      "entrada",
+      "otro",
+      "pista",
+      "hallazgo"
+    ],
+    "full_scene": {
+      "left": 470.046875,
+      "top": 70,
+      "x": 258.55263157894734,
+      "y": -5.684341886080802e-14,
+      "zoom": 0.4700956937799044,
+      "imageRight": 700.9126794258374,
+      "imageBottom": 786,
+      "width": 959.890625,
+      "height": 916,
+      "targets": {
+        "zona-a": {
+          "x": 612.5346889952153,
+          "y": 553.7727272727273
+        },
+        "zona-b": {
+          "x": 435.3086124401914,
+          "y": 389.2392344497608
+        },
+        "zona-c": {
+          "x": 313.55382775119614,
+          "y": 298.5107655502392
+        }
+      }
+    },
+    "direct_touch_any_point": true,
+    "equal_accessible_options": true,
+    "hint_text_only": true,
+    "correct_zoom": "0.5976095617529881",
+    "offline_recovery": true,
+    "keyboard_equivalent": true,
+    "errors": []
+  }
+]

@@ -38,3 +38,6 @@ body.phaser-active{background:var(--deep);color:var(--ice);overflow:hidden}
 .demo-requirement{font-size:10px;line-height:1.25;text-align:center;margin:0 0 5px;color:#d1efeb}.detail-open .camera-target:not(:focus-visible){opacity:0;pointer-events:none}
 .demo-experience[data-stage=explore] .demo-guide{bottom:87px}.comic-shot .demo-guide{bottom:231px}
 @media(orientation:landscape) and (max-height:600px){.comic-shot .demo-guide{top:10px;bottom:auto}.comic-shot .camera-tools,.demo-experience[data-stage=discover] .camera-tools{right:45%}.demo-experience[data-stage=explore] .demo-guide{bottom:75px}}
+
+/* Explora: neutral response only at the participant's own touch, never candidate markers. */
+.demo-experience[data-stage=explore] .touch-location{font-size:11px;color:#d4eeeb;margin:0 0 5px}

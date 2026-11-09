@@ -17,7 +17,7 @@ with sync_playwright() as p:
   assert page.locator('img[src="x"]').count()==0
   assert not any('Demostraci' in r['url'] or (r['body'] and 'Demostraci' in r['body']) for r in requests)
   assert not page.evaluate('localStorage.getItem("decidobien-review-v1").includes("Demostración")')
-  assert page.locator('[data-context-explore]').is_visible();page.locator('[data-context-explore]').click();assert page.locator('#phaser-host').get_attribute('data-focus')=='zona-c'
+  assert page.locator('[data-context-explore]').is_visible();page.locator('[data-context-explore]').click();assert page.locator('#phaser-host').get_attribute('data-focus')=='general'
   # New browser session requests identity while retaining confirmed practice progress.
   page.evaluate('sessionStorage.removeItem("decidobien-participant-v1")');before=page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).practice');page.reload();page.locator('#identity-form').wait_for();assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).practice')==before
   c.close();results.append(f'{width}x{height}')

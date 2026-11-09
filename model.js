@@ -114,6 +114,8 @@ export function validState(state, content) {
     const j = state.journey;
     if (!isRecord(j) || !['observe','explore','decide','discover','apply'].includes(j.stage)) return false;
     if (j.explored !== undefined && (!Array.isArray(j.explored) || new Set(j.explored).size!==j.explored.length || j.explored.some(id=>!content.practica.zonas.some(z=>z.id===id)))) return false;
+    if(j.lastTouch!==undefined&&(!isRecord(j.lastTouch)||!Number.isFinite(j.lastTouch.x)||!Number.isFinite(j.lastTouch.y)||j.lastTouch.x<0||j.lastTouch.x>941||j.lastTouch.y<0||j.lastTouch.y>1672))return false;
+    if(j.exploreEvent!==undefined&&!['point','hint'].includes(j.exploreEvent))return false;
     if (j.cameraFocus!==undefined&&j.cameraFocus!==null&&!['zona-a','zona-b','zona-c'].includes(j.cameraFocus))return false;
     if (j.inquiries !== undefined && (!Array.isArray(j.inquiries) || new Set(j.inquiries).size!==j.inquiries.length || j.inquiries.some(id=>!['method','condition','roles'].includes(id)))) return false;
     if (j.inquiryFocus !== undefined && !['method','condition','roles'].includes(j.inquiryFocus)) return false;

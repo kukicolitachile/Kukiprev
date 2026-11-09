@@ -1,6 +1,6 @@
 # DecidoBien — Manos que cuidan
 
-**2.5.0-demo.2**, rama `implementation/correa-phaser-demo`, creada exactamente desde `2f8275d` de `implementation/correa-interactiva-2.4`. Corrección de encuadre de escritorio y orientación, con escala acotada y controles visibles. Primera entrega jugable: **Comenzar misión → Nombre y apellido → Contexto → Explora → Decide → confirmar**. La escena es conceptual y el contenido sigue siendo un borrador pendiente de validación preventiva.
+**2.5.0-demo.3**, rama `implementation/correa-phaser-demo`, creada exactamente desde `2f8275d` de `implementation/correa-interactiva-2.4`. Entrega acotada a Explora: entrada sin marcas, toque directo, pista textual y visor después del hallazgo. [Auditoría completa y evidencias](docs/AUDITORIA_MISION_Y_EXPLORA.md). Primera entrega jugable: **Comenzar misión → Nombre y apellido → Contexto → Explora → Decide → confirmar**. La escena es conceptual y el contenido sigue siendo un borrador pendiente de validación preventiva.
 
 ## Abrir
 
@@ -25,7 +25,7 @@ bash /tmp/decidobien-update.sh
 
 El script preserva commits locales, guarda cambios registrados y archivos sin seguimiento en un stash identificado con su rama de origen, y no lo reaplica automáticamente. No sobrescribe archivos ignorados que colisionen, no descarta divergencias y no modifica `main`. Solo reinicia un servidor reconocido de este proyecto en 4173; se detiene ante un proceso desconocido. Los cambios anteriores pueden revisarse con `git stash list`; no aplicar `stash pop` sobre esta revisión sin examinarlos.
 
-Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.5.0-demo.2`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v13-responsive`.
+Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.5.0-demo.3`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v14-explore`.
 
 En cualquier momento: **Revisión técnica → Comprobar versión, servidor y caché**. En terminal, `npm run diagnose`. La app mantiene las respuestas confirmadas anteriores. Si falta la identificación de esta pestaña, la pide antes de recuperar la actividad; no reinicia la evaluación.
 
@@ -33,7 +33,7 @@ En cualquier momento: **Revisión técnica → Comprobar versión, servidor y ca
 
 Escena a pantalla completa, barra compacta, azul profundo/turquesa, logo y Kuky originales. La ilustración original se separa en cuatro máscaras: fondo, correa, cajas y operaria. Phaser controla selección, cámara de detalle y encuadre de historieta. La recomposición es idéntica al original; no se anima la mecánica.
 
-El contexto presenta el rol existente. Un botón discreto sobre los estuches permite entrar directamente a explorar. Se puede ampliar un detalle y volver al plano general. Las alternativas **Comunicar, Retirar y Ajustar** tienen igual peso visual; seleccionar muestra el texto original de la alternativa. La explicación aparece después de confirmar.
+El contexto presenta el rol existente. Un botón discreto sobre los estuches permite entrar directamente a explorar. En Explora se señala un punto sin marcas previas; la pista es textual. El visor y el acercamiento se abren después del hallazgo y permiten volver al plano general. Las alternativas **Comunicar, Retirar y Ajustar** tienen igual peso visual; seleccionar muestra el texto original de la alternativa. La explicación aparece después de confirmar.
 
 Descubre mantiene la escena y los focos existentes. Aplica, evaluación y resultado conservan sus actividades anteriores; no se presentan como una extensión ya terminada de toda la referencia visual. Preparar una consulta no la envía ni cambia el estado del equipo. La evaluación sigue separada, sin pistas y con recuperación de respuestas confirmadas.
 
@@ -58,6 +58,8 @@ npm test
 python3 tests/browser-review.py
 python3 tests/welcome-browser.py
 python3 tests/decision-layout.py
+python3 tests/explore-browser.py
+python3 tests/audit-mission.py
 python3 tests/experience-browser.py
 python3 tests/server-security.py
 python3 tests/security-browser.py

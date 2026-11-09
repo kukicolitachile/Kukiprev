@@ -1,0 +1,118 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "screens": [
+      {
+        "step": "inicio",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "nombre",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "contexto",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "decide",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "decide-seleccion",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "descubre",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "aplica",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "consulta-preparada",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "evaluacion",
+        "html_identical": false,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "resultado",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      }
+    ]
+  },
+  {
+    "viewport": [
+      1900,
+      988
+    ],
+    "screens": [
+      {
+        "step": "inicio",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "nombre",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "contexto",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "decide",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "decide-seleccion",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "descubre",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "aplica",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "consulta-preparada",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "evaluacion",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      },
+      {
+        "step": "resultado",
+        "html_identical": true,
+        "identical_except_existing_shuffle": true
+      }
+    ]
+  }
+]

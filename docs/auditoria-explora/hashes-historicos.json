@@ -1,0 +1,260 @@
+{
+  "a590956": {
+    "assets/escenarios.json": {
+      "sha256": "0a22c9855d0e2c123afc831fe79674193425c589a7b17811873d2c3678543d80",
+      "bytes": 27189
+    },
+    "assets/escenas/esc-01-base.webp": {
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "bytes": 48474
+    },
+    "assets/kuky.png": {
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "bytes": 260295
+    },
+    "index.html": {
+      "sha256": "06abea64af18c25619d4568ca6b702af23193ccd8f0e6a158a8d10b406477e61",
+      "bytes": 1011
+    },
+    "app.js": {
+      "sha256": "f06d63e752137d31a769d6be1722bb594c59c2fcad389a9a7780ef3b8e6194ae",
+      "bytes": 9751
+    },
+    "scenes.js": {
+      "sha256": "1d6733d6a86aba7d9410b89acd3a3a9eec2b57f0043ece9664419069f6b9c85e",
+      "bytes": 2028
+    }
+  },
+  "c49aa3e": {
+    "assets/correa-revision.json": {
+      "sha256": "b9e673c4c8686f9a3e2950d1c98d1f167b54d6b9bf0ca4c9acc712e26229419a",
+      "bytes": 15055
+    },
+    "assets/escenarios.json": {
+      "sha256": "6b5744b94858ff9c62966b13051302ed0804c8ee94904e6f694a1f01491bacc6",
+      "bytes": 30843
+    },
+    "assets/escenas/esc-01-base.webp": {
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "bytes": 48474
+    },
+    "assets/kuky.png": {
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "bytes": 260295
+    },
+    "index.html": {
+      "sha256": "3ad4dee2dac7b739db23d3b86c99ed0775e5cb58a7a5db36879c924718ba65b0",
+      "bytes": 1057
+    },
+    "app.js": {
+      "sha256": "01b6b87f82413d06731c81b55c76a9614ffe9bf9808e83f74f4a35e88726a3e8",
+      "bytes": 23056
+    },
+    "scenes.js": {
+      "sha256": "202481cbcd959584109bb270ed00fee0f619f72bd902950c92d5fbe2283b0489",
+      "bytes": 2251
+    }
+  },
+  "573c7e8": {
+    "assets/correa-revision.json": {
+      "sha256": "0ac081c8baa63cff4c8e648dcc359b577267a82ff3d64343d1636a7cee15cf75",
+      "bytes": 15828
+    },
+    "assets/escenarios.json": {
+      "sha256": "6b5744b94858ff9c62966b13051302ed0804c8ee94904e6f694a1f01491bacc6",
+      "bytes": 30843
+    },
+    "assets/escenas/esc-01-base.webp": {
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "bytes": 48474
+    },
+    "assets/kuky.png": {
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "bytes": 260295
+    },
+    "index.html": {
+      "sha256": "3ad4dee2dac7b739db23d3b86c99ed0775e5cb58a7a5db36879c924718ba65b0",
+      "bytes": 1057
+    },
+    "app.js": {
+      "sha256": "693a3ac0702bbded4186fcce2391425f970b25da36f267241ec7c7c62c4a1042",
+      "bytes": 21582
+    },
+    "scenes.js": {
+      "sha256": "202481cbcd959584109bb270ed00fee0f619f72bd902950c92d5fbe2283b0489",
+      "bytes": 2251
+    }
+  },
+  "24bb4af": {
+    "assets/correa-revision.json": {
+      "sha256": "0ac081c8baa63cff4c8e648dcc359b577267a82ff3d64343d1636a7cee15cf75",
+      "bytes": 15828
+    },
+    "assets/escenarios.json": {
+      "sha256": "6b5744b94858ff9c62966b13051302ed0804c8ee94904e6f694a1f01491bacc6",
+      "bytes": 30843
+    },
+    "assets/escenas/esc-01-base.webp": {
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "bytes": 48474
+    },
+    "assets/kuky.png": {
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "bytes": 260295
+    },
+    "assets/kuky/atento.png": {
+      "sha256": "2572322da1418f25f50f4fc5a8445145163ee7b716fd71258043cf8b29f637e1",
+      "bytes": 57863
+    },
+    "index.html": {
+      "sha256": "3ad4dee2dac7b739db23d3b86c99ed0775e5cb58a7a5db36879c924718ba65b0",
+      "bytes": 1057
+    },
+    "app.js": {
+      "sha256": "a739397898f9c5aab77451a86e0a74a9b6ab844e2532c4607bb8354532c1c2ac",
+      "bytes": 29036
+    },
+    "scenes.js": {
+      "sha256": "202481cbcd959584109bb270ed00fee0f619f72bd902950c92d5fbe2283b0489",
+      "bytes": 2251
+    }
+  },
+  "2f8275d": {
+    "assets/correa-revision.json": {
+      "sha256": "0ac081c8baa63cff4c8e648dcc359b577267a82ff3d64343d1636a7cee15cf75",
+      "bytes": 15828
+    },
+    "assets/escenarios.json": {
+      "sha256": "6b5744b94858ff9c62966b13051302ed0804c8ee94904e6f694a1f01491bacc6",
+      "bytes": 30843
+    },
+    "assets/escenas/esc-01-base.webp": {
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "bytes": 48474
+    },
+    "assets/kuky.png": {
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "bytes": 260295
+    },
+    "assets/kuky/atento.png": {
+      "sha256": "2572322da1418f25f50f4fc5a8445145163ee7b716fd71258043cf8b29f637e1",
+      "bytes": 57863
+    },
+    "index.html": {
+      "sha256": "6af385c2e330552bc1ce6fbe165412934ad07c2f69ad1ab37ec2c47f46d049d6",
+      "bytes": 1107
+    },
+    "app.js": {
+      "sha256": "0ee1d70a61396f6a517499be1b7304ecd84b434078de6d46e3b8c9e25e707bcd",
+      "bytes": 25355
+    },
+    "scenes.js": {
+      "sha256": "202481cbcd959584109bb270ed00fee0f619f72bd902950c92d5fbe2283b0489",
+      "bytes": 2251
+    },
+    "mission-scene.js": {
+      "sha256": "1ed4421c1961fc485979e4148129c77089bb25797d3ba1a90c5355d1a9ad13bd",
+      "bytes": 9398
+    }
+  },
+  "e21c34d": {
+    "assets/correa-revision.json": {
+      "sha256": "0ac081c8baa63cff4c8e648dcc359b577267a82ff3d64343d1636a7cee15cf75",
+      "bytes": 15828
+    },
+    "assets/escenarios.json": {
+      "sha256": "6b5744b94858ff9c62966b13051302ed0804c8ee94904e6f694a1f01491bacc6",
+      "bytes": 30843
+    },
+    "assets/escenas/esc-01-base.webp": {
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "bytes": 48474
+    },
+    "assets/kuky.png": {
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "bytes": 260295
+    },
+    "assets/kuky/atento.png": {
+      "sha256": "2572322da1418f25f50f4fc5a8445145163ee7b716fd71258043cf8b29f637e1",
+      "bytes": 57863
+    },
+    "index.html": {
+      "sha256": "3cae1e65bea3ea7349525908775e489f846c26ac97422ce2659aa8fe6a341aa7",
+      "bytes": 1294
+    },
+    "app.js": {
+      "sha256": "71e487cfb0a064d51e081d35a0d90c97d9a21fbaab1275fa7e5c092bf666aee2",
+      "bytes": 27055
+    },
+    "scenes.js": {
+      "sha256": "202481cbcd959584109bb270ed00fee0f619f72bd902950c92d5fbe2283b0489",
+      "bytes": 2251
+    },
+    "mission-scene.js": {
+      "sha256": "1ed4421c1961fc485979e4148129c77089bb25797d3ba1a90c5355d1a9ad13bd",
+      "bytes": 9398
+    },
+    "phaser-board.js": {
+      "sha256": "ef110aad38b089bb05302e62b83ffd339e73466c63cd12666d431f0ae3f2d184",
+      "bytes": 5434
+    },
+    "phaser-scene.js": {
+      "sha256": "1504f80040f65f2e53c15904fc880e06824817f3b6686f69c2a258f87e09d467",
+      "bytes": 8218
+    },
+    "scene-layers.js": {
+      "sha256": "96676aef6f85855f815d3eb925e57ae6ffa45dcdeee19f46b7f512c315657039",
+      "bytes": 3132
+    }
+  },
+  "c4aa98c": {
+    "assets/correa-revision.json": {
+      "sha256": "0ac081c8baa63cff4c8e648dcc359b577267a82ff3d64343d1636a7cee15cf75",
+      "bytes": 15828
+    },
+    "assets/escenarios.json": {
+      "sha256": "6b5744b94858ff9c62966b13051302ed0804c8ee94904e6f694a1f01491bacc6",
+      "bytes": 30843
+    },
+    "assets/escenas/esc-01-base.webp": {
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "bytes": 48474
+    },
+    "assets/kuky.png": {
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "bytes": 260295
+    },
+    "assets/kuky/atento.png": {
+      "sha256": "2572322da1418f25f50f4fc5a8445145163ee7b716fd71258043cf8b29f637e1",
+      "bytes": 57863
+    },
+    "index.html": {
+      "sha256": "3cae1e65bea3ea7349525908775e489f846c26ac97422ce2659aa8fe6a341aa7",
+      "bytes": 1294
+    },
+    "app.js": {
+      "sha256": "71e487cfb0a064d51e081d35a0d90c97d9a21fbaab1275fa7e5c092bf666aee2",
+      "bytes": 27055
+    },
+    "scenes.js": {
+      "sha256": "202481cbcd959584109bb270ed00fee0f619f72bd902950c92d5fbe2283b0489",
+      "bytes": 2251
+    },
+    "mission-scene.js": {
+      "sha256": "1ed4421c1961fc485979e4148129c77089bb25797d3ba1a90c5355d1a9ad13bd",
+      "bytes": 9398
+    },
+    "phaser-board.js": {
+      "sha256": "ef110aad38b089bb05302e62b83ffd339e73466c63cd12666d431f0ae3f2d184",
+      "bytes": 5434
+    },
+    "phaser-scene.js": {
+      "sha256": "139bcfd233e02e97add2abb0dddd28ee5a35e35f2e5d78692d42f45597761c9c",
+      "bytes": 9309
+    },
+    "scene-layers.js": {
+      "sha256": "0f9fd631a6d91c88d9495a5f06ec28b5fabc3b0b2cff0eea1e293974362cc67d",
+      "bytes": 3723
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "base": "c4aa98c50b2c5ff6abc1ab77a3865c565a85e556",
+  "release": "2.5.0-demo.3",
+  "tested_public_source_hash": "4430119d80341077",
+  "sources_modified_during_capture": true,
+  "byte_identical_protected_files": [
+    "assets/correa-revision.json",
+    "assets/escenarios.json",
+    "assets/escenas/esc-01-base.webp",
+    "assets/kuky.png",
+    "assets/kuky/atento.png",
+    "assets/kuky/motivador.png",
+    "assets/kuky/feliz.png",
+    "scene-layers.js",
+    "mission-scene.js",
+    "certificate.js",
+    "certificate-policy.json",
+    "participant.js",
+    "index.html"
+  ],
+  "other_screens_identical_except_existing_evaluation_shuffle": true,
+  "active_codespace": "not verified",
+  "real_screen_reader": "not tested",
+  "human_pilot": "not performed"
+}

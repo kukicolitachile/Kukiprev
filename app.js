@@ -97,10 +97,15 @@ function showEnlarged() {
  modal.innerHTML=`<button class="back" id="close-image">Cerrar imagen</button>${sceneMarkup(0)}<p>Ilustración genérica pendiente de cotejo técnico.</p>`;
  document.body.append(modal);modal.showModal();modal.querySelector('button').onclick=()=>modal.close();modal.onclose=()=>{modal.remove();document.querySelector('#enlarge')?.focus();};
 }
-function selectZone(id){
+function selectZone(id,point=null){
  if(state.view!=='practice'||journey().stage!=='explore')return;
- const z=content.practica.zonas.find(z=>z.id===id);if(!z)return;
- const j=journey();j.explored??=[];if(!j.explored.includes(z.id))j.explored.push(z.id);state.practice.attempts++;state.practice.found ||=z.correcta;j.cameraFocus=id;message=z.feedback;save();render();feedback('discover','Elemento explorado',z.descripcion);
+ const z=content.practica.zonas.find(z=>z.id===id);if(!z&&!point)return;
+ const j=journey();j.explored??=[];
+ if(z&&!j.explored.includes(z.id))j.explored.push(z.id);
+ if(z&&!point){const [x,y,w,h]=z.rect;point={x:(x+w/2)*941/100,y:(y+h/2)*1672/100};}
+ state.practice.attempts++;state.practice.found ||=Boolean(z?.correcta);j.cameraFocus=z?.id||null;j.lastTouch=point;j.exploreEvent='point';
+ message=z?.feedback||'Señalaste un punto de la escena. Puedes intentar en otra parte.';
+ save();render();document.querySelector('#explore-status')?.focus({preventScroll:true});feedback('discover','Elemento explorado',z?.descripcion||'Punto señalado');
 }
 function syncCameraTargets(){
  const positions=projectTargets();document.body.classList.toggle('detail-open',Boolean(document.querySelector('#phaser-host.detail-open')));document.querySelectorAll('[data-camera-zone]').forEach(button=>{const point=positions[button.dataset.cameraZone];if(point){button.style.left=point.x+'px';button.style.top=point.y+'px';button.style.visibility='visible';}});
@@ -110,7 +115,7 @@ function syncVisualScene(){
  const j=journey(),mode=state.view==='home'?'home':j.stage;
  const focus=mode==='discover'?content.interaccion.focos[j.focus].zona:j.cameraFocus||null;
  element.addEventListener('scene:camera',syncCameraTargets);
- mountScene(element,{mode,focus,visited:j.explored||[],reduced:!motionAllowed()},selectZone).then(syncCameraTargets).catch(()=>{element.dataset.failed='true';element.innerHTML='<img src="./assets/escenas/esc-01-base.webp" alt="Ilustración conceptual de la correa">';document.querySelectorAll('[data-camera-zone]').forEach(b=>b.hidden=true);});
+ mountScene(element,{mode,focus,found:state.practice.found,lastTouch:j.lastTouch||null,visited:j.explored||[],reduced:!motionAllowed()},selectZone).then(syncCameraTargets).catch(()=>{element.dataset.failed='true';element.innerHTML='<img src="./assets/escenas/esc-01-base.webp" alt="Ilustración conceptual de la correa">';document.querySelectorAll('[data-camera-zone]').forEach(b=>b.hidden=true);});
 }
 function bindEvents() {
  document.querySelector('#identity-form')?.addEventListener('submit',event=>{
@@ -121,7 +126,7 @@ function bindEvents() {
  document.querySelector('#edit-participant')?.addEventListener('click',()=>{state.identityReturn='summary';navigate('identify');});
  document.querySelector('#preview-certificate')?.addEventListener('click',async()=>{try{await downloadPreview(participant,certificatePolicy.module);}catch{document.querySelector('#certificate-status').textContent='No se pudo preparar la vista previa PDF.';}});
  document.querySelector('#camera-reset')?.addEventListener('click',()=>{journey().cameraFocus=null;save();render();});
- document.querySelector('[data-context-explore]')?.addEventListener('click',()=>{phase('explore');selectZone('zona-c');});
+ document.querySelector('[data-context-explore]')?.addEventListener('click',()=>phase('explore'));
 
  document.querySelector('[data-open-options]')?.addEventListener('click',()=>document.querySelector('#scene-options').showModal());
  document.querySelector('[data-close-options]')?.addEventListener('click',()=>document.querySelector('#scene-options').close());
@@ -147,7 +152,7 @@ function bindEvents() {
  document.querySelector('#observe-next')?.addEventListener('click',()=>phase('explore'));
  document.querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>selectZone(b.dataset.zone));
  document.querySelector('#explore-status')?.setAttribute('tabindex','-1');
- document.querySelector('#hint')?.addEventListener('click',()=>{journey().hint=true;journey().focus=0;journey().cameraFocus='zona-a';message='Busca el encuentro de la banda con la polea representada.';save();render();document.querySelector('#explore-status')?.focus({preventScroll:true});});
+ document.querySelector('#hint')?.addEventListener('click',()=>{journey().hint=true;journey().exploreEvent='hint';message='Busca el encuentro de la banda con la polea representada.';save();render();document.querySelector('#explore-status')?.focus({preventScroll:true});});
 
  document.querySelector('#explore-next')?.addEventListener('click',()=>{if(state.practice.found)phase('decide');});
  document.querySelectorAll('[data-decision]').forEach(b=>b.onclick=()=>{journey().pending=b.dataset.decision;save();render();document.querySelector('#confirm-decision').focus({preventScroll:true});});

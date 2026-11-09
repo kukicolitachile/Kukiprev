@@ -2,6 +2,7 @@
 import json,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from browser_helpers import touch_scene
 BASE=os.environ.get('DECIDOBIEN_TEST_URL','http://127.0.0.1:4173')
 OUT=Path(os.environ.get('DECIDOBIEN_DEMO_DIR','/workspace/demo-phaser-entrega'));OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
@@ -23,16 +24,19 @@ with sync_playwright() as p:
   def option(kind,value):
    if keyboard:
     act('[data-open-options]');act(f'#scene-options [data-{kind}="{value}"]')
-   else:act(f"{ {'zone':'.camera-target','decision':'.decision-tray button','focus':'.discovery-tray button'}.get(kind,'.scene button')}[data-{kind}=\"{value}\"]")
+   elif kind=='zone':touch_scene(q,zone=value)
+   else:act(f"{ {'decision':'.decision-tray button','focus':'.discovery-tray button'}.get(kind,'.scene button')}[data-{kind}=\"{value}\"]")
   canvas();act('#welcome-start');assert q.locator('#identity-form').is_visible()
   q.locator('#first-name').fill('María José');q.locator('#last-name').fill('Muñoz');act('#identity-form .primary');canvas()
   assert 'Tu rol: reconocer y comunicar; no realizar ajustes ni desatascos.' in q.locator('h1').inner_text()
   assert q.locator('.context-cue').is_visible()
   # First touch is on the environment; no tutorial and no correct-answer marker.
   base_zoom=float(q.locator('#phaser-host').get_attribute('data-zoom'))
-  act('[data-context-explore]');canvas();assert q.locator('#phaser-host').get_attribute('data-focus')=='zona-c'
-  assert q.locator('#explore-next').is_disabled();assert q.locator('[data-zone="zona-c"]').first.get_attribute('class').find('visited')>=0
-  zoom=float(q.locator('#phaser-host').get_attribute('data-zoom'));assert zoom>base_zoom
+  act('[data-context-explore]');canvas();assert q.locator('#phaser-host').get_attribute('data-focus')=='general'
+  assert q.locator('.camera-target').count()==0
+  option('zone','zona-c')
+  assert q.locator('#explore-next').is_disabled()
+  zoom=float(q.locator('#phaser-host').get_attribute('data-zoom'));assert q.locator('#phaser-host.detail-open').count()==0
   act('#camera-reset');assert q.locator('#phaser-host').get_attribute('data-focus')=='general'
   option('zone','zona-a');assert q.locator('#explore-next').is_enabled();act('#explore-next');canvas()
   assert q.locator('.decision-tray .tray-choice').count()==3;assert q.locator('#confirm-decision').is_disabled()

@@ -1,0 +1,84 @@
+{
+  "note": "Original user-supplied ZIP used as historical evidence, not as update/distribution mechanism. Hashes and relevant differences; no complete republishing of attachments.",
+  "sha256": {
+    "julisa-registro-visual.md": "14af063144c0e614352f2f98a4c2c941d07aa56097130eb01fe42a68e09a9c7e",
+    "decidobien-escenarios.json": "d9d7561693f4f47a85afd6c130a5ba17d6fb746bc1dea90ee6eda718d417d7de",
+    "julisa-escenarios.json": "a1226fa6907c390c5a6180992b8bdb32f53534d1499b583e02a0038156b946fc",
+    "kuky-sticker-principal.png": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+    "kuky-expresion-atento.png": "2572322da1418f25f50f4fc5a8445145163ee7b716fd71258043cf8b29f637e1",
+    "kuky-expresion-motivador.png": "f81ebc55e33e91a6fbf6f207b6e9809676f4c57ffec5b90bbf975ed6fe49829c",
+    "kuky-expresion-feliz.png": "0ef62f8ec2ee9420d7afe194ae4a4b0f4a40772c3d33c275ccd9a188477c82f7"
+  },
+  "correa_adjunto_a_a590956": [
+    {
+      "campo": ".imagenes.consecuencia",
+      "adjunto": "assets/escenas/esc-01-consecuencia.png",
+      "a590956": "assets/escenas/esc-01-consecuencia.webp"
+    },
+    {
+      "campo": ".imagenes.escena_base",
+      "adjunto": "assets/escenas/esc-01-base.png",
+      "a590956": "assets/escenas/esc-01-base.webp"
+    },
+    {
+      "campo": ".percepcion_activa.zonas[0].coordenadas.alto_pct",
+      "adjunto": null,
+      "a590956": 15
+    },
+    {
+      "campo": ".percepcion_activa.zonas[0].coordenadas.ancho_pct",
+      "adjunto": null,
+      "a590956": 32
+    },
+    {
+      "campo": ".percepcion_activa.zonas[0].coordenadas.x_pct",
+      "adjunto": null,
+      "a590956": 64
+    },
+    {
+      "campo": ".percepcion_activa.zonas[0].coordenadas.y_pct",
+      "adjunto": null,
+      "a590956": 63
+    },
+    {
+      "campo": ".percepcion_activa.zonas[1].coordenadas.alto_pct",
+      "adjunto": null,
+      "a590956": 11
+    },
+    {
+      "campo": ".percepcion_activa.zonas[1].coordenadas.ancho_pct",
+      "adjunto": null,
+      "a590956": 36
+    },
+    {
+      "campo": ".percepcion_activa.zonas[1].coordenadas.x_pct",
+      "adjunto": null,
+      "a590956": 22
+    },
+    {
+      "campo": ".percepcion_activa.zonas[1].coordenadas.y_pct",
+      "adjunto": null,
+      "a590956": 44
+    },
+    {
+      "campo": ".percepcion_activa.zonas[2].coordenadas.alto_pct",
+      "adjunto": null,
+      "a590956": 10
+    },
+    {
+      "campo": ".percepcion_activa.zonas[2].coordenadas.ancho_pct",
+      "adjunto": null,
+      "a590956": 25
+    },
+    {
+      "campo": ".percepcion_activa.zonas[2].coordenadas.x_pct",
+      "adjunto": null,
+      "a590956": 0
+    },
+    {
+      "campo": ".percepcion_activa.zonas[2].coordenadas.y_pct",
+      "adjunto": null,
+      "a590956": 33
+    }
+  ]
+}

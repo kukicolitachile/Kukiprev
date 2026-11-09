@@ -251,3 +251,14 @@ test('prepared inquiries restore; duplicate, unknown and unbounded local fields 
  assert.equal(validState(state,course),false);
  delete state.journey.inquiryFocus;state.reflection=['x'.repeat(501)];assert.equal(validState(state,course),false);
 });
+
+test('exploration touch recovery accepts bounded points, rejects malformed data, and keeps legacy hint progress', () => {
+ const course={...content,interaccion:{aplica:{alternativas:[{id:'apply-limit'}]}}};
+ const state=fresh();state.view='practice';state.practice.attempts=2;
+ state.journey={stage:'explore',pending:null,hint:true,focus:0,applied:null,appliedConfirmed:false,studyIndex:0,cameraFocus:'zona-a'};
+ assert.equal(validState(state,course),true);
+ state.journey.lastTouch={x:117,y:635};state.journey.exploreEvent='hint';
+ assert.equal(validState(JSON.parse(JSON.stringify(state)),course),true);
+ for(const point of [{x:-1,y:0},{x:942,y:0},{x:0,y:1673},{x:'117',y:635},{x:null,y:0}]){state.journey.lastTouch=point;assert.equal(validState(state,course),false);}
+ state.journey.lastTouch={x:117,y:635};state.journey.exploreEvent='unknown';assert.equal(validState(state,course),false);
+});

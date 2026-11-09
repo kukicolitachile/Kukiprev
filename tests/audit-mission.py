@@ -1,0 +1,23 @@
+import json,os,subprocess
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+OUT=Path(os.environ.get('DECIDOBIEN_AUDIT_DIR','/workspace/auditoria-explora'));OUT.mkdir(parents=True,exist_ok=True);PHASE=os.environ.get('AUDIT_PHASE','actual')
+with sync_playwright() as p:
+ b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);reports=[]
+ for width,height in [(390,844),(1900,988)]:
+  c=b.new_context(viewport={'width':width,'height':height},reduced_motion='reduce');q=c.new_page();errors=[];posts=[];q.on('pageerror',lambda e:errors.append(str(e)));q.on('request',lambda r:posts.append(r.url) if r.method not in ['GET','HEAD'] else None);q.add_init_script('window.__sounds=[];addEventListener("decidobien:sound",e=>__sounds.push(e.detail.kind))');q.goto('http://127.0.0.1:4173');q.locator('#network').filter(has_text='Lista sin conexión').wait_for();data=q.evaluate('async()=>await(await fetch("./assets/correa-revision.json")).json()');steps=[];cdp=c.new_cdp_session(q)
+  def snap(name):
+   q.wait_for_timeout(100);q.screenshot(path=str(OUT/f'{PHASE}-{width}-{name}.png'));ax=cdp.send('Accessibility.getFullAXTree');nodes=[{'role':n.get('role',{}).get('value'),'name':n.get('name',{}).get('value'),'properties':n.get('properties',[])} for n in ax['nodes'] if not n.get('ignored')]
+   steps.append({'step':name,'text':q.locator('main').inner_text(),'html':q.locator('main').inner_html(),'ax':nodes,'scrollY':q.evaluate('scrollY'),'overflowX':q.evaluate('document.documentElement.scrollWidth>innerWidth'),'canvas':q.locator('#phaser-host').evaluate('(e)=>({...e.dataset})') if q.locator('#phaser-host').count() else None})
+  def act(selector):q.locator(selector).focus();q.keyboard.press('Enter')
+  def zone(id):act('[data-open-options]');act('#scene-options [data-zone="'+id+'"]')
+  snap('inicio');act('#welcome-start');snap('nombre');q.locator('#first-name').fill('Persona');q.locator('#last-name').fill('Demostración');act('#identity-form .primary');q.locator('#phaser-host[data-ready="true"]').wait_for();snap('contexto');act('#observe-next');snap('explora-entrada');zone('zona-c');snap('explora-otro');act('#hint');snap('explora-pista');zone('zona-a');snap('explora-hallazgo');act('#explore-next');snap('decide');assert q.locator('#confirm-decision').is_disabled();act('.decision-tray [data-decision="alt-a"]');assert not any(a['feedback'] in q.locator('main').inner_text() for a in data['practica']['alternativas']);snap('decide-seleccion');act('#confirm-decision');snap('descubre');act('.discovery-tray [data-focus="1"]');act('.discovery-tray [data-focus="2"]');act('#discover-next');snap('aplica');act('.scene [data-inquiry="method"]');act('.scene [data-inquiry="roles"]');act('#confirm-inquiry');snap('consulta-preparada');assert posts==[]
+  act('#start-evaluation');snap('evaluacion');recovered=[]
+  for i,answer in enumerate(['ev1-b','ev2-a','ev3-a']):
+   assert not any(a['feedback'] in q.locator('main').inner_text() for a in data['evaluacion'][i]['alternativas']);act('[data-evaluation="'+answer+'"]');act('#evaluation-confirm');q.reload();assert q.locator('[data-evaluation="'+answer+'"]').is_disabled();recovered.append(answer);act('#evaluation-next')
+  snap('resultado');assert '2 de 3' in q.locator('.compact-summary').inner_text();act('#edit-participant');q.locator('#first-name').fill('Persona corregida');act('#identity-form .primary');assert 'Persona corregida Demostración' in q.locator('.certificate-panel').inner_text()
+  with q.expect_download() as dl:act('#preview-certificate')
+  assert Path(dl.value.path()).read_bytes().startswith(b'%PDF-')
+  c.set_offline(True);q.reload();q.wait_for_timeout(350);offline_status=q.locator('#certificate-status').inner_text();assert '2 de 3' in q.locator('.compact-summary').inner_text();print('OFFLINE_STATUS',width,offline_status,q.evaluate('navigator.onLine'))
+  reports.append({'viewport':[width,height],'steps':steps,'confirmed_recovered':recovered,'observed_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'working_tree_modified':bool(subprocess.check_output(['git','status','--porcelain'],text=True).strip()),'offline_result':True,'offline_certificate_status':offline_status,'draft_pdf_download':True,'posts':posts,'page_errors':errors,'screen_reader':'AX tree only; no actual screen reader tested'});assert errors==[];c.close()
+ b.close();(OUT/f'recorrido-{PHASE}.json').write_text(json.dumps(reports,ensure_ascii=False,indent=2));print(json.dumps({'phase':PHASE,'full_routes':2,'steps_per_route':len(reports[0]['steps']),'recovery_offline_pdf':'passed','screen_reader':'not tested; AX snapshot saved','errors':[]}))

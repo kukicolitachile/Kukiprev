@@ -26,13 +26,13 @@ function updateDebug(){
 }
 function viewFor(id){
  const c=plant.cameras.main,w=c.width,h=c.height;
- if(!id)return {x:470.5,y:840,zoom:Math.min(w/941,h/1120)};
+ if(!id)return current.mode==='explore'?{x:WORLD.width/2,y:WORLD.height/2,zoom:Math.min(w/WORLD.width,h/WORLD.height)}:{x:470.5,y:840,zoom:Math.min(w/941,h/1120)};
  const t=targets[id];return {x:t.x,y:t.y,zoom:Math.min(w/(t.width*1.7),h/(t.height*2.1),1.8)};
 }
 function aim(id){
  if(!plant||!ready)return;
  const c=plant.cameras.main,view=viewFor(null);c.panEffect.reset();c.zoomEffect.reset();c.setZoom(view.zoom);c.centerOn(view.x,view.y);
- const detail=plant.detailCamera,show=current.mode==='explore'&&Boolean(id);
+ const detail=plant.detailCamera,show=current.mode==='explore'&&current.found&&id==='zona-a';
  detail.visible=show;
  if(show){
   const w=host.clientWidth,h=host.clientHeight,wide=compactLandscape(),sceneWidth=wide?w*.56:w;
@@ -73,23 +73,20 @@ export async function mountScene(element,settings,onAction){
    this.mark=this.add.graphics();this.detailCamera=this.cameras.add(0,0,100,100);this.detailCamera.visible=false;
    this.input.on('pointerup',pointer=>{
     if(current.mode!=='explore')return;
-    const point=this.cameras.main.getWorldPoint(pointer.x,pointer.y);
-    for(const [id,t] of Object.entries(targets))if(Math.abs(point.x-t.x)<=t.width/2+24&&Math.abs(point.y-t.y)<=t.height/2+24){actionCallback(id);break;}
+    const d=this.detailCamera,inside=d.visible&&pointer.x>=d.x&&pointer.x<=d.x+d.width&&pointer.y>=d.y&&pointer.y<=d.y+d.height;
+    const camera=inside?d:this.cameras.main;
+    const p=camera.getWorldPoint(pointer.x,pointer.y);if(p.x<0||p.y<0||p.x>WORLD.width||p.y>WORLD.height)return;
+    // Keep c4aa98c's detector and tolerance; this correction changes guidance, not the answer map.
+    const hit=Object.entries(targets).find(([,t])=>Math.abs(p.x-t.x)<=t.width/2+24&&Math.abs(p.y-t.y)<=t.height/2+24);
+    actionCallback(hit?.[0]||null,{x:p.x,y:p.y});
    });
    this.events.on('postupdate',()=>{this.drawMarks();updateDebug();});
    ready=true;this.scene.launch('Foreground');layout();resolve();
   }
   drawMarks(){
    this.mark.clear();if(current.mode==='discover'&&plant.explainTarget){const t=plant.explainTarget;this.mark.lineStyle(6,0xffca30,.95);this.mark.strokeRoundedRect(t.x-t.width/2,t.y-t.height/2,t.width,t.height,10);return;}if(current.mode!=='explore')return;
-   const ids=current.visited||[];
-   for(const [id,t] of Object.entries(targets)){
-    const selected=current.focus===id,visited=ids.includes(id);
-    const color=selected?0xffca36:0xd7fff6;
-    this.mark.lineStyle(selected?5:3,color,selected?1:.75);
-    const size=selected?Math.min(t.width,t.height)*.55:44;
-    this.mark.strokeRoundedRect(t.x-size/2,t.y-size/2,size,size,8);
-    if(visited){this.mark.fillStyle(0x00b5b9,1);this.mark.fillCircle(t.x+size/2,t.y-size/2,12);}
-   }
+   if(current.lastTouch){const p=current.lastTouch,size=6/this.cameras.main.zoom;this.mark.lineStyle(2/this.cameras.main.zoom,0xf2fff9,1);this.mark.strokeCircle(p.x,p.y,size);}
+   if(current.found&&current.focus==='zona-a'){const t=targets['zona-a'];this.mark.lineStyle(5,0xffca36,1);this.mark.strokeRoundedRect(t.x-t.width/2,t.y-t.height/2,t.width,t.height,8);}
   }
  }
  class Foreground extends P.Scene{
