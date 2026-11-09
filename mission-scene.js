@@ -57,7 +57,7 @@ export function missionBoard(content,state,message=''){
  if(stage==='apply'){
   const items=inquiries(content),current=items.find(i=>i.id===j.inquiryFocus),prepared=j.appliedConfirmed&&j.inquiries.length>0;
   pins=items.map(i=>`<button class="context-action inquiry-action ${j.inquiries.includes(i.id)?'included':''} ${j.inquiryFocus===i.id?'selected':''}" data-inquiry="${i.id}" aria-label="${e(i.question)}" aria-pressed="${j.inquiries.includes(i.id)}" style="${pinStyle(i.x,i.y)}"><span class="action-symbol" aria-hidden="true">${j.inquiries.includes(i.id)?'✓':'?'}</span><span>${i.name}</span></button>`).join('');
-  caption=prepared?'Consulta preparada: falta información para decidir con seguridad. No se ha enviado ningún aviso real.':current?current.question:'Elige qué necesitas aclarar para preparar una consulta.';
+  caption=prepared?'Consulta preparada: falta información para decidir con seguridad. No se ha enviado ningún aviso real.':current?`${current.question} ${j.inquiries.includes(current.id)?'Incluido en tu consulta.':'No incluido en tu consulta.'}`:'Elige qué necesitas aclarar para preparar una consulta.';
   cue=prepared?'La condición sigue pendiente de aclarar.':'El método y las responsabilidades no están definidos.';mood=prepared?'motivador':'atento';
   status=prepared?'Comparte esta consulta durante la conversación con tu relator.':j.inquiries.length?`${j.inquiries.length} ${j.inquiries.length===1?'asunto incluido':'asuntos incluidos'}. Puedes añadir otro o confirmar.`:'Incluye al menos una condición que debas aclarar.';
   primary=prepared?button('start-evaluation','Ir a la evaluación'):button('confirm-inquiry','Confirmar consulta',!j.inquiries.length);

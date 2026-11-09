@@ -124,7 +124,7 @@ function bindEvents() {
   const j=journey(),item=inquiries(content).find(i=>i.id===b.dataset.inquiry);if(!item)return;
   j.inquiries??=[];j.inquiryFocus=item.id;j.inquiries=j.inquiries.includes(item.id)?j.inquiries.filter(id=>id!==item.id):[...j.inquiries,item.id];
   if(j.appliedConfirmed)j.appliedConfirmed=false;
-  save();render();document.querySelector('#scene-caption')?.focus({preventScroll:true});feedback('discover','Asunto incluido en tu consulta');
+  save();render();document.querySelector('#scene-caption')?.focus({preventScroll:true});feedback('discover',j.inquiries.includes(item.id)?'Asunto incluido en tu consulta':'Asunto retirado de tu consulta');
  });
  document.querySelector('#confirm-inquiry')?.addEventListener('click',()=>{
   if(!journey().inquiries?.length)return;journey().applied='ap-a';journey().appliedConfirmed=true;save();render();

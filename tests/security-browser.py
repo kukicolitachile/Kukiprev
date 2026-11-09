@@ -17,7 +17,7 @@ with sync_playwright() as p:
  page.add_init_script("window.__lcp=[];new PerformanceObserver(l=>{for(const e of l.getEntries())__lcp.push(e.startTime)}).observe({type:'largest-contentful-paint',buffered:true});")
  page.goto(BASE);page.locator('#welcome-start').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  performance=page.evaluate("({domReady:performance.getEntriesByType('navigation')[0].domContentLoadedEventEnd,lcp:Math.max(0,...__lcp),requests:performance.getEntriesByType('resource').length})")
- caches=page.evaluate("async()=>{const c=await caches.open('decidobien-v9-context');const keys=await c.keys();let bytes=0;for(const k of keys)bytes+=(await (await c.match(k)).arrayBuffer()).byteLength;return {files:keys.length,bytes,archived:keys.some(k=>k.url.endsWith('/assets/escenarios.json')),documents:keys.some(k=>k.url.includes('/docs/'))};}")
+ caches=page.evaluate("async()=>{const c=await caches.open('decidobien-v10-layout');const keys=await c.keys();let bytes=0;for(const k of keys)bytes+=(await (await c.match(k)).arrayBuffer()).byteLength;return {files:keys.length,bytes,archived:keys.some(k=>k.url.endsWith('/assets/escenarios.json')),documents:keys.some(k=>k.url.includes('/docs/'))};}")
  assert caches['archived']==False and caches['documents']==False
  # The answer key needed by this offline demonstration is intentionally inspectable.
  forge=page.evaluate("""async()=>{

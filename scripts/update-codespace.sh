@@ -57,7 +57,7 @@ test "$(git rev-parse HEAD)" = "$review_sha"
 python3 - <<'PY'
 import json,subprocess
 v=json.loads(subprocess.check_output(['python3','server.py','--diagnose'],text=True))
-assert v['release']=='2.4.0-review.1' and v['source_hash']=='b6fef79c477c9188' and not v['modified'], 'El contenido local no coincide con la base.'
+assert v['release']=='2.4.0-review.2' and v['source_hash']=='ad45c40859c8571c' and not v['modified'], 'El contenido local no coincide con la base.'
 print(json.dumps(v,indent=2),flush=True)
 PY
 npm start
