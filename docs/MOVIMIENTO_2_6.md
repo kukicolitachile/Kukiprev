@@ -42,6 +42,8 @@ Se mantienen identidad en la pestaña, evaluación local, PDF de borrador y pol�
 
 Se ejecutan también las regresiones de las tres decisiones, cuatro estados de Explora, entrada con teclado, ocho tamaños/cambio de orientación, recuperación histórica y superficie pública. Los informes y la huella de fuentes de la grabación se guardan junto al video. Las grabaciones usan una identidad ficticia.
 
+[Índice de evidencia y límites de las pruebas](movimiento-2.6/README.md). [Revisión de seguridad de esta entrega](SEGURIDAD_2_6.md).
+
 **Pendientes separados:** aprobación preventiva del caso y sus puntos, revisión de la devolución `ev3-c` ya señalada en la auditoría, lector de pantalla real, Safari/iOS y dispositivos físicos, piloto con trabajadores/personas nuevas, seguridad y registro empresarial y Codespace del usuario. Esta entrega no valida retención ni declara el sistema listo para una acreditación legal.
 
 La composición anterior de Inicio/Descubre y la relación etiqueta visible/nombre accesible de Decide se corrigen bajo la nueva autorización. Las demás observaciones de la auditoría se mantienen: no se reescribe su evidencia histórica ni se declara validado un punto técnico pendiente.

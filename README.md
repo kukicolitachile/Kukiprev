@@ -83,6 +83,6 @@ DECIDOBIEN_RECORD=1 DECIDOBIEN_MOTION_DIR=/ruta/salida python3 tests/motion-brow
 
 La captura de video requiere el ffmpeg de Playwright; se combina el audio grabado con el video respetando `offset.json`.
 
-[Implementación, alcance y evidencias](docs/IMPLEMENTACION_PHASER_2_5.md). [Revisión de seguridad actual](docs/AUDITORIA_SEGURIDAD_2_5.md). Los documentos 2.4 y anteriores son historial, no el estado actual.
+[Implementación anterior, alcance y evidencias](docs/IMPLEMENTACION_PHASER_2_5.md). [Revisión de seguridad de esta entrega](docs/SEGURIDAD_2_6.md). Los documentos 2.5 y anteriores son historial; la versión actual es 2.6.0-review.1.
 
 Pendientes separados: **validación preventiva del equipo y contenido**, **prueba con trabajadores/personas nuevas**, **dispositivos reales**, **Codespace del usuario** y **seguridad empresarial del futuro backend**. No se declara aprobación técnica, acreditación ni cumplimiento normativo a partir de esta demo.

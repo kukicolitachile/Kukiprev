@@ -1,0 +1,56 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "reduced_motion": false,
+    "offline_from_start": false,
+    "zoom_samples": [
+      0.3839712918660287,
+      0.402635688686527,
+      0.5976095617529881
+    ],
+    "finite_motion_calls": 51,
+    "assessment_sounds": "identical select/confirm",
+    "idle_replay": false,
+    "offline_result_recovery": true,
+    "errors": []
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "reduced_motion": true,
+    "offline_from_start": true,
+    "zoom_samples": [
+      0.5976095617529881,
+      0.5976095617529881,
+      0.5976095617529881
+    ],
+    "finite_motion_calls": 0,
+    "assessment_sounds": "identical select/confirm",
+    "idle_replay": false,
+    "offline_result_recovery": true,
+    "errors": []
+  },
+  {
+    "viewport": [
+      1900,
+      988
+    ],
+    "reduced_motion": true,
+    "offline_from_start": false,
+    "zoom_samples": [
+      0.5976095617529881,
+      0.5976095617529881,
+      0.5976095617529881
+    ],
+    "finite_motion_calls": 0,
+    "assessment_sounds": "identical select/confirm",
+    "idle_replay": false,
+    "offline_result_recovery": true,
+    "errors": []
+  }
+]

@@ -1,0 +1,166 @@
+{
+  "welcome-browser-run": [
+    {
+      "first_visit": [
+        "360x800",
+        "390x844",
+        "768x1024",
+        "844x390"
+      ],
+      "keyboard": "Tab + Enter to start",
+      "identity": "escaped, tab-scoped, never in request or progress",
+      "missing_identity": "asks without discarding progress",
+      "human_pilot": "not performed"
+    }
+  ],
+  "update-codespace-run": [
+    {
+      "pinned_remote_commit_served": {
+        "release": "2.6.0-review.1",
+        "commit": "ce7e87bf77fff21d760694488d011933a8d31a23",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": false,
+        "source_hash": "927b4d18aff0ed5d"
+      },
+      "main_local_commits_preserved": true,
+      "tracked_and_untracked_changes_saved_in_stash": true,
+      "recognized_server_restarted": true,
+      "unknown_server_not_stopped": true,
+      "ignored_collision_not_overwritten": true
+    }
+  ],
+  "browser-review-run": [
+    {
+      "routes": 7,
+      "viewports": [
+        "360x800",
+        "390x844",
+        "768x1024",
+        "844x390"
+      ],
+      "keyboard": "equivalent controls",
+      "offline": "complete/reload/recovery/PDF",
+      "practice": "all 3 decisions; feedback only after confirm",
+      "assessment": "neutral, confirmed answers recovered",
+      "name": "session only, editable before PDF",
+      "layers": {
+        "layers": [
+          "fondo",
+          "correa",
+          "cajas",
+          "operaria"
+        ],
+        "differentBytes": 0
+      },
+      "errors": []
+    }
+  ],
+  "motion-browser-run": [
+    {
+      "routes": 3,
+      "motion_reduced_offline": "passed",
+      "assessment_neutral": "passed",
+      "progress": "7 moments, completion at result",
+      "recorded": false,
+      "errors": []
+    }
+  ],
+  "server-security-run": [
+    {
+      "symlinks_and_private_files": "rejected",
+      "encoded_and_raw_traversal": "rejected",
+      "malformed_paths": "400",
+      "write_methods": "405",
+      "error_reflection_and_version_disclosure": "absent",
+      "HEAD_and_headers": "passed"
+    }
+  ],
+  "migration-browser-run": [
+    {
+      "old_cache_mismatch_reproduced": true,
+      "explicit_recovery": "passed",
+      "legacy_progress_unchanged": true,
+      "offline_after_recovery": "passed"
+    },
+    {
+      "recent_PWA_confirmed_answer_preserved": true,
+      "recovery_does_not_restart_assessment": true,
+      "offline_assessment_resume": true
+    },
+    {
+      "base_24bb4af_to_implementation": "passed",
+      "confirmed_answer_unchanged": true,
+      "offline_after_update": true,
+      "foreign_cache_preserved": true
+    },
+    {
+      "demo_1_to_current": "passed",
+      "confirmed_answer": "preserved",
+      "offline_after_update": true,
+      "current_cache": true
+    },
+    {
+      "reviewed_c4_to_current": "passed",
+      "old_hint_remains_textual": true,
+      "practice_attempts_preserved": true,
+      "offline_resume": true
+    }
+  ],
+  "explore-browser-run": [
+    {
+      "viewports": 2,
+      "four_states_each": "passed",
+      "pointer_keyboard_offline": "passed",
+      "hint_before_discovery": "text only",
+      "errors": []
+    }
+  ],
+  "decision-layout-run": [
+    {
+      "viewports": 8,
+      "face_clipped_or_covered": false,
+      "resize_and_keyboard": "passed",
+      "errors": []
+    }
+  ],
+  "audit-mission-run": [
+    {
+      "phase": "actual",
+      "full_routes": 2,
+      "steps_per_route": 14,
+      "recovery_offline_pdf": "passed",
+      "screen_reader": "not tested; AX snapshot saved",
+      "errors": []
+    }
+  ],
+  "security-browser-run": [
+    {
+      "blocked_paths": {
+        "/.git/config": 404,
+        "/.git/HEAD": 404,
+        "/assets/escenarios.json": 404,
+        "/docs/EXPERIENCIA_AUDIOVISUAL.md": 404,
+        "/server.py": 404,
+        "/tests/browser-review.py": 404,
+        "/assets/": 404,
+        "/%2e%2e/server.py": 404
+      },
+      "headers": "CSP/no-sniff/referrer/permissions checked",
+      "offline_cache": {
+        "files": 40,
+        "bytes": 2481582,
+        "archived": false,
+        "documents": false
+      },
+      "local_headless_performance_ms": {
+        "domReady": 275.5999999977648,
+        "lcp": 344,
+        "requests": 23
+      },
+      "local_result_can_be_modified": true,
+      "trusted_enterprise_result": false,
+      "input_and_storage_checks": "malformed and oversized payloads recover; explicit close is scoped; inline script blocked",
+      "errors": []
+    }
+  ]
+}
