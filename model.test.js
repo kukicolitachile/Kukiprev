@@ -239,3 +239,15 @@ test('scene discovery restores without accepting duplicate or unknown details', 
  delete state.journey.discovered;state.journey.compareOpen=true;state.journey.comparison='neither';
  assert.equal(validState(state,course),true);
 });
+
+test('prepared inquiries restore; duplicate, unknown and unbounded local fields are rejected', () => {
+ const course={...content,interaccion:{aplica:{alternativas:[{id:'apply-limit'}]}}};
+ const state=fresh();state.practice.found=true;state.practice.selected='practice-limit';
+ state.journey={stage:'apply',pending:'practice-limit',hint:false,focus:0,applied:null,appliedConfirmed:false,studyIndex:0,inquiries:['method'],inquiryFocus:'method'};
+ assert.equal(validState(JSON.parse(JSON.stringify(state)),course),true);
+ state.journey.inquiries=['method','method'];assert.equal(validState(state,course),false);
+ state.journey.inquiries=['invented'];assert.equal(validState(state,course),false);
+ state.journey.inquiries=['method'];state.journey.inquiryFocus='<img onerror=x>';
+ assert.equal(validState(state,course),false);
+ delete state.journey.inquiryFocus;state.reflection=['x'.repeat(501)];assert.equal(validState(state,course),false);
+});

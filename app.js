@@ -1,3 +1,4 @@
+import {missionBoard,inquiries,artwork} from './mission-scene.js';
 import {initVersion} from './version-client.js';
 import {initExperience,feedback,cueKuky,clearFeedback} from './experience.js';
 import { KEY, fresh, shuffle, validState, evaluateAnswers } from './model.js';
@@ -31,35 +32,17 @@ const welcomeElements = [
 ];
 function homeView() {
  const complete=welcomeSeen.size===welcomeElements.length;
- return `<section class="welcome-home" aria-labelledby="welcome-title">
-  <div class="welcome-heading"><h1 id="welcome-title">Manos que cuidan</h1></div>
-  <div class="welcome-invitation"><img src="./assets/kuky/${complete?'motivador':'atento'}.png" alt="Kuky" width="50" height="60"><p id="welcome-invite">${complete?'Ya sabes explorar. ¿Entramos a la misión?':'¿Qué ves fuera de lugar? Explora la escena.'}</p></div>
-  <div class="welcome-stage"><div class="welcome-canvas" role="group" aria-label="Exploración de bienvenida sin puntaje">
-   <svg viewBox="0 0 941 1100" class="welcome-art" aria-hidden="true"><image href="./assets/escenas/esc-01-base.webp" width="941" height="1672"/></svg>
-   ${welcomeElements.map((el,i)=>`<button class="welcome-spot ${welcomeSeen.has(el.id)?'visited':''}" data-welcome="${el.id}" style="left:${el.x}%;top:${el.y}%" aria-label="Explorar: ${el.name}" aria-pressed="${welcomeSeen.has(el.id)}"><span aria-hidden="true">${welcomeSeen.has(el.id)?'✓':'+'}</span></button>`).join('')}
-   ${complete?'':`<span class="touch-example" aria-hidden="true">☝ Toca un + para probar</span>`}
-  </div><span class="welcome-layer" aria-hidden="true"></span></div>
-  <p class="welcome-reply" id="welcome-reply" role="status">${complete?'Exploración completa, sin puntaje. Puedes continuar.':'Toca un + o usa los controles accesibles.'}</p>
-  <div class="welcome-actions"><button class="primary ${complete?'ready':''}" id="welcome-start">Comenzar misión <span aria-hidden="true">→</span></button>
-   <div class="welcome-secondary"><button class="text-button" data-go="join">Unirme a una capacitación</button><button class="text-button" data-go="study">Estudiar</button><details class="welcome-accessible"><summary>Explorar con teclado o lista</summary>${welcomeElements.map(el=>`<button class="text-button" data-welcome="${el.id}" aria-pressed="${welcomeSeen.has(el.id)}">${el.name}</button>`).join('')}</details></div>
-  </div>
- </section>`;
+ return `<section class="welcome-home" aria-labelledby="welcome-title"><h1 id="welcome-title">Manos que cuidan</h1>
+ <div class="welcome-stage"><div class="welcome-canvas" role="group" aria-label="Exploración de bienvenida sin puntaje">
+ <svg viewBox="0 0 941 1100" class="welcome-art" aria-hidden="true"><image href="./assets/escenas/esc-01-base.webp" width="941" height="1672"/></svg>
+ ${welcomeElements.map(el=>`<button class="welcome-spot ${welcomeSeen.has(el.id)?'visited':''}" data-welcome="${el.id}" style="left:${el.x}%;top:${el.y}%" aria-label="Explorar: ${el.name}" aria-pressed="${welcomeSeen.has(el.id)}"><span aria-hidden="true">${welcomeSeen.has(el.id)?'✓':'+'}</span></button>`).join('')}
+ ${complete?'':'<span class="touch-example" aria-hidden="true">☝ Toca un + para probar</span>'}</div>
+ <div class="welcome-invitation"><img src="./assets/kuky/${complete?'motivador':'atento'}.png" alt="Kuky" width="105" height="140"><p id="welcome-invite">${complete?'Ya sabes explorar. ¿Entramos a la misión?':'¿Qué ves fuera de lugar? Explora la escena.'}</p></div>
+ <div class="welcome-dock"><p id="welcome-reply" class="welcome-reply" role="status">${complete?'Exploración completa, sin puntaje. Puedes continuar.':'Toca un + o usa los controles accesibles.'}</p><button class="primary ${complete?'ready':''}" id="welcome-start">Comenzar misión <span aria-hidden="true">→</span></button></div></div>
+ <div class="welcome-secondary"><button class="text-button" data-go="join">Unirme a una capacitación</button><button class="text-button" data-go="study">Estudiar</button><details class="welcome-accessible"><summary>Explorar con teclado o lista</summary>${welcomeElements.map(el=>`<button class="text-button" data-welcome="${el.id}" aria-pressed="${welcomeSeen.has(el.id)}">${el.name}</button>`).join('')}</details></div></section>`;
 }
-function scene({active=false, highlight=false, discover=false}={}) {
- const j=journey();j.explored??=[];j.discovered??=[];
- const focus=content.interaccion.focos[j.focus];
- const target=content.practica.zonas.find(z=>z.id===focus.zona);
- // A camera crop of the same illustration. All coordinates remain tied to the original art.
- const rect=z=>`left:${z.rect[0]}%;top:${(z.rect[1]*16.72-280)/11.2}%;width:${z.rect[2]}%;height:${z.rect[3]*16.72/11.2}%`;
- return `<div class="scene-wrap"><div class="scene">
- <svg class="scene-art" viewBox="0 280 941 1120" role="img" aria-label="Ilustración hipotética: persona junto a correa con estuches acumulados y polea en el extremo." xmlns="http://www.w3.org/2000/svg"><image href="./assets/escenas/esc-01-base.webp" width="941" height="1672"/></svg>
- ${active?[...content.practica.zonas].sort((a,b)=>a.rect[0]-b.rect[0]).map(z=>`<button class="zone ${j.explored.includes(z.id)?'explored-zone':''}" data-zone="${escape(z.id)}" aria-label="${escape(z.descripcion)}" style="${rect(z)}"></button>`).join(''):''}
- ${highlight?`<div class="focus-highlight" aria-hidden="true" style="${rect(target)}"></div>`:''}
- ${discover?content.interaccion.focos.map((f,i)=>{const z=content.practica.zonas.find(z=>z.id===f.zona);return `<button class="scene-discovery ${j.focus===i?'active':''} ${j.discovered.includes(i)?'visited':''}" data-focus="${i}" aria-label="${i+1}. ${escape(f.titulo)}" aria-pressed="${j.focus===i}" style="left:${Math.min(90,z.rect[0]+z.rect[2]/2)}%;top:${(z.rect[1]*16.72-280+z.rect[3]*8.36)/11.2}%">${i+1}${j.discovered.includes(i)?'<span class="visually-hidden">, explorado</span>':''}</button>`;}).join(''):''}
- </div><button class="enlarge" id="enlarge" aria-label="Ampliar ilustración completa">⤢</button></div>`;
-}
-function companion(text,mood='atento') {
- return `<div class="scene-companion"><img src="./assets/kuky/${mood}.png" alt="Kuky" width="42" height="42"><p id="scene-message" role="status">${escape(text)}</p></div>`;
+function scene() {
+ return `<div class="scene-wrap"><div class="scene">${artwork()}</div><button class="enlarge" id="enlarge" aria-label="Ampliar ilustración completa">⤢</button></div>`;
 }
 function progress(index) {
  return `<div class="stage-progress" aria-label="${names[index]}, momento ${index+1} de 5">${names.map((n,i)=>`<span class="${i<index?'done':i===index?'current':''}" ${i===index?'aria-current="step"':''}><b>${i<index?'✓':i+1}</b><small>${n}</small></span>`).join('')}</div>`;
@@ -76,40 +59,9 @@ function studyView() {
  <div class="action-row">${j.studyIndex>0?'<button class="text-button" id="study-back">← Anterior</button>':''}<button class="primary" id="study-next">${j.studyIndex<3?'Siguiente observación':'Practicar este caso'} →</button></div></div></section>`;
 }
 function practiceView() {
- const j=journey(),stage=j.stage,index=stages.indexOf(stage),selected=content.practica.alternativas.find(a=>a.id===state.practice.selected);
- j.discovered??=stage==='discover'?[0]:[];
+ const j=journey(),index=stages.indexOf(j.stage);
  const titles={observe:'Observa la tarea antes de actuar.',explore:content.interaccion.explora,decide:content.interaccion.decide,discover:'Toca los detalles. Conecta lo que ocurre.',apply:content.interaccion.aplica.consigna};
- let panel='',cue='',mood='atento';
- if(stage==='observe') {
-  cue='Observa los materiales y la posición de la persona.';
-  panel=`<p class="context-line">Ejemplo hipotético: se acumulan estuches; se describe movimiento irregular.</p><details><summary>Tu rol en el ejemplo</summary><p>${escape(content.rol.descripcion)}</p></details><button class="primary" id="observe-next">Explorar la escena →</button>`;
- }
- if(stage==='explore') {
-  cue=state.practice.found?'Reconociste una posible exposición. Ahora decide.':'Toca la escena. Cada detalle cuenta.';
-  panel=`<p id="explore-status" role="status">${escape(message || (state.practice.found?'Zona reconocida. Continúa con una decisión.':'Busca el encuentro que podría captar una mano.'))}</p>
-  <div class="explore-tools"><details class="accessible-elements"><summary>Lista accesible</summary>${choices(content.practica.zonas.map(z=>({id:z.id,texto:z.descripcion})),'zone',null)}</details><button class="text-button" id="hint">Pedir pista</button></div>
-  <p class="action-requirement">${state.practice.found?'Puedes continuar.':'Para avanzar, localiza la zona de exposición del ejemplo.'}</p><button class="primary" id="explore-next" ${state.practice.found?'':'disabled'}>Decidir →</button>`;
- }
- if(stage==='decide') {
-  cue='Tu rol: reconocer y comunicar; no ajustar ni desatascar.';
-  const order=state.practice.order.length?state.practice.order:content.practica.alternativas.map(a=>a.id);
-  panel=`${choices(order.map(id=>content.practica.alternativas.find(a=>a.id===id)),'decision',j.pending)}<p class="action-requirement">${j.pending?'Selección lista para confirmar.':'Selecciona una acción desde tu rol.'}</p><button class="primary" id="confirm-decision" ${j.pending?'':'disabled'}>Confirmar decisión →</button>`;
- }
- if(stage==='discover') {
-  const focus=content.interaccion.focos[j.focus],remaining=3-j.discovered.length;
-  cue=remaining?'Lo que pasó se entiende mirando la tarea.':'Conecta estos detalles con tu tarea.';mood=remaining?'atento':'motivador';
-  panel=`<div class="discovery-caption" aria-live="polite"><span class="detail-index">${j.focus+1} / 3</span><p id="focus-caption">${escape(focus.texto)}</p></div>
-  <details class="accessible-elements"><summary>Detalles con teclado o lista</summary><div class="focus-controls">${content.interaccion.focos.map((f,i)=>`<button class="focus-tab" data-focus="${i}" aria-pressed="${j.focus===i}">${i+1}. ${escape(f.titulo)}${j.discovered.includes(i)?' ✓':''}</button>`).join('')}</div></details>
-  ${why(selected.feedback+' '+content.estudio[2].texto+' '+content.rol.limites.join(' '))}
-  <p class="action-requirement" id="discover-requirement">${remaining?`Explora ${remaining} ${remaining===1?'detalle más':'detalles más'} sobre la escena para continuar.`:'Tres relaciones exploradas. Llévalas a tu trabajo.'}</p>
-  <button class="primary" id="discover-next" ${remaining?'disabled':''}>Aplicar a tu trabajo →</button>`;
- }
- if(stage==='apply') {
-  const task=content.interaccion.aplica,answer=task.alternativas.find(a=>a.id===j.applied);
-  cue=j.appliedConfirmed?'¿Quién debe aclararlo en tu proceso?':task.contexto;mood=j.appliedConfirmed?'motivador':'atento';
-  panel=j.appliedConfirmed?`<p class="feedback" role="status">${escape(answer.feedback)}</p>${why(content.practica.alternativas[0].feedback)}<button class="text-button" id="retry-apply">Revisar otra respuesta</button><button class="primary" id="start-evaluation">Ir a la evaluación →</button>`:`${choices(task.alternativas,'apply',j.applied)}<p class="action-requirement">${j.applied?'Selección lista para confirmar.':'Elige qué necesitas aclarar antes de actuar.'}</p><button class="primary" id="confirm-apply" ${j.applied?'':'disabled'}>Confirmar respuesta →</button>`;
- }
- return `${header()}<section class="mission-frame" data-stage="${stage}"><div class="step-title">${progress(index)}<h1>${escape(titles[stage])}</h1></div><div class="scene-column">${scene({active:stage==='explore',highlight:stage==='discover'||(stage==='explore'&&j.hint),discover:stage==='discover'})}${companion(cue,mood)}</div><div class="activity-panel">${panel}</div></section>`;
+ return `${header()}<section class="mission-frame immersive-mission" data-stage="${j.stage}"><div class="step-title">${progress(index)}<h1>${escape(titles[j.stage])}</h1></div>${missionBoard(content,state,message)}</section>`;
 }
 function evaluationView() {
  const q=content.evaluacion[state.evaluation.current],answer=state.evaluation.answers[q.id];
@@ -124,7 +76,7 @@ let evaluationPending=null;
 function summaryView() {
  const result=evaluateAnswers(state.evaluation.answers,content.evaluacion);
  return `${header()}<section class="compact-summary"><h1>Revisa lo que descubriste.</h1><p>${result.correct} de ${result.total} respuestas coinciden con este borrador.</p>
- <p class="fine">No acredita aprobación ni asistencia. Contenido pendiente de validación técnica.</p><section class="work-transfer"><h2>Una conversación para tu trabajo</h2><p>Abre una pregunta que puedas conversar con el relator.</p>${[['La tarea','¿Qué hace necesario aproximar las manos?'],['El método','¿Qué condiciones y medios deben estar definidos?'],['La respuesta','¿Quién confirma cómo se atendió la anomalía?']].map(([a,b])=>`<details><summary>${a}</summary><p>${b}</p></details>`).join('')}</section>
+ <p class="fine">No acredita aprobación ni asistencia. Contenido pendiente de validación técnica.</p><section class="work-transfer">${journey().inquiries?.length?`<div class="prepared-inquiry"><h2>La consulta que preparaste</h2>${inquiries(content).filter(i=>journey().inquiries.includes(i.id)).map(i=>`<p>${escape(i.question)}</p>`).join('')}<small>Para conversar con el relator; no se ha enviado un aviso.</small></div>`:''}<h2>Una conversación para tu trabajo</h2><p>Abre una pregunta que puedas conversar con el relator.</p>${[['La tarea','¿Qué hace necesario aproximar las manos?'],['El método','¿Qué condiciones y medios deben estar definidos?'],['La respuesta','¿Quién confirma cómo se atendió la anomalía?']].map(([a,b])=>`<details><summary>${a}</summary><p>${b}</p></details>`).join('')}</section>
  ${content.evaluacion.map(q=>{const a=q.alternativas.find(a=>a.id===state.evaluation.answers[q.id]);return `<details><summary>${a.correcta?'✓':'↻'} ${escape(q.pregunta)}</summary><p>${escape(a.feedback)}</p><p><strong>Para revisar:</strong> ${escape(q.alternativas.find(a=>a.correcta).texto)}</p></details>`;}).join('')}
  ${kuky('¿Qué debe estar resuelto antes de una tarea parecida?')}<div class="action-row"><button class="primary" data-go="home">Volver al inicio</button><button class="back" id="retry-evaluation">Repetir evaluación</button></div></section>`;
 }
@@ -164,6 +116,21 @@ function exploreWelcome(id) {
   }
 }
 function bindEvents() {
+ document.querySelector('[data-open-options]')?.addEventListener('click',()=>document.querySelector('#scene-options').showModal());
+ document.querySelector('[data-close-options]')?.addEventListener('click',()=>document.querySelector('#scene-options').close());
+ document.querySelector('[data-explain]')?.addEventListener('click',()=>document.querySelector('#scene-explanation').showModal());
+ document.querySelector('[data-close-explanation]')?.addEventListener('click',()=>document.querySelector('#scene-explanation').close());
+ document.querySelectorAll('[data-inquiry]').forEach(b=>b.onclick=()=>{
+  const j=journey(),item=inquiries(content).find(i=>i.id===b.dataset.inquiry);if(!item)return;
+  j.inquiries??=[];j.inquiryFocus=item.id;j.inquiries=j.inquiries.includes(item.id)?j.inquiries.filter(id=>id!==item.id):[...j.inquiries,item.id];
+  if(j.appliedConfirmed)j.appliedConfirmed=false;
+  save();render();document.querySelector('#scene-caption')?.focus({preventScroll:true});feedback('discover','Asunto incluido en tu consulta');
+ });
+ document.querySelector('#confirm-inquiry')?.addEventListener('click',()=>{
+  if(!journey().inquiries?.length)return;journey().applied='ap-a';journey().appliedConfirmed=true;save();render();
+  document.querySelector('#start-evaluation').focus({preventScroll:true});feedback('complete','Consulta preparada');
+ });
+
  document.querySelector('#welcome-start')?.addEventListener('click',startPractice);
  document.querySelectorAll('[data-welcome]').forEach(button=>button.addEventListener('click',()=>exploreWelcome(button.dataset.welcome)));
  document.querySelector('.welcome-canvas')?.addEventListener('click',event=>{
@@ -181,13 +148,13 @@ function bindEvents() {
  document.querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>{
   const z=content.practica.zonas.find(z=>z.id===b.dataset.zone);journey().explored??=[];if(!journey().explored.includes(z.id))journey().explored.push(z.id);state.practice.attempts++;state.practice.found ||= z.correcta;
   message=z.correcta?'Este encuentro puede captar una mano si accede al movimiento.':z.id==='zona-c'?'La acumulación puede motivar acercarse. Busca también dónde podría quedar atrapada una mano.':'Ese tramo también requiere revisión. Busca el encuentro entre superficies.';save();render();
-  document.querySelector('#explore-status')?.focus();feedback('discover','Elemento explorado',z.descripcion);
+  document.querySelector('#explore-status')?.focus({preventScroll:true});feedback('discover','Elemento explorado',z.descripcion);
  });
  document.querySelector('#explore-status')?.setAttribute('tabindex','-1');
- document.querySelector('#hint')?.addEventListener('click',()=>{journey().hint=true;journey().focus=0;message='Busca el encuentro de la banda con la polea representada.';save();render();document.querySelector('#explore-status')?.focus();});
+ document.querySelector('#hint')?.addEventListener('click',()=>{journey().hint=true;journey().focus=0;message='Busca el encuentro de la banda con la polea representada.';save();render();document.querySelector('#explore-status')?.focus({preventScroll:true});});
  document.querySelector('.scene-art')?.addEventListener('click',()=>{if(state.view==='practice'&&journey().stage==='explore'){document.querySelector('#explore-status').textContent='Explora los elementos o abre la alternativa de lista y teclado.';}});
  document.querySelector('#explore-next')?.addEventListener('click',()=>{if(state.practice.found)phase('decide');});
- document.querySelectorAll('[data-decision]').forEach(b=>b.onclick=()=>{journey().pending=b.dataset.decision;save();render();document.querySelector('#confirm-decision').focus();});
+ document.querySelectorAll('[data-decision]').forEach(b=>b.onclick=()=>{journey().pending=b.dataset.decision;save();render();document.querySelector('#confirm-decision').focus({preventScroll:true});});
  document.querySelector('#confirm-decision')?.addEventListener('click',()=>{if(!journey().pending)return;state.practice.selected=journey().pending;journey().focus=0;journey().discovered=[0];phase('discover');});
  document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{
   const j=journey();j.focus=Number(b.dataset.focus);j.discovered??=[];
@@ -195,8 +162,6 @@ function bindEvents() {
   save();render();document.querySelector(`.scene-discovery[data-focus="${j.focus}"]`)?.focus({preventScroll:true});feedback('discover','Detalle explorado');
  });
  document.querySelector('#discover-next')?.addEventListener('click',()=>{if(journey().discovered?.length===3)phase('apply');});
- document.querySelectorAll('[data-apply]').forEach(b=>b.onclick=()=>{if(journey().appliedConfirmed)return;journey().applied=b.dataset.apply;save();render();document.querySelector('#confirm-apply').focus();});
- document.querySelector('#confirm-apply')?.addEventListener('click',()=>{if(!journey().applied)return;journey().appliedConfirmed=true;save();render();document.querySelector('#start-evaluation').focus();feedback('complete','Actividad completada','Revisa lo que necesitas aclarar.');cueKuky('advance','Reconocer un dato pendiente también es aprender.');});
  document.querySelector('#retry-apply')?.addEventListener('click',()=>{journey().appliedConfirmed=false;journey().applied=null;navigate('practice');});
  document.querySelector('#start-evaluation')?.addEventListener('click',()=>{prepareEvaluation();evaluationPending=null;navigate('evaluation');});
  document.querySelectorAll('[data-evaluation]').forEach(b=>b.onclick=()=>{const q=content.evaluacion[state.evaluation.current];if(state.evaluation.answers[q.id])return;evaluationPending=b.dataset.evaluation;render();document.querySelector('#evaluation-confirm').focus();});
@@ -216,6 +181,16 @@ function render() {
 }
 initExperience();
 initVersion();
+window.addEventListener('decidobien:close-journey',()=>{
+ const d=document.createElement('dialog');d.className='close-journey';
+ d.innerHTML='<h2>Cerrar este recorrido</h2><p>Se eliminarán las respuestas y el avance de este ejercicio en este navegador. No se envían a la empresa. Esta acción no borra otros datos ni es un cierre de sesión empresarial.</p><button class="primary" id="keep-progress">Conservar mi avance</button><button class="back" id="clear-progress">Borrar mi avance y cerrar</button>';
+ document.body.append(d);d.showModal();d.querySelector('#keep-progress').onclick=()=>d.close();
+ d.querySelector('#clear-progress').onclick=()=>{
+  try{localStorage.removeItem(KEY);}catch{d.querySelector('p').textContent='No se pudo eliminar el avance. No prepares esta tablet para otra persona todavía.';return;}
+  d.close();state=fresh();evaluationPending=null;navigate('home');feedback('confirm','Recorrido cerrado','Se eliminó el avance de este ejercicio.');
+ };
+ d.onclose=()=>{d.remove();document.querySelector('#settings-toggle').focus();};
+});
 window.addEventListener('decidobien:motion',()=>{if(content)render();});
 window.addEventListener('decidobien:pause',()=>{if(content)render();});
 function updateNetwork() {
@@ -262,7 +237,8 @@ try {
   if (!response.ok) throw new Error('content-unavailable');
   content = await response.json();
   try {
-    const stored = JSON.parse(localStorage.getItem(KEY));
+    const raw=localStorage.getItem(KEY);
+    const stored=raw&&raw.length<=65536?JSON.parse(raw):null;
     if (validState(stored, content)) state = stored;
   } catch {
     // Invalid or unavailable saved data must never prevent opening the case.

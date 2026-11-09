@@ -51,6 +51,8 @@ export function initExperience() {
  dialog.innerHTML='<h2>Ajustes y ayuda</h2><p>Sonidos de interfaz, sin alarmas del equipo.</p>';
  controls.className='settings-options';dialog.append(controls);
  const help=document.createElement('p');help.textContent='Toca los elementos o utiliza la lista accesible. En Descubre, los números explican la escena después de tu decisión. Los efectos cambian el encuadre y los resaltados; no simulan movimiento del equipo.';dialog.append(help);
+ const privacy=document.createElement('p');privacy.textContent='El avance se guarda en este navegador. En una tablet compartida, otra persona puede retomarlo. No es un registro empresarial.';dialog.append(privacy);
+ const finish=document.createElement('button');finish.className='back';finish.id='close-journey';finish.textContent='Cerrar recorrido en esta tablet';finish.onclick=()=>{dialog.close();window.dispatchEvent(new Event('decidobien:close-journey'));};dialog.append(finish);
  const close=document.createElement('button');close.className='primary';close.textContent='Volver a la escena';close.onclick=()=>dialog.close();dialog.append(close);document.body.append(dialog);
  const settings=document.createElement('button');settings.id='settings-toggle';settings.textContent='Ajustes';settings.setAttribute('aria-haspopup','dialog');settings.onclick=()=>dialog.showModal();document.querySelector('.tools').append(settings);
  dialog.addEventListener('close',()=>settings.focus());
@@ -72,7 +74,7 @@ export function initExperience() {
  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',()=>{syncControls();window.dispatchEvent(new Event('decidobien:motion'));});
  document.addEventListener('click',event=>{
   const button=event.target.closest('button');if(!button||button.disabled)return;
-  if(button.matches('[data-decision],[data-apply],[data-evaluation]'))playSound('select');
+  if(button.matches('[data-decision],[data-inquiry],[data-apply],[data-evaluation]'))playSound('select');
  },true);
  document.addEventListener('pointerdown',event=>{
   if(!motionAllowed())return;

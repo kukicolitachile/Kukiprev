@@ -64,7 +64,7 @@ export function evaluateAnswers(answers, questions) {
 export function validState(state, content) {
   if (!isRecord(state) || state.version !== 1 || !VIEWS.has(state.view)) return false;
   if (typeof state.studyRead !== 'boolean') return false;
-  if (!Array.isArray(state.reflection) || state.reflection.some(item => typeof item !== 'string')) return false;
+  if (!Array.isArray(state.reflection) || state.reflection.length>20 || state.reflection.some(item => typeof item !== 'string'||item.length>500)) return false;
 
   const practiceIds = choiceIds(content?.practica?.alternativas);
   const questions = content?.evaluacion;
@@ -113,6 +113,8 @@ export function validState(state, content) {
     const j = state.journey;
     if (!isRecord(j) || !['observe','explore','decide','discover','apply'].includes(j.stage)) return false;
     if (j.explored !== undefined && (!Array.isArray(j.explored) || new Set(j.explored).size!==j.explored.length || j.explored.some(id=>!content.practica.zonas.some(z=>z.id===id)))) return false;
+    if (j.inquiries !== undefined && (!Array.isArray(j.inquiries) || new Set(j.inquiries).size!==j.inquiries.length || j.inquiries.some(id=>!['method','condition','roles'].includes(id)))) return false;
+    if (j.inquiryFocus !== undefined && !['method','condition','roles'].includes(j.inquiryFocus)) return false;
     if (j.discovered !== undefined && (!Array.isArray(j.discovered) || new Set(j.discovered).size !== j.discovered.length || j.discovered.some(id=>!Number.isInteger(id)||id<0||id>2))) return false;
     if (j.classified !== undefined && (!isRecord(j.classified) || Object.entries(j.classified).some(([k,v])=>!['accumulation','message','response'].includes(k)||!['observed','communicated','pending'].includes(v)))) return false;
     if (j.comparison !== undefined && !['a','b','neither'].includes(j.comparison)) return false;

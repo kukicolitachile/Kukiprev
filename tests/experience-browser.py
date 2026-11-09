@@ -45,10 +45,10 @@ with sync_playwright() as p:
  act('.zone[data-zone="zona-a"]',1.5)
  assert page.locator('.explored-zone').count()==2
  page.screenshot(path=str(OUT/'exploracion.png'),full_page=False)
- act('#explore-next');page.screenshot(path=str(OUT/'decision.png'));act('[data-decision="alt-a"]');act('#confirm-decision',2)
+ act('#explore-next');page.screenshot(path=str(OUT/'decision.png'));act('.scene [data-decision="alt-a"]');act('#confirm-decision',2)
  act('.scene-discovery[data-focus="1"]',2);act('.scene-discovery[data-focus="2"]',2)
  page.screenshot(path=str(OUT/'descubrimiento.png'),full_page=False)
- act('#discover-next');act('[data-apply="ap-a"]');act('#confirm-apply',2);page.screenshot(path=str(OUT/'aplica.png'))
+ act('#discover-next');act('.scene [data-inquiry="method"]',2);act('.scene [data-inquiry="roles"]',2);act('#confirm-inquiry',2);page.screenshot(path=str(OUT/'aplica.png'))
  act('#start-evaluation');page.screenshot(path=str(OUT/'evaluacion.png'))
  for a in ['ev1-b','ev2-a','ev3-a']:
   assert page.locator('.focus-highlight,#kuky-moment:not([hidden]),.stage-progress').count()==0

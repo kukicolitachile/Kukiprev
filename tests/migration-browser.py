@@ -9,6 +9,7 @@ with sync_playwright() as p:
  page.get_by_role('button',name='Comenzar recorrido').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  legacy={'index':0,'answers':[],'phase':'welcome','found':False,'order':[],'remaining':60}
  page.evaluate('(s)=>localStorage.setItem("decidobien-progress-v1",JSON.stringify(s))',legacy)
+ page.evaluate("async()=>{const c=await caches.open('decidobien-user-data');await c.put('/saved-user-data',new Response('keep'))}")
  mode.write_text('new');page.reload()
  old_still_shown=page.get_by_role('button',name='Comenzar recorrido').is_visible()
  assert old_still_shown
@@ -17,6 +18,7 @@ with sync_playwright() as p:
  except Exception:
   print(json.dumps({'url':page.url,'page_errors':errors,'http_errors':failed,'main':page.locator('main').inner_text()[:1200]}));raise
  assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-progress-v1"))')==legacy
+ assert page.evaluate("async()=>(await(await(await caches.open('decidobien-user-data')).match('/saved-user-data')).text())")=='keep'
  page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  c.set_offline(True);page.reload();assert page.locator('#welcome-start').is_visible()
  print(json.dumps({'old_cache_mismatch_reproduced':old_still_shown,'explicit_recovery':'passed','legacy_progress_unchanged':True,'offline_after_recovery':'passed'}))
@@ -32,4 +34,17 @@ with sync_playwright() as p:
  assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1"))')==confirmed
  page.locator('#network').filter(has_text='Lista sin conexión').wait_for();c.set_offline(True);page.reload();assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
  print(json.dumps({'recent_PWA_confirmed_answer_preserved':True,'recovery_does_not_restart_assessment':True,'offline_assessment_resume':True}))
+ c.close();b.close()
+
+
+# The fixed 2.3 base upgrades to this implementation without changing assessment answers.
+mode.write_text('review')
+with sync_playwright() as p:
+ b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);c=b.new_context();page=c.new_page();page.goto('http://127.0.0.1:4175');page.locator('#welcome-start').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
+ page.evaluate('(s)=>localStorage.setItem("decidobien-review-v1",JSON.stringify(s))',confirmed)
+ mode.write_text('new');page.goto('http://127.0.0.1:4175/recovery.html');page.locator('#recover').click();page.locator('[data-evaluation="ev1-b"]').wait_for(timeout=30000)
+ assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
+ assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1"))')==confirmed
+ page.locator('#network').filter(has_text='Lista sin conexión').wait_for();c.set_offline(True);page.reload();assert page.locator('[data-evaluation="ev1-b"]').is_disabled()
+ print(json.dumps({'base_24bb4af_to_implementation':'passed','confirmed_answer_unchanged':True,'offline_after_update':True,'foreign_cache_preserved':True}))
  c.close();b.close()

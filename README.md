@@ -1,83 +1,88 @@
 # DecidoBien — Manos que cuidan
 
-PWA de capacitación guiada, versión **2.3.0-review.1**. Una misión completa de correa transportadora, disponible como **borrador para revisión preventiva**. Conserva Kuky, la paleta y los recursos existentes. No enseña una intervención ni acredita capacitación empresarial.
+PWA de capacitación guiada, **2.4.0-review.1**, rama `implementation/correa-interactiva-2.4`, desarrollada desde la base `24bb4af`. Una misión completa de correa transportadora con interacción sobre la escena. **Borrador para validación preventiva**, sin acreditación empresarial ni instrucciones de intervención.
 
-## Ejecutar y comprobar la versión
+Se mantienen logo, Kuky, paleta, títulos y recursos originales. Solo la correa está disponible; el objetivo de seis misiones y los casos reservados permanecen pendientes. La ilustración es conceptual.
 
-Con Node y Python 3 disponibles, sin dependencias npm:
+## Abrir y comprobar
+
+Con Node y Python 3, sin dependencias npm:
 
 ```sh
 npm start
 ```
 
-En Codespaces abre **Puertos → 4173 → Abrir en el navegador**. La configuración intenta iniciar `server.py` automáticamente. Su raíz se fija al proyecto, independientemente de la carpeta de ejecución. No publiques el repositorio completo con un servidor genérico: el servidor incluido limita los archivos públicos.
+En Codespaces abre **Puertos → 4173 → Abrir en el navegador**. Utiliza el servidor incluido: limita los archivos públicos y fija su raíz al proyecto. El Codespace del usuario y el entorno de desarrollo son instancias distintas; publicar una rama no actualiza por sí solo la instancia.
 
 ```sh
 npm run diagnose
 ```
 
-Muestra release, rama, commit, cambios locales, huella de recursos y carpeta servida. En el navegador, **Revisión técnica → Comprobar versión, servidor y caché** abre `/recovery.html`. El endpoint `/__runtime.json` permite contrastar el proceso que realmente responde con el diagnóstico del checkout. Si ambos difieren, hay otra carpeta o proceso servido. Si difiere solo la pantalla, revisa la caché.
+Muestra release, commit, rama, cambios pendientes, raíz y huella de recursos públicos. La respuesta de `/__runtime.json` identifica el proceso que realmente responde, sin mostrar su carpeta. En la app: **Revisión técnica → Comprobar versión, servidor y caché**.
 
-La recuperación actualiza únicamente los recursos estáticos de la app; conserva almacenamiento local y respuestas confirmadas. No fuerza una actualización durante la evaluación. No puede recuperar selecciones que una versión anterior nunca guardó. La caché actual es `decidobien-v8-scene`; al cambiar los recursos debe versionarse.
+## Actualizar el Codespace desde Git
 
-## Recorrido consolidado
+Confirma la respuesta en curso si corresponde y cierra otras pestañas del ejercicio. En una terminal nueva, dentro del repositorio:
 
-- Inicio: “Manos que cuidan”, escena explorable sin puntaje y **Comenzar misión** siempre disponible. Capacitación y estudio son accesos secundarios.
-- Observa: contexto hipotético y rol disponible bajo demanda.
-- Explora: tocar elementos o usar su lista accesible. No hay resalto revelador antes del intento; pista opcional.
-- Decide: una elección desde el rol, sin abandonar la escena. Seleccionar y confirmar son acciones separadas.
-- Descubre: tres relaciones vinculadas a la misma ilustración. El primer detalle ya está explicado; tocar los otros cambia foco y explicación. No hay clasificación de frases ni pantalla que esconda la escena.
-- Aplica: reconocer qué información falta ante una tarea no definida, con devolución y posibilidad de revisar.
-- Evaluación: tres preguntas sobrias, sin pistas ni devolución correctiva antes del resultado. Respuestas confirmadas recuperables.
-- Resultado: revisar la comprensión y llevar preguntas sobre tarea, método y responsables a la conversación guiada.
+```sh
+cd /workspaces/Kukiprev
+git fetch origin refs/heads/implementation/correa-interactiva-2.4:refs/remotes/origin/implementation/correa-interactiva-2.4
+git show origin/implementation/correa-interactiva-2.4:scripts/update-codespace.sh > /tmp/decidobien-update.sh
+bash /tmp/decidobien-update.sh
+```
 
-Kuky acompaña junto a la escena. **Ajustes** agrupa sonido, movimiento y ayuda. Audio desactivado al abrir; cuatro WAV locales se activan por una acción del usuario. Silenciar detiene las fuentes activas. Movimiento reducido respeta la preferencia del sistema y permite completar todas las actividades. Los efectos son recursos de interfaz: no se animan poleas, banda ni materiales.
+El script conserva commits locales; guarda modificaciones y archivos sin seguimiento en un stash identificado; nunca lo aplica automáticamente sobre la revisión. Los archivos ignorados no se sobrescriben si generan conflicto. Solo permite avanzar la rama local sin descartar commits. `main` no se modifica. Se detiene ante un proceso no reconocido en 4173 o una divergencia Git. No utiliza paquetes ni otra copia de aplicación.
 
-Los 30 minutos corresponden al módulo guiado con observación, decisiones, conversación y evaluación. No hay temporizadores, esperas obligatorias, rankings ni premios por velocidad. La duración real y la retención requieren un piloto.
+El comando final deja `npm start` activo. Abre la misma URL reenviada de 4173, en el mismo navegador y perfil, con `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. La caché actual es `decidobien-v9-context`; el diagnóstico debe coincidir con el SHA remoto y release `2.4.0-review.1`.
 
-## Offline y límites
+Los cambios anteriores quedan en `git stash list`, identificados con su rama de origen. No hagas `stash pop` sobre esta revisión sin examinar y resolver esos cambios. El script no hace reset, clean, borrado de stash ni publicación. La configuración de Codespaces inicia el servidor de esta misma carpeta al arrancar.
 
-La primera descarga requiere conexión. Espera “Lista sin conexión” antes de desconectar. La bienvenida, estudio, práctica, evaluación demostrativa, sonidos y revisión técnica quedan disponibles localmente.
+## Qué hace el participante
 
-No se solicitan datos personales. El progreso guardado en `localStorage` es inspeccionable y modificable. Volver al inicio conserva el avance; repetir evaluación reemplaza ese intento local. Una tablet compartida no ofrece aislamiento de identidades en esta versión.
+Inicio explorable sin puntaje y **Comenzar misión** siempre disponible. **Observa → Explora → Decide → Descubre → Aplica** mantiene la escena como superficie de interacción. Las acciones se eligen junto a persona, materiales y banda; requieren confirmación. La explicación posterior destaca relaciones sin animar maquinaria. En Aplica se prepara una consulta sobre método, condiciones o responsables, y se conserva para conversar con el relator. No se envía un aviso real.
 
-El código, las imágenes y las respuestas descargadas para evaluación offline pueden inspeccionarse. No son registros confiables de empresa. Identidad, permisos por rol, registro servidor, retención y constancias verificables siguen pendientes; no están simulados.
+La evaluación es independiente: tres preguntas, sin pistas o corrección anticipada, respuestas confirmadas guardadas y resultado al cierre. El puntaje demuestra comprensión del borrador; no acredita asistencia o aprobación.
 
-## Contenido conservado y pendientes
+Los 30 minutos son el alcance del módulo guiado con conversación y evaluación, no la duración de la demostración grabada. No hay esperas obligatorias, rankings ni premios por rapidez.
 
-`assets/correa-revision.json` es el único caso activo. Mantiene ocho asuntos de validación con responsables: equipo/geometría, tarea/anomalía, accesos/controles, método, roles/comunicación, organización, protección personal pertinente y fuentes. No se recomiendan guantes de manera general ante atrapamiento. Comunicar una anomalía no confirma que el peligro esté resuelto; ver el equipo detenido tampoco demuestra una condición segura para intervenir.
+## Accesibilidad, audio y offline
 
-Las doce ilustraciones y el archivo heredado `assets/escenarios.json` se conservan en el repositorio. El servidor y la caché solo distribuyen el caso activo; autoclave, vidrio y químicos permanecen reservados para otros módulos. El objetivo futuro de seis misiones no se representa como seis misiones disponibles.
+Todos los objetivos de la escena tienen botones y una lista equivalente en diálogo, utilizables con teclado. Kuky acompaña con frases breves. Ajustes agrupa sonido, pausa de efectos y ayuda. Cuatro WAV locales se activan por acción del usuario; silenciar detiene su reproducción. El movimiento reducido del sistema y la preferencia local desactivan las animaciones.
 
-No hay contenido aprobado ni respaldo normativo específico validado. Registro empresarial, constancias, investigación y seguimiento siguen fuera de esta entrega.
+La primera descarga requiere conexión. Espera «Lista sin conexión» y luego puede completarse el recorrido offline. La actualización es explícita y preserva el progreso guardado; no recupera selecciones que una versión antigua nunca guardó.
 
-## Verificación reproducible
+Ajustes permite **Cerrar recorrido en esta tablet**, con confirmación antes de borrar únicamente el avance actual. Cancelar lo conserva. No es autenticación, cierre de sesión empresarial ni garantía de borrar información heredada u otros datos del navegador.
+
+## Seguridad y validación pendiente
+
+El repositorio es público: sus respuestas y materiales son inspeccionables. La corrección offline y `localStorage` pueden modificarse; no se oculta esa limitación. No se solicitan identidades ni se construyó un backend de empresa. Las constancias verificables requieren identidad, autorización y validación en servidor.
+
+El servidor no expone `.git`, documentos, scripts, pruebas o casos reservados. Rechaza enlaces simbólicos, traversal y métodos de escritura. La auditoría describe pruebas, correcciones y configuración que no pudo comprobarse: [auditoría de seguridad](docs/AUDITORIA_SEGURIDAD_2_4.md).
+
+Siguen pendientes equipo/geometría, tarea/anomalía, accesos/controles, método, roles/comunicación, organización, protección personal por tarea y fuentes. No se recomiendan guantes de forma general frente al atrapamiento; informar no confirma una condición resuelta y ver el equipo detenido no demuestra seguridad para intervenir. Autoclave, vidrio y químicos se conservan para otros módulos.
+
+[Implementación y capturas](docs/IMPLEMENTACION_2_4.md). Los documentos anteriores se conservan como historial de desarrollo.
+
+## Comprobaciones reproducibles
 
 ```sh
 npm test
 python3 tests/browser-review.py
 python3 tests/welcome-browser.py
 python3 tests/experience-browser.py
+python3 tests/server-security.py
 python3 tests/security-browser.py
 python3 scripts/security-audit.py
 ```
 
-Las pruebas de navegador requieren Playwright de Python y Chromium en `/usr/bin/chromium`, con el servidor activo. Verifican ruta completa, coordenadas de interacción, teclado, movimiento reducido, decisiones erróneas sin castigo, audio real/silencio, evaluación sin pistas, persistencia y offline. Tamaños 360×800, 390×844, 768×1024 y 1365×1000. No sustituyen pruebas con dispositivos reales ni participantes.
+Las pruebas de navegador requieren Playwright de Python y Chromium en `/usr/bin/chromium`, con `npm start` activo. Cubren ruta completa, teclado, movimiento reducido, audio/silencio, persistencia, consultas, evaluación y offline en 360×800, 390×844, 768×1024 y 1365×1000. No sustituyen el piloto con trabajadores o los dispositivos reales.
 
-Para reproducir una PWA antigua en un origen local aislado (nunca producción), inicia en otra terminal:
+Para migraciones, en otra terminal de pruebas inicia `python3 tests/migration-proxy.py`, luego ejecuta `python3 tests/migration-browser.py`. Ese fixture histórico usa solo un origen local aislado y no es un procedimiento de actualización de la app.
 
-```sh
-python3 tests/migration-proxy.py
-```
-
-Luego ejecuta:
+Para grabar video y la salida real Web Audio, sin banda sonora añadida:
 
 ```sh
-python3 tests/migration-browser.py
+DECIDOBIEN_RECORD=1 DECIDOBIEN_DEMO_DIR=/ruta/salida python3 tests/experience-browser.py
 ```
 
-Usa los commits históricos a590956 y 844bc05, el puerto local 4175 y carpetas temporales. No modifica el checkout ni reinicia evaluaciones.
-
-`DECIDOBIEN_RECORD=1 DECIDOBIEN_DEMO_DIR=/ruta/salida python3 tests/experience-browser.py` graba la apertura y misión completa, captura la salida real Web Audio y genera datos para sincronizarla. Requiere ffmpeg disponible para Playwright. No añade banda sonora externa.
-
-Consulta [el informe de consolidación](docs/CONSOLIDACION.md). Los documentos y demostraciones anteriores se conservan como historial; la descripción de esta entrega es la de este README y ese informe.
+La grabación necesita el ffmpeg de Playwright. La validación de retención, la aprobación preventiva y la revisión de configuración privada bloqueada permanecen separadas de estas comprobaciones técnicas.

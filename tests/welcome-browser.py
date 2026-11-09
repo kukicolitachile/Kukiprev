@@ -18,7 +18,7 @@ with sync_playwright() as p:
  assert page.evaluate('__sounds.length')==0
  assert page.locator('#welcome-start').bounding_box()['y']+page.locator('#welcome-start').bounding_box()['height']<=844
  assert page.locator('.welcome-stage').bounding_box()['height']>=300
- assert page.locator('.welcome-invitation').bounding_box()['y']<page.locator('.welcome-stage').bounding_box()['y']
+ assert page.locator('.welcome-invitation').bounding_box()['y']>page.locator('.welcome-stage').bounding_box()['y']
  page.screenshot(path=str(OUT/'inicio-interactivo.png'),full_page=True)
  def wait(seconds=1.8):
   if RECORD:page.wait_for_timeout(int(seconds*1000))
