@@ -1,0 +1,14 @@
+{
+  "pinned_remote_commit_served": {
+    "release": "2.5.0-demo.1",
+    "commit": "e21c34d10be236a5f6575cfeb43b96d4d756eaab",
+    "branch": "implementation/correa-phaser-demo",
+    "modified": false,
+    "source_hash": "965e10baf3f0a2e5"
+  },
+  "main_local_commits_preserved": true,
+  "tracked_and_untracked_changes_saved_in_stash": true,
+  "recognized_server_restarted": true,
+  "unknown_server_not_stopped": true,
+  "ignored_collision_not_overwritten": true
+}

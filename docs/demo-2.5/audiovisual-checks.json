@@ -1,0 +1,14 @@
+{
+  "demo": "opening → identity → context → explore/camera → choose → confirm",
+  "audio": [
+    "select",
+    "complete",
+    "discover",
+    "confirm"
+  ],
+  "mute": "passed",
+  "reduced_motion": "persisted",
+  "offline_audio_and_canvas": "passed",
+  "recorded": true,
+  "errors": []
+}

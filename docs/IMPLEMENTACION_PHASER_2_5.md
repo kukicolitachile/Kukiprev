@@ -40,3 +40,5 @@ Julisa debe confirmar criterio y umbral, si aplica. Prevención debe validar el 
 ## Instancias
 
 El entorno probado sirve el código de esta rama con `npm start`, puerto 4173. No se ha verificado el Codespace `scaling-happiness-xr99457w97r7f69pw`; una publicación Git no prueba qué versión sirve. README contiene una sola secuencia de actualización segura y comprobación de runtime/caché.
+
+El video dura 22 segundos, con imagen H.264 a 390×844 y audio AAC capturado de la app. Se grabó el commit de fuentes `e21c34d`; el commit de entrega agrega evidencia y prueba del actualizador sin modificar los recursos públicos. Huella de fuentes: `965e10baf3f0a2e5`. Los informes JSON adjuntos permiten comparar esa huella y los controles ejecutados.

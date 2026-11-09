@@ -60,6 +60,7 @@ python3 tests/welcome-browser.py
 python3 tests/experience-browser.py
 python3 tests/server-security.py
 python3 tests/security-browser.py
+python3 tests/update-codespace.py
 python3 scripts/security-audit.py
 npm audit --omit=dev
 ```

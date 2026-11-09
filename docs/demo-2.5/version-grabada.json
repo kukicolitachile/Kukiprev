@@ -1,0 +1,24 @@
+{
+  "release": "2.5.0-demo.1",
+  "commit": "e21c34d10be236a5f6575cfeb43b96d4d756eaab",
+  "branch": "implementation/correa-phaser-demo",
+  "source_hash": "965e10baf3f0a2e5",
+  "port": 4173,
+  "video": {
+    "width": 390,
+    "height": 844,
+    "duration_seconds": 22.123,
+    "audio": "Web Audio real, sin pista añadida",
+    "source_commit": "e21c34d10be236a5f6575cfeb43b96d4d756eaab"
+  },
+  "scope": "first mobile demo through confirmed decision",
+  "pending": [
+    "preventive validation",
+    "first-time worker pilot",
+    "physical mobile/tablet tests",
+    "user Codespace verification",
+    "enterprise record/folio/synchronization backend and private security configuration"
+  ],
+  "modified_during_recording": false,
+  "note": "Captured at source commit e21c34d; subsequent delivery commit adds evidence/tests only. Compare public source_hash."
+}
