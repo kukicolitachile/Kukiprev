@@ -1,0 +1,1 @@
+{"symlinks_and_private_files": "rejected", "encoded_and_raw_traversal": "rejected", "malformed_paths": "400", "write_methods": "405", "error_reflection_and_version_disclosure": "absent", "HEAD_and_headers": "passed"}

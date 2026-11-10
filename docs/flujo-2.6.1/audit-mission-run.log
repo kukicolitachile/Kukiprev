@@ -1,0 +1,3 @@
+OFFLINE_STATUS 390 Criterio de emisión pendiente de Julisa True
+OFFLINE_STATUS 1900 Criterio de emisión pendiente de Julisa True
+{"phase": "actual", "full_routes": 2, "steps_per_route": 14, "recovery_offline_pdf": "passed", "screen_reader": "not tested; AX snapshot saved", "errors": []}
