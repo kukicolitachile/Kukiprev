@@ -9,7 +9,7 @@ with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);report=[]
  for width,height in [(390,844),(1900,988)]:
   c=b.new_context(viewport={'width':width,'height':height},reduced_motion='reduce',has_touch=width<600,is_mobile=width<600);q=c.new_page();errors=[];q.on('pageerror',lambda e:errors.append(str(e)));q.goto(BASE);q.locator('#network').filter(has_text='Lista sin conexión').wait_for();data=q.evaluate('async()=>await(await fetch("./assets/correa-revision.json")).json()')
-  q.locator('#welcome-start').click();q.locator('#first-name').fill('Persona');q.locator('#last-name').fill('Demostración');q.locator('#identity-form .primary').click();q.locator('[data-context-explore]').click();q.locator('#phaser-host[data-ready="true"]').wait_for();q.wait_for_timeout(150)
+  q.locator('#welcome-start').click();q.locator('#first-name').fill('Persona');q.locator('#last-name').fill('Demostración');q.locator('#identity-form .primary').click();q.locator('#observe-next').click();q.locator('#phaser-host[data-ready="true"]').wait_for();q.wait_for_timeout(150)
   def state():return q.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1"))')
   def shot(name):q.screenshot(path=str(OUT/f'despues-{width}-explora-{name}.png'))
   def no_reveal():

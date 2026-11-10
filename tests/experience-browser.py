@@ -32,7 +32,7 @@ with sync_playwright() as p:
  assert page.evaluate('__sounds.length')==0;wait(1.7);snap('inicio')
  act('#settings-toggle',.5);act('#sound-toggle',.7);page.locator('#sound-toggle[aria-pressed="true"]').wait_for();assert page.locator('#sound-toggle').get_attribute('aria-pressed')=='true';act('#experience-settings .primary',.5)
  act('#welcome-start',.8);page.locator('#first-name').fill('María José');wait(.4);page.locator('#last-name').fill('Muñoz');wait(.6);snap('nombre');act('#identity-form .primary',2);page.locator('#phaser-host[data-ready="true"]').wait_for();snap('contexto')
- act('[data-context-explore]',1);touch_scene(page,zone='zona-c');wait(1.2);snap('explora');touch_scene(page,zone='zona-a');wait(2.2);snap('detalle');act('#camera-reset',.7);act('#explore-next',2);snap('decide')
+ act('#observe-next',1);touch_scene(page,zone='zona-c');wait(1.2);snap('explora');touch_scene(page,zone='zona-a');wait(2.2);snap('detalle');act('#camera-reset',.7);act('#explore-next',2);snap('decide')
  assert page.locator('#confirm-decision').is_disabled();act('.decision-tray [data-decision="alt-a"]',1.7);snap('seleccion');act('#confirm-decision',2.5);snap('confirmada')
  kinds=page.evaluate('[...new Set(__sounds)]');assert set(kinds)=={'select','confirm','discover','complete'},kinds
  if RECORD:

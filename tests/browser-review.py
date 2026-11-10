@@ -29,10 +29,10 @@ with sync_playwright() as p:
   canvas();act('#welcome-start');assert q.locator('#identity-form').is_visible()
   q.locator('#first-name').fill('María José');q.locator('#last-name').fill('Muñoz');act('#identity-form .primary');canvas()
   assert 'Tu rol: reconocer y comunicar; no realizar ajustes ni desatascos.' in q.locator('h1').inner_text()
-  assert q.locator('.context-cue').is_visible()
-  # First touch is on the environment; no tutorial and no correct-answer marker.
+  assert q.locator('.context-cue').count()==0;assert q.locator('#observe-next').is_visible()
+  # Context advances only through its explicitly named primary action.
   base_zoom=float(q.locator('#phaser-host').get_attribute('data-zoom'))
-  act('[data-context-explore]');canvas();assert q.locator('#phaser-host').get_attribute('data-focus')=='general'
+  act('#observe-next');canvas();assert q.locator('#phaser-host').get_attribute('data-focus')=='general'
   assert q.locator('.camera-target').count()==0
   option('zone','zona-c')
   assert q.locator('#explore-next').is_disabled()
@@ -57,10 +57,10 @@ with sync_playwright() as p:
    assert q.locator(f'[data-evaluation="{answer}"]').is_disabled()
    assert q.locator('.feedback,.focus-highlight').count()==0
    act('#evaluation-next')
-  assert '2 de 3' in q.locator('.compact-summary').inner_text();assert q.locator('.prepared-inquiry').is_visible()
+  assert '2 de 3' in q.locator('.compact-summary').inner_text();act('.result-detail:first-of-type>summary');assert q.locator('.prepared-inquiry').is_visible()
   assert q.evaluate('!localStorage.getItem("decidobien-review-v1").includes("Muñoz")')
-  c.set_offline(True);q.reload();assert 'pendiente de sincronización' in q.locator('#certificate-status').inner_text()
-  act('#edit-participant');q.locator('#first-name').fill('María');act('#identity-form .primary');assert 'María Muñoz' in q.locator('.certificate-panel').inner_text()
+  c.set_offline(True);q.reload();q.wait_for_function("""()=>{const s=document.querySelector('#certificate-status');return s&&(navigator.onLine?s.textContent.includes('Julisa'):s.textContent.includes('pendiente de sincronización'));}""",timeout=3000)
+  act('#result-certificate>summary');act('#edit-participant');q.locator('#first-name').fill('María');act('#identity-form .primary');assert 'María Muñoz' in q.locator('.certificate-panel').inner_text()
   with q.expect_download() as download:act('#preview-certificate')
   assert Path(download.value.path()).read_bytes().startswith(b'%PDF-')
   assert q.locator('.certificate-panel .primary').is_disabled()

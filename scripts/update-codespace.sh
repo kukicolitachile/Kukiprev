@@ -38,7 +38,7 @@ else:raise SystemExit('El servidor anterior no cerró el puerto. No se usó term
 PY
 previous_branch=$(git symbolic-ref --short -q HEAD || git rev-parse HEAD)
 if [ -n "$(git status --porcelain=v1 --untracked-files=all)" ]; then
-  git stash push --include-untracked -m "Antes de actualizar DecidoBien 2.6; origen=$previous_branch"
+  git stash push --include-untracked -m "Antes de actualizar DecidoBien 2.6.1; origen=$previous_branch"
   printf 'Cambios locales conservados en stash: %s\n' "$(git rev-parse refs/stash)"
 fi
 if git show-ref --verify --quiet "refs/heads/$review_branch"; then
@@ -57,7 +57,7 @@ test "$(git rev-parse HEAD)" = "$review_sha"
 python3 - <<'PY'
 import json,subprocess
 v=json.loads(subprocess.check_output(['python3','server.py','--diagnose'],text=True))
-assert v['release']=='2.6.0-review.1' and v['source_hash']=='927b4d18aff0ed5d' and not v['modified'], 'El contenido local no coincide con la base.'
+assert v['release']=='2.6.1-review.1' and v['source_hash']=='d903e9099f971e16' and not v['modified'], 'El contenido local no coincide con la base.'
 print(json.dumps(v,indent=2),flush=True)
 PY
 npm start

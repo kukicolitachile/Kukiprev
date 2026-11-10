@@ -1,11 +1,11 @@
-import {demoBoard,journeyProgress,journeyMoments} from './phaser-board.js';
+import {demoBoard,journeyProgress,journeyMoments,momentName} from './phaser-board.js';
 import {mountScene,unmountScene,projectTargets,projectScenePoint,pauseScene,resumeScene} from './phaser-scene.js';
 import {loadParticipant,saveParticipant,clearParticipant,normalizeParticipant} from './participant.js';
 import {certificateStatus,downloadPreview} from './certificate.js';
 import {inquiries,artwork} from './mission-scene.js';
 import {initVersion} from './version-client.js';
 import {initExperience,motionAllowed,feedback,cueKuky,clearFeedback,animateMoment} from './experience.js';
-import { KEY, fresh, shuffle, validState, evaluateAnswers } from './model.js';
+import { KEY, fresh, shuffle, validState, evaluateAnswers, savedDestination, hasMissionProgress, canAdvance } from './model.js';
 import { sceneMarkup } from './scenes.js';
 const app = document.querySelector('#app');
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -18,8 +18,14 @@ function journey() {
   return state.journey ??= {stage:state.practice.selected?'discover':state.practice.found?'decide':'observe',pending:null,hint:false,focus:0,applied:null,appliedConfirmed:false,studyIndex:0};
 }
 function save() { try {localStorage.setItem(KEY, JSON.stringify(state));} catch {storageAvailable=false;} }
-function navigate(view) {clearFeedback();state.view=view;message='';save();render();app.focus();window.scrollTo(0,0);}
+function navigate(view) {
+ clearFeedback();
+ if(['practice','evaluation','summary'].includes(state.view))state.resumeView=state.view;
+ if(['practice','evaluation','summary'].includes(view))state.resumeView=view;
+ state.view=view;message='';save();render();app.focus();window.scrollTo(0,0);
+}
 function phase(stage) {
+ if(!canAdvance(state,stage))return;
  journey().stage=stage;journey().cameraFocus=null;navigate('practice');
  const cues={explore:['explore','Explora a tu ritmo.'],decide:['reflect',content.interaccion.rol_breve],discover:['reflect','Miremos qué explica la exposición.'],};
  if(cues[stage])cueKuky(...cues[stage]);
@@ -31,10 +37,14 @@ function header() {
 function why(text) {return `<details class="why"><summary>¿Por qué?</summary><p>${escape(text)}</p></details>`;}
 function kuky(text) {return `<aside class="kuky-cue result-guide"><img src="./assets/kuky/feliz.png" alt="Kuky" width="90" height="120"><span>${escape(text)}</span></aside>`;}
 function homeView() {
- return `<section class="demo-experience demo-home" aria-labelledby="welcome-title"><div id="phaser-host" aria-hidden="true"></div><h1 id="welcome-title">Manos que cuidan</h1><div class="home-invite"><img src="./assets/kuky/atento.png" alt="Kuky" width="110" height="145"><p id="welcome-reply" role="status" tabindex="-1">${escape(welcomeReply||'¿Qué ves fuera de lugar? Explora la escena.')}</p></div><button class="welcome-explore" id="welcome-explore" aria-label="Explorar la escena con controles accesibles">Explorar la escena</button><dialog id="welcome-options" class="scene-options" aria-labelledby="welcome-options-title"><h2 id="welcome-options-title">Elementos y acciones</h2><div class="choices">${welcomeDetails.map(item=>`<button class="choice" data-welcome="${item.id}">${item.name}</button>`).join('')}</div><button class="back" id="close-welcome-options">Volver a la escena</button></dialog><div class="home-start"><button class="primary" id="welcome-start">Comenzar misión →</button><div class="welcome-secondary"><button class="text-button" data-go="join">Unirme a una capacitación</button><button class="text-button" data-go="study">Estudiar</button></div></div></section>`;
+ const progress=hasMissionProgress(state),destination=savedDestination(state,content),finished=destination==='summary';
+ const resume=progress&&!finished?`<p class="resume-note">Tu avance está guardado. Continuarás en <strong>${escape(destination==='evaluation'?'Evaluación · pregunta '+(state.evaluation.current+1)+' de '+content.evaluacion.length:momentName(journey().stage))}</strong>.</p>`:'';
+ return `<section class="demo-experience demo-home" aria-labelledby="welcome-title"><div id="phaser-host" aria-hidden="true"></div><h1 id="welcome-title">Manos que cuidan</h1><div class="home-invite"><img src="./assets/kuky/atento.png" alt="Kuky" width="110" height="145"><p id="welcome-reply" role="status" tabindex="-1">${escape(welcomeReply||'¿Qué ves fuera de lugar? Explora la escena.')}</p></div><button class="welcome-explore" id="welcome-explore" aria-label="Explorar la escena con controles accesibles">Explorar la escena</button><dialog id="welcome-options" class="scene-options" aria-labelledby="welcome-options-title"><h2 id="welcome-options-title">Elementos y acciones</h2><div class="choices">${welcomeDetails.map(item=>`<button class="choice" data-welcome="${item.id}">${item.name}</button>`).join('')}</div><button class="back" id="close-welcome-options">Volver a la escena</button></dialog><div class="home-start">${resume}<button class="primary" id="welcome-start">Comenzar misión →</button>${finished?'<button class="text-button saved-result" id="saved-result">Ver mi resultado guardado</button>':''}<div class="welcome-secondary"><button class="text-button" data-go="join">Unirme a una capacitación</button><button class="text-button" data-go="study">Estudiar</button></div></div></section>`;
 }
 function identifyView(){
- return `<section class="identity-screen"><form id="identity-form" class="identity-card"><img src="./assets/kuky/atento.png" alt="Kuky" width="80" height="100"><h1>Nombre y apellido</h1><p>Se guardan durante esta pestaña. No se envían a la empresa.</p><label for="first-name">Nombre</label><input id="first-name" name="firstName" autocomplete="given-name" maxlength="80" required value="${escape(participant?.firstName||'')}"><label for="last-name">Apellido</label><input id="last-name" name="lastName" autocomplete="family-name" maxlength="80" required value="${escape(participant?.lastName||'')}"><p id="identity-error" role="status"></p><button class="primary" type="submit">Continuar →</button><button class="text-button" type="button" data-go="home">← Inicio</button></form></section>`;
+ const destination=state.identityReturn||'practice',resume=hasMissionProgress(state),target=destination==='summary'?'Resultado':destination==='evaluation'?'Evaluación · pregunta '+(state.evaluation.current+1)+' de '+content.evaluacion.length:momentName(journey().stage);
+ const action=destination==='summary'?'Guardar y volver al resultado':resume?'Retomar '+target:'Entrar al contexto';
+ return `<section class="identity-screen"><form id="identity-form" class="identity-card"><p class="identity-position">${destination==='summary'?'Revisar identificación':'Preparación · Antes de la misión'}</p><img src="./assets/kuky/atento.png" alt="Kuky" width="80" height="100"><h1>Nombre y apellido</h1><p class="identity-destination">${resume?'Tu avance se conserva. Volverás a <strong>'+escape(target)+'</strong>.':'Después entrarás al contexto de la correa.'}</p><p>Se guardan durante esta pestaña. No se envían a la empresa.</p><label for="first-name">Nombre</label><input id="first-name" name="firstName" autocomplete="given-name" maxlength="80" required value="${escape(participant?.firstName||'')}"><label for="last-name">Apellido</label><input id="last-name" name="lastName" autocomplete="family-name" maxlength="80" required value="${escape(participant?.lastName||'')}"><p id="identity-error" role="status"></p><button class="primary" type="submit">${escape(action)} →</button><button class="text-button" type="button" data-go="home">← Inicio</button></form></section>`;
 }
 function scene() {
  return `<div class="scene-wrap"><div class="scene">${artwork()}</div><button class="enlarge" id="enlarge" aria-label="Ampliar ilustración completa">⤢</button></div>`;
@@ -57,18 +67,20 @@ function evaluationView() {
  const q=content.evaluacion[state.evaluation.current],answer=state.evaluation.answers[q.id];
  const order=state.evaluation.orders[q.id]||q.alternativas.map(a=>a.id);
  return `<div class="compact-top"><button class="text-button" id="exit-evaluation">Salir de la evaluación</button><span class="draft-pill">Borrador</span><span>Evaluación · ${state.evaluation.current+1}/${content.evaluacion.length}</span></div>
- ${journeyProgress('evaluation')}<section class="mission-frame evaluation"><div class="step-title"><h1>${escape(q.pregunta)}</h1></div>${scene()}<div class="activity-panel">
+ ${journeyProgress('evaluation')}<section class="mission-frame evaluation"><div class="step-title"><p class="evaluation-orientation">Responde por tu cuenta. Confirma cada respuesta para pasar a la siguiente.</p><h1>${escape(q.pregunta)}</h1></div>${scene()}<div class="activity-panel">
  ${choices(order.map(id=>q.alternativas.find(a=>a.id===id)),'evaluation',answer||evaluationPending,Boolean(answer))}
  ${answer?`<p role="status">Respuesta confirmada. Continúa para completar la evaluación.</p><button class="primary" id="evaluation-next">${state.evaluation.current===content.evaluacion.length-1?'Ver resultado':'Siguiente pregunta'} →</button>`:`<p class="action-requirement">${evaluationPending?'Selección lista para confirmar.':'Selecciona una respuesta.'}</p><button class="primary" id="evaluation-confirm" ${evaluationPending?'':'disabled'}>Confirmar respuesta →</button>`}
  </div></section>`;
 }
-let evaluationPending=null;
+let evaluationPending=null,certificateOpen=false;
 function summaryView() {
  const result=evaluateAnswers(state.evaluation.answers,content.evaluacion);
  return `${header()}<section class="compact-summary">${journeyProgress('summary')}<div class="result-heading"><span class="completion-badge" role="img" aria-label="Recorrido completado"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m12 25 8 8 17-19"/></svg></span><h1>Revisa lo que descubriste.</h1></div><p>${result.correct} de ${result.total} respuestas coinciden con este borrador.</p>
- <p class="fine">No acredita aprobación ni asistencia. Contenido pendiente de validación técnica.</p>${kuky('¿Qué debe estar resuelto antes de una tarea parecida?')}<section class="work-transfer">${journey().inquiries?.length?`<div class="prepared-inquiry"><h2>La consulta que preparaste</h2>${inquiries(content).filter(i=>journey().inquiries.includes(i.id)).map(i=>`<p>${escape(i.question)}</p>`).join('')}<small>Para conversar con el relator; no se ha enviado un aviso.</small></div>`:''}<h2>Una conversación para tu trabajo</h2><p>Abre una pregunta que puedas conversar con el relator.</p>${[['La tarea','¿Qué hace necesario aproximar las manos?'],['El método','¿Qué condiciones y medios deben estar definidos?'],['La respuesta','¿Quién confirma cómo se atendió la anomalía?']].map(([a,b])=>`<details><summary>${a}</summary><p>${b}</p></details>`).join('')}</section>
- ${content.evaluacion.map(q=>{const a=q.alternativas.find(a=>a.id===state.evaluation.answers[q.id]);return `<details><summary>${a.correcta?'✓':'↻'} ${escape(q.pregunta)}</summary><p>${escape(a.feedback)}</p><p><strong>Para revisar:</strong> ${escape(q.alternativas.find(a=>a.correcta).texto)}</p></details>`;}).join('')}
- ${certificatePanel()}<div class="action-row"><button class="primary" data-go="home">Volver al inicio</button><button class="back" id="retry-evaluation">Repetir evaluación</button></div></section>`;
+ <p class="fine">No acredita aprobación ni asistencia. Contenido pendiente de validación técnica.</p>${kuky('¿Qué debe estar resuelto antes de una tarea parecida?')}
+ <div class="result-finish"><p>Terminaste el recorrido. Puedes revisar el detalle o finalizar.</p><button class="primary" data-go="home">Finalizar misión →</button><small>Tu resultado queda guardado en este navegador.</small></div>
+ <details class="result-detail"><summary>La consulta y la conversación con tu relator</summary><section class="work-transfer">${journey().inquiries?.length?`<div class="prepared-inquiry"><h2>La consulta que preparaste</h2>${inquiries(content).filter(i=>journey().inquiries.includes(i.id)).map(i=>`<p>${escape(i.question)}</p>`).join('')}<small>Para conversar con el relator; no se ha enviado un aviso.</small></div>`:''}<h2>Una conversación para tu trabajo</h2><p>Abre una pregunta que puedas conversar con el relator.</p>${[['La tarea','¿Qué hace necesario aproximar las manos?'],['El método','¿Qué condiciones y medios deben estar definidos?'],['La respuesta','¿Quién confirma cómo se atendió la anomalía?']].map(([a,b])=>`<details><summary>${a}</summary><p>${b}</p></details>`).join('')}</section></details>
+ <details class="result-detail" id="result-answers"><summary>Revisar las ${result.total} respuestas</summary>${content.evaluacion.map(q=>{const a=q.alternativas.find(a=>a.id===state.evaluation.answers[q.id]);return `<details><summary>${a.correcta?'✓':'↻'} ${escape(q.pregunta)}</summary><p>${escape(a.feedback)}</p><p><strong>Para revisar:</strong> ${escape(q.alternativas.find(a=>a.correcta).texto)}</p></details>`;}).join('')}<button class="back" id="retry-evaluation">Repetir evaluación</button></details>
+ <details class="result-detail" id="result-certificate" ${certificateOpen?'open':''}><summary>Certificado · Pendiente de validación</summary>${certificatePanel()}</details></section>`;
 }
 function certificatePanel(){
  const status=certificateStatus(state,content,participant,certificatePolicy||{},navigator.onLine);
@@ -87,7 +99,18 @@ function reviewView() {
 
 function prepareEvaluation() {for(const q of content.evaluacion)state.evaluation.orders[q.id]??=shuffle(q.alternativas.map(a=>a.id));}
 function enterMission(){journey();state.practice.order.length||(state.practice.order=shuffle(content.practica.alternativas.map(a=>a.id)));navigate('practice');}
-function startPractice(){state.identityReturn='practice';if(state.view==='home'||!participant)navigate('identify');else enterMission();}
+function startPractice(){
+ const destination=savedDestination(state,content);
+ if(destination==='summary'){
+  const d=document.createElement('dialog');d.className='scene-options';d.innerHTML='<h2>Ya completaste esta misión</h2><p>Puedes revisar tu resultado. Comenzar de nuevo reemplazará el avance y las respuestas de este recorrido en este navegador.</p><button class="primary" id="keep-result">Ver mi resultado</button><button class="back" id="new-mission">Comenzar una nueva misión</button><button class="text-button" id="cancel-new-mission">Volver al inicio</button>';document.body.append(d);d.showModal();
+  d.querySelector('#keep-result').onclick=()=>{d.close();openSavedResult();};
+  d.querySelector('#new-mission').onclick=()=>{d.close();state=fresh();journey();certificateOpen=false;state.identityReturn='practice';evaluationPending=null;navigate('identify');};
+  d.querySelector('#cancel-new-mission').onclick=()=>d.close();d.onclose=()=>d.remove();return;
+ }
+ state.identityReturn=destination;
+ if(state.view==='home'||!participant)navigate('identify');else if(destination==='evaluation')navigate('evaluation');else enterMission();
+}
+function openSavedResult(){state.identityReturn='summary';navigate(participant?'summary':'identify');}
 function showEnlarged() {
  const modal=document.createElement('dialog');modal.className='image-dialog';
  modal.innerHTML=`<button class="back" id="close-image">Cerrar imagen</button>${sceneMarkup(0)}<p>Ilustración genérica pendiente de cotejo técnico.</p>`;
@@ -127,12 +150,12 @@ function bindEvents() {
  document.querySelector('#identity-form')?.addEventListener('submit',event=>{
   event.preventDefault();const form=event.currentTarget;const p=normalizeParticipant(form.elements.firstName.value,form.elements.lastName.value);
   if(!p){document.querySelector('#identity-error').textContent='Revisa nombre y apellido.';return;}
-  participant=p;saveParticipant(p);if(['summary','evaluation'].includes(state.identityReturn))navigate(state.identityReturn);else enterMission();
+  participant=p;saveParticipant(p);const destination=state.identityReturn;delete state.identityReturn;if(['summary','evaluation'].includes(destination))navigate(destination);else enterMission();
  });
- document.querySelector('#edit-participant')?.addEventListener('click',()=>{state.identityReturn='summary';navigate('identify');});
+ document.querySelector('#edit-participant')?.addEventListener('click',()=>{certificateOpen=true;state.identityReturn='summary';navigate('identify');});
  document.querySelector('#preview-certificate')?.addEventListener('click',async()=>{try{await downloadPreview(participant,certificatePolicy.module);}catch{document.querySelector('#certificate-status').textContent='No se pudo preparar la vista previa PDF.';}});
  document.querySelector('#camera-reset')?.addEventListener('click',()=>{journey().cameraFocus=null;save();render();});
- document.querySelector('[data-context-explore]')?.addEventListener('click',()=>phase('explore'));
+ document.querySelector('#saved-result')?.addEventListener('click',openSavedResult);
 
  document.querySelector('[data-open-options]')?.addEventListener('click',()=>document.querySelector('#scene-options').showModal());
  document.querySelector('[data-close-options]')?.addEventListener('click',()=>document.querySelector('#scene-options').close());
@@ -170,20 +193,23 @@ function bindEvents() {
  });
  document.querySelector('#discover-next')?.addEventListener('click',()=>{if(journey().discovered?.length===3)phase('apply');});
  document.querySelector('#retry-apply')?.addEventListener('click',()=>{journey().appliedConfirmed=false;journey().applied=null;navigate('practice');});
- document.querySelector('#start-evaluation')?.addEventListener('click',()=>{prepareEvaluation();evaluationPending=null;navigate('evaluation');});
+ document.querySelector('#start-evaluation')?.addEventListener('click',()=>{if(!canAdvance(state,'evaluation'))return;prepareEvaluation();evaluationPending=null;navigate('evaluation');});
  document.querySelectorAll('[data-evaluation]').forEach(b=>b.onclick=()=>{const q=content.evaluacion[state.evaluation.current];if(state.evaluation.answers[q.id])return;evaluationPending=b.dataset.evaluation;render();document.querySelector('#evaluation-confirm').focus();});
  document.querySelector('#evaluation-confirm')?.addEventListener('click',()=>{if(!evaluationPending)return;const q=content.evaluacion[state.evaluation.current];state.evaluation.answers[q.id]=evaluationPending;evaluationPending=null;save();render();document.querySelector('#evaluation-next').focus();feedback('confirm','Respuesta confirmada');});
- document.querySelector('#evaluation-next')?.addEventListener('click',()=>{evaluationPending=null;if(state.evaluation.current<content.evaluacion.length-1){state.evaluation.current++;navigate('evaluation');}else {navigate('summary');feedback('complete','Recorrido completado');cueKuky('advance','Ahora revisa tu comprensión.');}});
+ document.querySelector('#evaluation-next')?.addEventListener('click',()=>{if(!state.evaluation.answers[content.evaluacion[state.evaluation.current].id])return;evaluationPending=null;if(state.evaluation.current<content.evaluacion.length-1){state.evaluation.current++;navigate('evaluation');}else {navigate('summary');feedback('complete','Recorrido completado');cueKuky('advance','Ahora revisa tu comprensión.');}});
  document.querySelector('#exit-evaluation')?.addEventListener('click',()=>{const d=document.createElement('dialog');d.innerHTML='<p>Las respuestas confirmadas se conservan. ¿Quieres salir?</p><button id="stay" class="primary">Continuar evaluación</button><button id="leave" class="back">Salir al inicio</button>';document.body.append(d);d.showModal();d.querySelector('#stay').onclick=()=>d.close();d.querySelector('#leave').onclick=()=>{d.close();navigate('home');};d.onclose=()=>d.remove();});
- document.querySelector('#retry-evaluation')?.addEventListener('click',()=>{state.evaluation={answers:{},orders:{},current:0};prepareEvaluation();evaluationPending=null;navigate('evaluation');});
- document.querySelector('#join-review')?.addEventListener('click',()=>{if(Object.keys(state.evaluation.answers).length){navigate(evaluateAnswers(state.evaluation.answers,content.evaluacion).complete?'summary':'evaluation');}else startPractice();});
+ document.querySelector('#retry-evaluation')?.addEventListener('click',()=>{
+  const d=document.createElement('dialog');d.className='scene-options';d.innerHTML='<h2>Repetir evaluación</h2><p>Reemplazará las respuestas de tu evaluación anterior. La práctica y tu consulta se conservan.</p><button class="primary" id="cancel-retry">Conservar mi resultado</button><button class="back" id="confirm-retry">Repetir las tres preguntas</button>';document.body.append(d);d.showModal();d.querySelector('#cancel-retry').onclick=()=>d.close();d.querySelector('#confirm-retry').onclick=()=>{d.close();state.evaluation={answers:{},orders:{},current:0};prepareEvaluation();evaluationPending=null;navigate('evaluation');};d.onclose=()=>d.remove();
+ });
+ document.querySelector('#join-review')?.addEventListener('click',startPractice);
 }
 function render() {
  document.body.classList.toggle('at-welcome',state.view==='home');
+ document.body.classList.toggle('route-active',['home','identify','practice','evaluation','summary'].includes(state.view));
  document.body.classList.toggle('at-assessment',['evaluation','summary'].includes(state.view));
  const immersive=state.view==='home'||state.view==='identify'||state.view==='practice';document.body.classList.toggle('phaser-active',immersive);
  document.querySelector('#mission-label').textContent=state.view==='identify'?'Nombre y apellido':state.view==='practice'?(names[stages.indexOf(journey().stage)]||''):state.view==='evaluation'?'Evaluación':state.view==='summary'?'Resultado':'';
- document.body.classList.toggle('in-mission',['practice','study','evaluation'].includes(state.view));
+ document.body.classList.toggle('in-mission',['practice','study','evaluation','summary'].includes(state.view));
  journey();
  const views={home:homeView,identify:identifyView,study:studyView,practice:practiceView,evaluation:evaluationView,summary:summaryView,review:reviewView,join:()=>`${header()}<section class="join-panel"><h1>Unirme a una capacitación</h1><p>En esta versión revisable, continúa con tu relator en el caso de la correa.</p><button class="primary" id="join-review">Continuar el caso</button><details><summary>Ingreso por código</summary><p>El ingreso a sesiones empresariales y el registro de asistencia siguen pendientes. Nombre y apellido se guardan durante esta pestaña para el recorrido.</p></details></section>`};
  app.innerHTML=`${['home','identify','practice'].includes(state.view)&&document.body.classList.contains('phaser-active')?'<div class="demo-nav"><button class="text-button" data-go="home" aria-label="Inicio">⌂</button><span class="draft-pill">Borrador</span><button class="text-button" data-go="review" aria-label="Revisión técnica">ⓘ</button></div>':''}${!storageAvailable?'<p class="storage-note" role="status">El avance no puede guardarse en este navegador.</p>':''}${views[state.view]()}`;
@@ -191,6 +217,7 @@ function render() {
  const moment=state.view==='practice'?journey().stage:state.view;document.querySelector('#mission-label').dataset.count=(journeyMoments.indexOf(moment)+1)+'/7';
  animateMoment({view:state.view,stage:journey().stage,event:JSON.stringify([journey().pending,journey().focus,journey().inquiries,state.practice.attempts,journey().exploreEvent,journey().appliedConfirmed,welcomeSequence])});
 }
+document.querySelector('.brand').addEventListener('click',event=>{if(!content)return;event.preventDefault();if(state.view==='evaluation')document.querySelector('#exit-evaluation')?.click();else navigate('home');});
 initExperience();
 initVersion();
 window.addEventListener('decidobien:close-journey',()=>{
@@ -199,7 +226,7 @@ window.addEventListener('decidobien:close-journey',()=>{
  document.body.append(d);d.showModal();d.querySelector('#keep-progress').onclick=()=>d.close();
  d.querySelector('#clear-progress').onclick=()=>{
   try{localStorage.removeItem(KEY);}catch{d.querySelector('p').textContent='No se pudo eliminar el avance. No prepares esta tablet para otra persona todavía.';return;}
-  d.close();clearParticipant();participant=null;welcomeReply='';welcomeTouch=null;welcomeSequence=0;state=fresh();evaluationPending=null;navigate('home');feedback('confirm','Recorrido cerrado','Se eliminó el avance de este ejercicio.');
+  d.close();clearParticipant();participant=null;welcomeReply='';welcomeTouch=null;welcomeSequence=0;state=fresh();certificateOpen=false;evaluationPending=null;navigate('home');feedback('confirm','Recorrido cerrado','Se eliminó el avance de este ejercicio.');
  };
  d.onclose=()=>{d.remove();document.querySelector('#settings-toggle').focus();};
 });

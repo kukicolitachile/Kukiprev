@@ -15,6 +15,33 @@ export function fresh() {
   };
 }
 
+// A visit to Home must not erase where the participant left the mission.
+export function savedDestination(state, content) {
+  if (evaluateAnswers(state.evaluation.answers, content.evaluacion).complete) return 'summary';
+  if (state.resumeView === 'evaluation' || state.view === 'evaluation' ||
+      (state.view === 'identify' && state.identityReturn === 'evaluation') ||
+      Object.keys(state.evaluation.answers).length > 0) return 'evaluation';
+  return 'practice';
+}
+
+export function hasMissionProgress(state) {
+  return Boolean(state.resumeView || state.practice.attempts || state.practice.found ||
+    state.practice.selected || Object.keys(state.evaluation.answers).length ||
+    (state.journey && state.journey.stage !== 'observe'));
+}
+
+export function canAdvance(state, next) {
+  const j = state.journey;
+  if (!j) return false;
+  const successors = {observe:'explore', explore:'decide', decide:'discover', discover:'apply', apply:'evaluation'};
+  if (successors[j.stage] !== next) return false;
+  if (next === 'decide') return state.practice.found;
+  if (next === 'discover') return Boolean(state.practice.found && state.practice.selected);
+  if (next === 'apply') return j.discovered?.length === 3;
+  if (next === 'evaluation') return Boolean(j.appliedConfirmed && j.inquiries?.length);
+  return true;
+}
+
 export function shuffle(items) {
   const result = [...items];
   for (let index = result.length - 1; index > 0; index--) {
@@ -110,6 +137,7 @@ export function validState(state, content) {
   if (['evaluation', 'summary'].includes(state.view) && (!practice.found || practice.selected === null)) return false;
   if (state.view === 'summary' && !complete) return false;
   if (state.identityReturn!==undefined&&!['practice','summary','evaluation'].includes(state.identityReturn))return false;
+  if (state.resumeView!==undefined&&!['practice','summary','evaluation'].includes(state.resumeView))return false;
   if (state.journey !== undefined) {
     const j = state.journey;
     if (!isRecord(j) || !['observe','explore','decide','discover','apply'].includes(j.stage)) return false;

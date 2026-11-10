@@ -1,8 +1,8 @@
 # DecidoBien — Manos que cuidan
 
-**2.6.0-review.1**, rama `implementation/correa-phaser-demo`, desarrollada desde `ab954dd`. Una misión de correa con escena persistente desde Contexto hasta Aplica, movimiento controlado por acciones, progreso de siete momentos y evaluación separada hasta Resultado. Mantiene nombre, logo, Kuky, textos y criterios del ejercicio. **Borrador pendiente de validación preventiva**, sin emisión empresarial.
+**2.6.1-review.1**, rama `implementation/correa-phaser-demo`, corrección de flujo desde `9b19f10`. Una misión de correa con escena persistente desde Contexto hasta Aplica, movimiento controlado por acciones, progreso de siete momentos y evaluación separada hasta Resultado. Mantiene nombre, logo, Kuky, textos y criterios del ejercicio. **Borrador pendiente de validación preventiva**, sin emisión empresarial.
 
-[Movimiento y recorrido integrados: alcance, pruebas y video](docs/MOVIMIENTO_2_6.md). [Auditoría histórica y requisitos contrastados](docs/AUDITORIA_MISION_Y_EXPLORA.md).
+[Corrección del flujo y recuperación: alcance, pruebas y video](docs/FLUJO_2_6_1.md). [Movimiento y recorrido anteriores: alcance, pruebas y video](docs/MOVIMIENTO_2_6.md). [Auditoría histórica y requisitos contrastados](docs/AUDITORIA_MISION_Y_EXPLORA.md).
 
 ## Abrir
 
@@ -27,7 +27,7 @@ bash /tmp/decidobien-update.sh
 
 El script preserva commits locales, guarda cambios registrados y archivos sin seguimiento en un stash identificado con su rama de origen, y no lo reaplica automáticamente. No sobrescribe archivos ignorados que colisionen, no descarta divergencias y no modifica `main`. Solo reinicia un servidor reconocido de este proyecto en 4173; se detiene ante un proceso desconocido. Los cambios anteriores pueden revisarse con `git stash list`; no aplicar `stash pop` sobre esta revisión sin examinarlos.
 
-Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.6.0-review.1`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v15-motion`.
+Abre **la misma dirección reenviada y perfil del navegador**, agregando `/recovery.html`. Pulsa **Actualizar recursos conservando el avance**. No borres los datos del sitio. El diagnóstico debe mostrar release `2.6.1-review.1`, rama `implementation/correa-phaser-demo`, el SHA de GitHub y caché `decidobien-v16-flow`.
 
 En cualquier momento: **Revisión técnica → Comprobar versión, servidor y caché**. En terminal, `npm run diagnose`. La app mantiene las respuestas confirmadas anteriores. Si falta la identificación de esta pestaña, la pide antes de recuperar la actividad; no reinicia la evaluación.
 
@@ -37,7 +37,7 @@ El inicio responde a explorar la planta, por toque o con una lista accesible, si
 
 **Observa → Explora → Decide → Descubre → Aplica** utiliza una misma superficie Phaser. En Explora no hay marcas iniciales: el toque recibe una respuesta neutra y la pista es textual. El visor y el acercamiento aparecen después del hallazgo. Decide cambia al encuadre de historieta; las tres acciones tienen igual peso, se seleccionan y se confirman. Descubre permite tocar los elementos explicados sobre la imagen. Aplica conserva las preguntas existentes de método, condiciones y responsables, y prepara una consulta sin enviarla ni cambiar el equipo.
 
-Un progreso común conecta los cinco momentos con Evaluación y Resultado. La evaluación mantiene tres preguntas sin pistas ni señales correctivas; selección y confirmación son neutras. El cierre muestra el avance completo de esta misión y a Kuky con una expresión original. El distintivo representa completar el recorrido, no aprobar una capacitación ni emitir un certificado.
+Un indicador con «Paso N de 7», nombre y siguiente etapa conecta los cinco momentos con Evaluación y Resultado. Salir al inicio conserva un punto de retorno explícito, incluso antes de confirmar la primera respuesta de evaluación. La identificación indica el destino antes de continuar. El resultado tiene un cierre principal; consulta, respuestas y certificado quedan como detalles opcionales. Reiniciar un recorrido terminado o repetir la evaluación requiere elegir expresamente el reemplazo del avance. La evaluación mantiene tres preguntas sin pistas ni señales correctivas; selección y confirmación son neutras. El cierre muestra el avance completo de esta misión y a Kuky con una expresión original. El distintivo representa completar el recorrido, no aprobar una capacitación ni emitir un certificado.
 
 Las entradas, pulsaciones, encuadres y cambios de foco son finitos y de interfaz; se pueden desactivar. No hay avance automático, cuenta regresiva o movimiento mecánico. Se conservan el alcance de módulo guiado de 30 minutos y el objetivo futuro de seis misiones, sin inventar las cinco restantes.
 
@@ -64,6 +64,7 @@ python3 tests/welcome-browser.py
 python3 tests/decision-layout.py
 python3 tests/explore-browser.py
 python3 tests/motion-browser.py
+python3 tests/flow-browser.py
 python3 tests/audit-mission.py
 python3 tests/experience-browser.py
 python3 tests/server-security.py
@@ -83,6 +84,6 @@ DECIDOBIEN_RECORD=1 DECIDOBIEN_MOTION_DIR=/ruta/salida python3 tests/motion-brow
 
 La captura de video requiere el ffmpeg de Playwright; se combina el audio grabado con el video respetando `offset.json`.
 
-[Implementación anterior, alcance y evidencias](docs/IMPLEMENTACION_PHASER_2_5.md). [Revisión de seguridad de esta entrega](docs/SEGURIDAD_2_6.md). Los documentos 2.5 y anteriores son historial; la versión actual es 2.6.0-review.1.
+[Implementación anterior, alcance y evidencias](docs/IMPLEMENTACION_PHASER_2_5.md). [Revisión de seguridad de esta entrega](docs/SEGURIDAD_2_6.md). La corrección actual es 2.6.1-review.1; las evidencias 2.6.0 y anteriores documentan versiones anteriores.
 
 Pendientes separados: **validación preventiva del equipo y contenido**, **prueba con trabajadores/personas nuevas**, **dispositivos reales**, **Codespace del usuario** y **seguridad empresarial del futuro backend**. No se declara aprobación técnica, acreditación ni cumplimiento normativo a partir de esta demo.
