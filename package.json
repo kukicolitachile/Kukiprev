@@ -1,7 +1,7 @@
 {
   "name": "decidobien",
   "private": true,
-  "version": "2.6.1-review.1",
+  "version": "2.7.0-review.1",
   "type": "module",
   "scripts": {
     "start": "python3 server.py",

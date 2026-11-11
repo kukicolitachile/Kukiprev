@@ -16,6 +16,7 @@ with sync_playwright() as p:
    target=q.locator(selector)
    if keyboard:target.focus();q.keyboard.press('Enter')
    else:target.click()
+   q.wait_for_function("()=>!document.querySelector('#app[aria-busy]')")
   def canvas():
    q.locator('#phaser-host[data-ready="true"]').wait_for();q.wait_for_timeout(100)
    box=q.locator('#phaser-host').bounding_box();assert box['height']>=height*.65
@@ -46,7 +47,7 @@ with sync_playwright() as p:
   option('decision',choice);assert q.locator('#confirm-decision').is_enabled()
   assert not any(a['feedback'] in q.locator('main').inner_text() for a in data['practica']['alternativas'])
   q.reload();canvas();assert q.locator(f'.decision-tray [data-decision="{choice}"]').get_attribute('aria-pressed')=='true'
-  act('#confirm-decision');canvas();assert next(a['feedback'] for a in data['practica']['alternativas'] if a['id']==choice) in q.locator('main').inner_text()
+  act('#confirm-decision');canvas();act('.decision-explanation>summary');assert next(a['feedback'] for a in data['practica']['alternativas'] if a['id']==choice) in q.locator('main').inner_text();act('.decision-explanation>summary')
   option('focus','1');q.reload();canvas();option('focus','2');assert q.locator('#discover-next').is_enabled()
   act('#discover-next');assert q.locator('.demo-experience[data-stage="apply"]').is_visible();assert q.locator('#confirm-inquiry').is_disabled()
   option('inquiry','method');option('inquiry','roles');act('#confirm-inquiry');assert 'No se ha enviado' in q.locator('#scene-caption').inner_text();act('#start-evaluation')
@@ -58,8 +59,8 @@ with sync_playwright() as p:
    assert q.locator('.feedback,.focus-highlight').count()==0
    act('#evaluation-next')
   assert '2 de 3' in q.locator('.compact-summary').inner_text();act('.result-detail:first-of-type>summary');assert q.locator('.prepared-inquiry').is_visible()
-  assert q.evaluate('!localStorage.getItem("decidobien-review-v1").includes("Muñoz")')
-  c.set_offline(True);q.reload();q.wait_for_function("""()=>{const s=document.querySelector('#certificate-status');return s&&(navigator.onLine?s.textContent.includes('Julisa'):s.textContent.includes('pendiente de sincronización'));}""",timeout=3000)
+  assert q.evaluate('!localStorage.getItem("decidobien-review-v1:attempt-authority-v1").includes("Muñoz")')
+  c.set_offline(True);q.reload();q.wait_for_function("""()=>{const s=document.querySelector('#certificate-status');return s&&(navigator.onLine?s.textContent.includes('Julisa'):s.textContent.includes('Esta demo no sincroniza'));}""",timeout=3000)
   act('#result-certificate>summary');act('#edit-participant');q.locator('#first-name').fill('María');act('#identity-form .primary');assert 'María Muñoz' in q.locator('.certificate-panel').inner_text()
   with q.expect_download() as download:act('#preview-certificate')
   assert Path(download.value.path()).read_bytes().startswith(b'%PDF-')

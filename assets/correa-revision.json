@@ -1,5 +1,5 @@
 {
-  "version": "2.1-interaccion-1",
+  "version": "2.1-interaccion-2",
   "id": "esc-01",
   "titulo": "La correa: reconocer la exposición antes de actuar",
   "estado": "borrador_revisable",
@@ -114,7 +114,7 @@
           "id": "ev1-a",
           "texto": "Falta información para decidir con seguridad.",
           "correcta": true,
-          "feedback": "La falta de movimiento visible no confirma todos esos puntos. Prevención y los responsables técnicos deben validar la tarea y sus condiciones; este caso no habilita una intervención."
+          "feedback": "La falta de movimiento visible no confirma las condiciones de la tarea, su método ni las responsabilidades. Prevención y los responsables técnicos deben revisar esos puntos; este caso no habilita una intervención."
         },
         {
           "id": "ev1-b",
@@ -174,7 +174,7 @@
           "id": "ev3-c",
           "texto": "Solo la rapidez para retirar los estuches.",
           "correcta": false,
-          "feedback": "La ilustración plantea una situación hipotética. La causa, la frecuencia y el método de respuesta necesitan datos y revisión del equipo real."
+          "feedback": "La rapidez no controla el acceso de las manos al peligro. Deben revisarse causa, controles y método; faltan datos del equipo real para confirmarlos."
         }
       ]
     }
@@ -243,7 +243,7 @@
     "nota": "Caso ilustrativo construido a partir del material disponible. No acredita condiciones de un equipo real ni incorpora una referencia normativa como contenido aprobado. Las decisiones técnicas pendientes deben revisarse antes de usarlo como capacitación aprobada."
   },
   "interaccion": {
-    "observa": "La correa avanza a tirones. Se acumulan estuches.",
+    "observa": "Situación hipotética. La correa avanza a tirones. Se acumulan estuches.",
     "explora": "¿Dónde podría quedar atrapada una mano?",
     "decide": "La acumulación continúa. ¿Qué haces desde tu rol?",
     "rol_breve": "Tu rol: reconocer y comunicar; no realizar ajustes ni desatascos.",

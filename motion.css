@@ -50,3 +50,65 @@ body.route-active{background:var(--deep);color:var(--ice)}
  #mission-label:not(:empty)::after{content:none}.route-active:not(.phaser-active) main{width:min(100%,900px)}
  .identity-card{grid-template-columns:1fr 1fr;max-width:650px}.identity-card .identity-position{grid-column:1/-1;grid-row:1}.identity-card h1{grid-column:1/-1;grid-row:2}.identity-card .identity-destination{grid-column:1/-1;grid-row:3}.identity-card>p:not([class]):not(#identity-error){grid-column:1/-1;grid-row:4}.identity-card label[for=first-name]{grid-column:1;grid-row:5}.identity-card label[for=last-name]{grid-column:2;grid-row:5}.identity-card input:first-of-type{grid-column:1;grid-row:6}.identity-card input:last-of-type{grid-column:2;grid-row:6}.identity-card>.primary{grid-column:2;grid-row:8}.identity-card>.text-button{grid-column:1;grid-row:8}
 }
+
+/* The camera uses the scene-window's measured rectangle; reading and actions occupy their own rows. */
+body.phaser-active{overflow:auto}
+.phaser-active main{height:auto;min-height:calc(100dvh - 70px)}
+.phaser-active main:has(.demo-experience:not(.demo-home)){width:min(100%,1100px)}
+.demo-experience:not(.demo-home){display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:52px auto auto minmax(230px,1fr) auto auto;min-height:calc(100dvh - 70px);height:auto;overflow:visible;align-content:stretch}
+.demo-experience:not(.demo-home) .scene-flow{position:relative;inset:auto;grid-column:1;grid-row:2;margin:0 12px 8px;width:auto;min-width:0}
+.demo-experience:not(.demo-home)>h1{position:relative;inset:auto;grid-column:1;grid-row:3;margin:0 12px 8px;max-width:calc(100% - 24px);font-size:18px}
+.scene-window{grid-column:1;grid-row:4;min-width:0;min-height:230px;pointer-events:none}
+.demo-experience:not(.demo-home) .demo-guide{position:relative;inset:auto;grid-column:1;grid-row:5;align-self:end;margin:8px 10px;max-width:none;min-width:0;gap:7px}
+.demo-experience:not(.demo-home) .demo-response{max-height:none;overflow:visible;padding:10px 12px}
+.demo-experience:not(.demo-home) .demo-response>p{font-size:13px;line-height:1.45}
+.demo-experience:not(.demo-home) .demo-guide>img{width:68px;height:92px}
+.demo-experience:not(.demo-home) .demo-bottom{position:relative;inset:auto;grid-column:1;grid-row:6;align-self:end;min-width:0}
+.demo-response details{margin:8px 0 0}
+.demo-response summary{font-size:13px;min-height:36px;display:list-item;padding:8px 0}
+.demo-response .confirmed-decision{margin-top:10px}
+.demo-response details p+p{margin-top:10px}
+.demo-home{height:calc(100dvh - 70px)}
+.route-active :is(button,a,summary):focus-visible{outline:3px solid #fff8d4;outline-offset:3px;box-shadow:0 0 0 6px #032b3b}
+.phaser-active dialog :is(button,a,summary):focus-visible{outline-color:#075e63;box-shadow:none}
+.scene-focus:focus-visible{outline-color:#fff8d4;box-shadow:0 0 0 7px #032b3b}
+@media(min-width:900px){
+ .demo-experience:not(.demo-home){grid-template-columns:minmax(0,1fr) 340px;grid-template-rows:52px auto auto minmax(230px,1fr) auto auto}
+ .demo-experience:not(.demo-home) .scene-flow{grid-column:1/-1}
+ .demo-experience:not(.demo-home) .scene-window{grid-row:4/7}
+ .demo-experience:not(.demo-home) .demo-guide{grid-column:2;grid-row:3/6;align-self:start;margin:0 12px 12px 0;align-items:start}
+ .demo-experience:not(.demo-home) .demo-guide>img{width:58px;height:80px}
+ .demo-experience:not(.demo-home) .demo-bottom{grid-column:2;grid-row:6;border-left:1px solid #14a5ab}
+ .demo-experience:not(.demo-home)>h1{max-width:calc(100% - 24px)}
+}
+@media(max-width:450px){
+ .route-active>header{padding:8px;gap:5px;display:grid;grid-template-columns:minmax(0,1fr) auto}
+ .route-active .brand{min-width:0;gap:4px;font-size:25px}
+ .route-active .brand>span{font-size:19px;letter-spacing:-.5px}
+ .route-active .brand small{font-size:6px;letter-spacing:1.4px}
+ .route-active .tools{gap:5px;min-width:0}
+ #mission-label{font-size:10px;max-width:104px;padding:7px;white-space:normal;line-height:1.2;text-align:center}
+ .route-active #settings-toggle{width:36px;min-width:36px;height:36px;min-height:36px}
+ .demo-experience:not(.demo-home)>h1{font-size:16px}
+ .demo-experience:not(.demo-home) .demo-guide{margin:7px}
+ .demo-experience:not(.demo-home) .demo-guide>img{width:56px;height:77px}
+ .demo-experience:not(.demo-home) .demo-response{padding:8px 10px}
+}
+@media(max-height:720px) and (orientation:portrait){
+ .phaser-active main,.demo-experience:not(.demo-home){min-height:calc(100dvh - 61px)}
+ .demo-home{height:calc(100dvh - 61px)}
+}
+@media(orientation:landscape) and (max-height:600px){
+ .phaser-active main,.demo-experience:not(.demo-home){min-height:calc(100dvh - 56px)}
+ .demo-home{height:calc(100dvh - 56px)}
+ .demo-experience:not(.demo-home){grid-template-columns:minmax(0,1fr) minmax(270px,40%);grid-template-rows:49px auto auto minmax(180px,1fr) auto auto}
+ .demo-experience:not(.demo-home) .scene-flow{grid-column:1;grid-row:2;margin-bottom:3px}
+ .demo-experience:not(.demo-home)>h1{grid-column:1;font-size:14px;margin-bottom:5px}
+ .demo-experience:not(.demo-home) .scene-window{grid-column:1;grid-row:4/7;min-height:180px}
+ .demo-experience:not(.demo-home) .demo-guide{grid-column:2;grid-row:1/6;align-self:start;margin:8px 8px 10px 0;align-items:start}
+ .demo-experience:not(.demo-home) .demo-guide>img{width:45px;height:62px}
+ .demo-experience:not(.demo-home) .demo-response>p{font-size:12px}
+ .demo-experience:not(.demo-home) .demo-bottom{grid-column:2;grid-row:6}
+ .demo-experience:not(.demo-home) .camera-tools{right:calc(40% + 10px)}
+ .identity-card #identity-error{display:block;grid-column:1/-1;grid-row:7;margin:3px 0;min-height:18px}
+}

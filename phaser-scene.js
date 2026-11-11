@@ -17,11 +17,26 @@ export function portraitLayout(width,height,{compact=false,captionBottom=144}={}
  const y=compact?12:Math.max(12,captionBottom+12-95*scale);
  return {x,y,scale,face:{x:x+60*scale,y:y+95*scale,width:120*scale,height:85*scale}};
 }
+// Measure the region left by the actual flow, heading, guide and action dock.
+// The window is a normal grid item, so expanded explanations grow the page, never cover the camera.
+function sceneBounds(){
+ const base=host.getBoundingClientRect(),windowRect=host.parentElement?.querySelector('.scene-window')?.getBoundingClientRect();
+ if(windowRect)return {x:windowRect.left-base.left,y:windowRect.top-base.top,width:windowRect.width,height:windowRect.height};
+ const landscape=compactLandscape();return {x:0,y:0,width:landscape?base.width*.56:base.width,height:Math.max(190,base.height-(landscape?70:130))};
+}
+function observeLayout(){
+ resizeObserver?.disconnect();
+ if(!resizeObserver||!host)return;
+ resizeObserver.observe(host);
+ for(const element of host.parentElement.querySelectorAll('.scene-window,.scene-flow,h1,.demo-guide,.demo-bottom'))resizeObserver.observe(element);
+}
 function updateDebug(){
  if(!host||!plant)return;
  const c=plant.cameras.main;
  host.dataset.ready=String(ready&&frameReady);host.dataset.mode=current.mode;host.dataset.zoom=String(plant.detailCamera?.visible?plant.detailCamera.zoom:c.zoom);host.classList.toggle('detail-open',Boolean(plant.detailCamera?.visible));host.dataset.focus=current.focus||'general';host.dataset.layers='fondo,correa,cajas,operaria';
- const snapshot=[c.width,c.height,c.zoom,c.worldView.x,c.worldView.y,host.dataset.zoom,current.mode,current.focus].join(':');
+ if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))host.dataset.detailRect=JSON.stringify(plant.detailRect);
+
+ const snapshot=[c.x,c.y,c.width,c.height,JSON.stringify(plant.detailRect),c.zoom,c.worldView.x,c.worldView.y,host.dataset.zoom,current.mode,current.focus].join(':');
  if(snapshot!==debugSnapshot){debugSnapshot=snapshot;host.dispatchEvent(new CustomEvent('scene:camera',{bubbles:true}));}
 }
 function viewFor(id){
@@ -32,10 +47,10 @@ function viewFor(id){
 function aim(id){
  if(!plant||!ready)return;
  const c=plant.cameras.main,view=viewFor(null);
- const key=[current.mode,id,current.found,c.width,c.height,instant()].join(':');
+ const key=[current.mode,id,current.found,c.x,c.y,c.width,c.height,instant()].join(':');
  if(key===cameraKey){foreground?.layout(host.clientWidth,host.clientHeight,current.mode==='decide');updateDebug();return;}
  const from=cameraMode,first=!cameraKey;cameraKey=key;cameraMode=current.mode;
- const mainKey=[current.mode,c.width,c.height,instant()].join(':');
+ const mainKey=[current.mode,c.x,c.y,c.width,c.height,instant()].join(':');
  if(mainKey!==mainCameraKey){
   mainCameraKey=mainKey;c.panEffect.reset();c.zoomEffect.reset();
   if(!instant()&&!first&&from!==current.mode&&['decide','discover'].includes(current.mode)){
@@ -45,8 +60,8 @@ function aim(id){
  const detail=plant.detailCamera,show=current.mode==='explore'&&current.found&&id==='zona-a';
  detail.visible=show;
  if(show){
-  const w=host.clientWidth,h=host.clientHeight,wide=compactLandscape(),sceneWidth=wide?w*.56:w;
-  const rect=wide?{x:sceneWidth*.06,y:92,width:sceneWidth*.88,height:h*.48}:{x:w*.18,y:132,width:w*.74,height:Math.min(h*.31,225)};
+  const area=sceneBounds(),margin=12;
+  const rect={x:area.x+margin,y:area.y+margin,width:Math.max(1,area.width-2*margin),height:Math.max(1,Math.min(area.height-2*margin,250))};
   detail.setViewport(rect.x,rect.y,rect.width,rect.height);const t=targets[id];
   const zoom=Math.min(rect.width/(t.width*1.3),rect.height/(t.height*1.5),2.2);
   detail.panEffect.reset();detail.zoomEffect.reset();
@@ -59,10 +74,10 @@ function aim(id){
 function layout(){
  if(!game||!plant||!host)return;
  const {width,height}=host.getBoundingClientRect();if(game.scale.width!==Math.round(width)||game.scale.height!==Math.round(height))game.scale.resize(Math.round(width),Math.round(height));
- const decision=current.mode==='decide';const landscape=compactLandscape();
+ const decision=current.mode==='decide';
  plant.operator?.setVisible(!decision);plant.reverseShot?.setVisible(decision);
- const reserve=decision?(landscape?0:205):(landscape?70:130);
- plant.cameras.main.setViewport(0,0,landscape?width*.56:width,Math.max(190,height-reserve));
+ const area=sceneBounds();
+ plant.cameras.main.setViewport(area.x,area.y,area.width,area.height);
  aim(current.focus);
  foreground?.layout(width,height,decision);
  const key=[current.mode,current.focus,current.touchSequence].join(':');
@@ -74,7 +89,7 @@ function layout(){
 }
 export async function mountScene(element,settings,onAction){
  host=element;current=settings;actionCallback=onAction;
- if(game){element.append(game.canvas);debugSnapshot='';resizeObserver?.disconnect();resizeObserver?.observe(element);game.scale.parent=element;game.scale.updateBounds();layout();return readyPromise;}
+ if(game){element.append(game.canvas);debugSnapshot='';observeLayout();game.scale.parent=element;game.scale.updateBounds();layout();return readyPromise;}
  if(!window.Phaser)throw new Error('phaser-not-loaded');
  const P=window.Phaser;
  readyPromise=new Promise((resolve,reject)=>{
@@ -91,6 +106,7 @@ export async function mountScene(element,settings,onAction){
     if(!['home','explore'].includes(current.mode))return;
     const d=this.detailCamera,inside=d.visible&&pointer.x>=d.x&&pointer.x<=d.x+d.width&&pointer.y>=d.y&&pointer.y<=d.y+d.height;
     const camera=inside?d:this.cameras.main;
+    if(pointer.x<camera.x||pointer.y<camera.y||pointer.x>camera.x+camera.width||pointer.y>camera.y+camera.height)return;
     const p=camera.getWorldPoint(pointer.x,pointer.y);if(p.x<0||p.y<0||p.x>WORLD.width||p.y>WORLD.height)return;
     if(current.mode==='home'){actionCallback('welcome',{x:p.x,y:p.y});return;}
     // Keep c4aa98c's detector and tolerance; this correction changes guidance, not the answer map.
@@ -113,14 +129,16 @@ export async function mountScene(element,settings,onAction){
   create(){foreground=this;this.edge=this.add.graphics();this.portrait=this.add.image(0,0,'operaria').setOrigin(0);this.layout(host.clientWidth,host.clientHeight,current.mode==='decide');}
   layout(w,h,decision){
    if(!this.portrait)return;
+   const area=sceneBounds();
+   this.cameras.main.setViewport(decision?area.x:0,decision?area.y:0,decision?area.width:w,decision?area.height:h).setScroll(decision?area.x:0,decision?area.y:0);
    const entering=decision&&!this.wasDecision;this.wasDecision=decision;
    if(instant()||!decision){this.tweens.killTweensOf([this.portrait,this.edge]);this.portrait.setAlpha(1);this.edge.setAlpha(1);}
    if(entering&&!instant()){this.portrait.setAlpha(0);this.edge.setAlpha(0);this.tweens.add({targets:[this.portrait,this.edge],alpha:1,duration:280,ease:'Cubic.easeOut'});}
    this.portrait.setVisible(decision);this.edge.clear();if(!decision){if(plant?.detailRect){const r=plant.detailRect;this.edge.lineStyle(7,0x062a36,1);this.edge.strokeRoundedRect(r.x-5,r.y-5,r.width+10,r.height+10,17);this.edge.lineStyle(4,0xffca30,1);this.edge.strokeRoundedRect(r.x-2,r.y-2,r.width+4,r.height+4,14);this.edge.lineStyle(3,0xf0fff8,1);const l=19;for(const [x,y,sx,sy] of [[r.x+12,r.y+12,1,1],[r.x+r.width-12,r.y+12,-1,1],[r.x+12,r.y+r.height-12,1,-1],[r.x+r.width-12,r.y+r.height-12,-1,-1]]){this.edge.beginPath();this.edge.moveTo(x,y+sy*l);this.edge.lineTo(x,y);this.edge.lineTo(x+sx*l,y);this.edge.strokePath();}}return;}
    // Comic foreground is a change of shot, not an action by the operator.
-   const caption=document.querySelector('.demo-experience>h1')?.getBoundingClientRect();
-   const captionBottom=caption?caption.bottom-host.getBoundingClientRect().top:144;
-   const shot=portraitLayout(w,h,{compact:compactLandscape(),captionBottom});
+   const shot=portraitLayout(area.width,area.height,{compact:true});
+   const centerOffset=area.width*.57*.44;
+   shot.x+=area.x+centerOffset;shot.y+=area.y;shot.face.x+=area.x+centerOffset;shot.face.y+=area.y;
    const {scale,x:px,y:py}=shot;host.dataset.portrait=JSON.stringify(shot);
    this.edge.lineStyle(6,0x032431,1);this.edge.beginPath();
    LAYERS[3].polygon.forEach(([x,y],i)=>{const xx=px+(x-654)*scale,yy=py+(y-321)*scale;i?this.edge.lineTo(xx,yy):this.edge.moveTo(xx,yy);});this.edge.closePath();this.edge.strokePath();
@@ -131,7 +149,7 @@ export async function mountScene(element,settings,onAction){
  game=new P.Game({type:P.CANVAS,parent:element,backgroundColor:'#062c3a',width:element.clientWidth,height:element.clientHeight,antialias:true,audio:{noAudio:true},loader:{imageLoadType:'HTMLImageElement'},banner:false,scene:[Plant,Foreground],scale:{mode:P.Scale.NONE},fps:{target:30,forceSetTimeOut:true},render:{pixelArt:false}});
  game.events.once('destroy',()=>{ready=false;});
  });
- resizeObserver=new ResizeObserver(()=>layout());resizeObserver.observe(element);
+ resizeObserver=new ResizeObserver(()=>layout());observeLayout();
  return readyPromise;
 }
 export function updateScene(settings,onAction){current=settings;actionCallback=onAction;layout();}

@@ -7,8 +7,8 @@ with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);reports=[]
  for width,height in [(390,844),(1366,768)]:
   c=b.new_context(viewport={'width':width,'height':height},reduced_motion='reduce');q=c.new_page();errors=[];q.on('pageerror',lambda e:errors.append(str(e)));q.goto('http://127.0.0.1:4173');q.locator('#network').filter(has_text='Lista sin conexión').wait_for()
-  def act(selector):q.locator(selector).wait_for(state='visible');q.locator(selector).focus();q.keyboard.press('Enter')
-  def state():return q.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1"))')
+  def act(selector):q.locator(selector).wait_for(state='visible');q.locator(selector).focus();q.keyboard.press('Enter');q.wait_for_function("()=>!document.querySelector('#app[aria-busy]')")
+  def state():return q.evaluate('(JSON.parse(localStorage.getItem("decidobien-review-v1:attempt-authority-v1"))?.state||JSON.parse(localStorage.getItem("decidobien-review-v1")))')
   def snap(name):
    q.wait_for_timeout(80);q.screenshot(path=str(OUT/f'{width}-{name}.png'));assert not q.evaluate('document.documentElement.scrollWidth>innerWidth')
   def step(name,n):

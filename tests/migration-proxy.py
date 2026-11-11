@@ -16,12 +16,14 @@ REVIEWED=Path('/tmp/decidobien-reviewed-c4');REVIEWED.mkdir(exist_ok=True)
 with tarfile.open(fileobj=io.BytesIO(subprocess.check_output(['git','-C',str(ROOT),'archive','c4aa98c']))) as archive:archive.extractall(REVIEWED,filter='data')
 MOTION_BASE=Path('/tmp/decidobien-motion-base');MOTION_BASE.mkdir(exist_ok=True)
 with tarfile.open(fileobj=io.BytesIO(subprocess.check_output(['git','-C',str(ROOT),'archive','9b19f10']))) as archive:archive.extractall(MOTION_BASE,filter='data')
+FLOW_BASE=Path('/tmp/decidobien-flow-base');FLOW_BASE.mkdir(exist_ok=True)
+with tarfile.open(fileobj=io.BytesIO(subprocess.check_output(['git','-C',str(ROOT),'archive','0def89f']))) as archive:archive.extractall(FLOW_BASE,filter='data')
 mode=Path('/tmp/decidobien-migration-mode');mode.write_text('old')
 class Handler(SimpleHTTPRequestHandler):
  def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(LEGACY),**kwargs)
  def do_GET(self):
-  if mode.read_text() in {'old','v6','review','demo1','reviewed','motion'}:
-   self.directory=str({'old':LEGACY,'v6':BASELINE,'review':REVIEW,'demo1':DEMO_ONE,'reviewed':REVIEWED,'motion':MOTION_BASE}[mode.read_text()]);return super().do_GET()
+  if mode.read_text() in {'old','v6','review','demo1','reviewed','motion','flow'}:
+   self.directory=str({'old':LEGACY,'v6':BASELINE,'review':REVIEW,'demo1':DEMO_ONE,'reviewed':REVIEWED,'motion':MOTION_BASE,'flow':FLOW_BASE}[mode.read_text()]);return super().do_GET()
   connection=http.client.HTTPConnection('127.0.0.1',4173);connection.request('GET',self.path);response=connection.getresponse();data=response.read();self.send_response(response.status)
   for key,value in response.getheaders():
    if key.lower() not in {'connection','server','date','transfer-encoding'}:self.send_header(key,value)

@@ -16,9 +16,9 @@ with sync_playwright() as p:
   page.locator('#phaser-host[data-ready="true"]').wait_for();page.reload();page.locator('#phaser-host[data-ready="true"]').wait_for()
   assert page.locator('img[src="x"]').count()==0
   assert not any('Demostraci' in r['url'] or (r['body'] and 'Demostraci' in r['body']) for r in requests)
-  assert not page.evaluate('localStorage.getItem("decidobien-review-v1").includes("Demostración")')
-  assert page.locator('#observe-next').is_visible();page.locator('#observe-next').click();assert page.locator('#phaser-host').get_attribute('data-focus')=='general'
+  assert not page.evaluate('localStorage.getItem("decidobien-review-v1:attempt-authority-v1").includes("Demostración")')
+  assert page.locator('#observe-next').is_visible();page.locator('#observe-next').click();page.wait_for_function("()=>!document.querySelector('#app[aria-busy]')");assert page.locator('#phaser-host').get_attribute('data-focus')=='general'
   # New browser session requests identity while retaining confirmed practice progress.
-  page.evaluate('sessionStorage.removeItem("decidobien-participant-v1")');before=page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).practice');page.reload();page.locator('#identity-form').wait_for();assert page.evaluate('JSON.parse(localStorage.getItem("decidobien-review-v1")).practice')==before
+  page.evaluate('sessionStorage.removeItem("decidobien-participant-v1")');before=page.evaluate('(JSON.parse(localStorage.getItem("decidobien-review-v1:attempt-authority-v1"))?.state||JSON.parse(localStorage.getItem("decidobien-review-v1"))).practice');page.reload();page.locator('#identity-form').wait_for();assert page.evaluate('(JSON.parse(localStorage.getItem("decidobien-review-v1:attempt-authority-v1"))?.state||JSON.parse(localStorage.getItem("decidobien-review-v1"))).practice')==before
   c.close();results.append(f'{width}x{height}')
  b.close();print(json.dumps({'first_visit':results,'keyboard':'Tab + Enter to start','identity':'escaped, tab-scoped, never in request or progress','missing_identity':'asks without discarding progress','human_pilot':'not performed'}))

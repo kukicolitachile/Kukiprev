@@ -18,7 +18,7 @@ with sync_playwright() as p:
   if offline:c.set_offline(True);q.reload();q.locator('#phaser-host[data-ready="true"]').wait_for()
   def wait(seconds=1):
    if record:q.wait_for_timeout(int(seconds*1000))
-  def act(selector,seconds=.8):q.locator(selector).click();wait(seconds)
+  def act(selector,seconds=.8):q.locator(selector).click();q.wait_for_function("()=>!document.querySelector('#app[aria-busy]')");wait(seconds)
   def shot(name):
    if record:q.screenshot(path=str(OUT/(name+'.png')))
   def progress(moment,done):
@@ -27,7 +27,7 @@ with sync_playwright() as p:
    assert q.locator('.motion-progress [aria-current="step"]').get_attribute('aria-label').startswith(moment)
   assert q.evaluate('__sounds.length')==0;wait(1.5);shot('inicio')
   # Optional welcome reacts without starting a practice attempt or locating the hazard.
-  act('#welcome-explore',.3);act('[data-welcome="materials"]',1);assert 'Los materiales ayudan' in q.locator('#welcome-reply').inner_text();assert q.evaluate('(JSON.parse(localStorage.getItem("decidobien-review-v1"))?.practice.attempts||0)')==0
+  act('#welcome-explore',.3);act('[data-welcome="materials"]',1);assert 'Los materiales ayudan' in q.locator('#welcome-reply').inner_text();assert q.evaluate('((JSON.parse(localStorage.getItem("decidobien-review-v1:attempt-authority-v1"))?.state||JSON.parse(localStorage.getItem("decidobien-review-v1")))?.practice.attempts||0)')==0
   act('#settings-toggle',.25);act('#sound-toggle',.3);q.locator('#sound-toggle[aria-pressed="true"]').wait_for();act('#experience-settings .primary',.2)
   act('#welcome-start',.7);q.locator('#first-name').fill('Persona');q.locator('#last-name').fill('Demostración');wait(.8);shot('nombre');act('#identity-form .primary',2);q.locator('#phaser-host[data-ready="true"]').wait_for();progress('Observa',0);shot('contexto')
   act('#observe-next',1);progress('Explora',1);assert q.locator('.camera-target,.scene-focus').count()==0;shot('explora-entrada')

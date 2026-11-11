@@ -18,7 +18,7 @@ test('certificate requires configured criterion, review, and real server validat
  const check=(p=policy,online=true,identity=person)=>certificateStatus(state,content,identity,p,online).code;
  assert.equal(check(),'incomplete');
  for(const q of content.evaluacion)state.evaluation.answers[q.id]=q.alternativas.find(a=>a.correcta).id;
- assert.equal(check(policy,true,null),'identity');assert.equal(check(policy,false),'pending_sync');assert.equal(check(),'pending_policy');
+ assert.equal(check(policy,true,null),'identity');assert.equal(check(policy,false),'offline_preview');assert.equal(check(),'pending_policy');
  assert.equal(check({criterion:'minimum_score',minimumScore:null}),'pending_policy');
  assert.equal(check({criterion:'completion',contentApproved:false}),'pending_review');
  assert.equal(check({criterion:'completion',contentApproved:true,requireServer:false}),'pending_server');

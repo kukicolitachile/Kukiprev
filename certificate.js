@@ -4,7 +4,7 @@ export function certificateStatus(state,content,participant,policy,online){
  const result=evaluateAnswers(state.evaluation.answers,content.evaluacion);
  if(!result.complete)return {code:'incomplete',label:'Recorrido pendiente'};
  if(!participant)return {code:'identity',label:'Revisar nombre y apellido'};
- if(!online)return {code:'pending_sync',label:'Certificado pendiente de sincronización'};
+ if(!online)return {code:'offline_preview',label:'Sin conexión. Esta demo no sincroniza registros ni emite certificados empresariales.'};
  if(!['completion','minimum_score'].includes(policy.criterion))return {code:'pending_policy',label:'Criterio de emisión pendiente de Julisa'};
  if(policy.criterion==='minimum_score'&&(!Number.isFinite(policy.minimumScore)||policy.minimumScore<0||policy.minimumScore>100))return {code:'pending_policy',label:'Puntaje mínimo pendiente de definir'};
  if(policy.criterion==='minimum_score'&&result.correct/result.total*100<policy.minimumScore)return {code:'not_eligible',label:'No alcanza el criterio configurado'};

@@ -17,26 +17,26 @@ with sync_playwright() as p:
  page.add_init_script("window.__lcp=[];new PerformanceObserver(l=>{for(const e of l.getEntries())__lcp.push(e.startTime)}).observe({type:'largest-contentful-paint',buffered:true});")
  page.goto(BASE);page.locator('#welcome-start').wait_for();page.locator('#network').filter(has_text='Lista sin conexión').wait_for()
  performance=page.evaluate("({domReady:performance.getEntriesByType('navigation')[0].domContentLoadedEventEnd,lcp:Math.max(0,...__lcp),requests:performance.getEntriesByType('resource').length})")
- caches=page.evaluate("async()=>{const c=await caches.open('decidobien-v16-flow');const keys=await c.keys();let bytes=0;for(const k of keys)bytes+=(await (await c.match(k)).arrayBuffer()).byteLength;return {files:keys.length,bytes,archived:keys.some(k=>k.url.endsWith('/assets/escenarios.json')),documents:keys.some(k=>k.url.includes('/docs/'))};}")
+ caches=page.evaluate("async()=>{const c=await caches.open('decidobien-v17-corrective');const keys=await c.keys();let bytes=0;for(const k of keys)bytes+=(await (await c.match(k)).arrayBuffer()).byteLength;return {files:keys.length,bytes,archived:keys.some(k=>k.url.endsWith('/assets/escenarios.json')),documents:keys.some(k=>k.url.includes('/docs/'))};}")
  assert caches['archived']==False and caches['documents']==False
  # The answer key needed by this offline demonstration is intentionally inspectable.
  forge=page.evaluate("""async()=>{
  const d=await(await fetch('./assets/correa-revision.json')).json();
  const s={version:1,view:'summary',practice:{found:true,attempts:1,selected:'alt-a',order:[]},evaluation:{answers:Object.fromEntries(d.evaluacion.map(q=>[q.id,q.alternativas.find(a=>a.correcta).id])),orders:{},current:0},reflection:[],studyRead:true};
- sessionStorage.setItem('decidobien-participant-v1',JSON.stringify({firstName:'Persona',lastName:'Prueba'}));localStorage.setItem('decidobien-review-v1',JSON.stringify(s));return d.evaluacion.length;
+ sessionStorage.setItem('decidobien-participant-v1',JSON.stringify({firstName:'Persona',lastName:'Prueba'}));const k='decidobien-review-v1:attempt-authority-v1',a=JSON.parse(localStorage.getItem(k));a.state=s;localStorage.setItem(k,JSON.stringify(a));return d.evaluacion.length;
  }""")
  page.reload();page.locator('.compact-summary').wait_for();assert f'{forge} de {forge}' in page.locator('.compact-summary').inner_text()
  assert 'No acredita' in page.locator('.compact-summary').inner_text()
  assert not errors,errors
  # Local progress cannot grant trusted approval; close only this exercise after explicit confirmation.
  page.evaluate("localStorage.setItem('unrelated-progress','keep');localStorage.setItem('decidobien-progress-v1','legacy-keep')")
- before=page.evaluate("localStorage.getItem('decidobien-review-v1')")
+ before=page.evaluate("localStorage.getItem('decidobien-review-v1:attempt-authority-v1')")
  page.locator('#settings-toggle').click();page.locator('#close-journey').click();page.locator('#keep-progress').click()
- assert page.evaluate("localStorage.getItem('decidobien-review-v1')")==before
+ assert page.evaluate("localStorage.getItem('decidobien-review-v1:attempt-authority-v1')")==before
  page.locator('#settings-toggle').click();page.locator('#close-journey').click();page.locator('#clear-progress').click()
- assert page.locator('#welcome-start').is_visible()
+ page.locator('#welcome-start').wait_for();assert page.locator('#welcome-start').is_visible()
  assert page.evaluate("sessionStorage.getItem('decidobien-participant-v1')") is None
- assert page.evaluate("JSON.parse(localStorage.getItem('decidobien-review-v1')).evaluation.answers")=={}
+ assert page.evaluate("(JSON.parse(localStorage.getItem('decidobien-review-v1:attempt-authority-v1'))?.state||JSON.parse(localStorage.getItem('decidobien-review-v1'))).evaluation.answers")=={}
  assert page.evaluate("localStorage.getItem('unrelated-progress')")=='keep'
  assert page.evaluate("localStorage.getItem('decidobien-progress-v1')")=='legacy-keep'
  for malformed in ['{bad json', 'x'*65537]:
@@ -46,6 +46,6 @@ with sync_playwright() as p:
  except Exception:pass
  assert page.evaluate('window.__injected||0')==0
  assert not errors,errors
- result={'blocked_paths':blocked,'headers':'CSP/no-sniff/referrer/permissions checked','offline_cache':caches,'local_headless_performance_ms':performance,'local_result_can_be_modified':True,'trusted_enterprise_result':False,'input_and_storage_checks':'malformed and oversized payloads recover; explicit close is scoped; inline script blocked','errors':errors}
+ result={'blocked_paths':blocked,'headers':'CSP/no-sniff/referrer/permissions checked','offline_cache':caches,'local_headless_performance_ms':performance,'local_result_can_be_modified':True,'trusted_enterprise_result':False,'input_and_storage_checks':'malformed legacy writes ignored after migration; explicit close persists tombstone; inline script blocked','errors':errors}
  Path('/tmp/decidobien-security-results.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))
  c.close();b.close()

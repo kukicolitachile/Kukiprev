@@ -4,7 +4,7 @@ let motion = true;
 try {motion = JSON.parse(localStorage.getItem(PREF))?.motion !== false;} catch {}
 let enabled = false, context = null, output = null;
 const buffers = new Map(), sources = new Set();
-let noticeTimer, cueTimer;
+let noticeTimer;
 export function motionAllowed() {return motion && !matchMedia('(prefers-reduced-motion: reduce)').matches;}
 function syncControls() {
  document.body.classList.toggle('effects-off', !motionAllowed());
@@ -38,21 +38,16 @@ export function feedback(kind,title,text='') {
  box.append(icon,content,dismiss);box.dataset.kind=kind;box.hidden=false;
  noticeTimer=setTimeout(()=>{box.hidden=true;},3200);
 }
-export function cueKuky(mode,text) {
- const cue=document.querySelector('.scene-companion');if(!cue)return;
- cue.dataset.mood=mode;
- const image=cue.querySelector('img');image.src=`./assets/kuky/${mode==='advance'?'motivador':'atento'}.png`;
- cue.querySelector('p').textContent=text;
-}
-export function clearFeedback() {clearTimeout(noticeTimer);clearTimeout(cueTimer);for(const id of ['interface-notice','kuky-moment']){const item=document.getElementById(id);if(item)item.hidden=true;}}
+export function clearFeedback() {clearTimeout(noticeTimer);for(const id of ['interface-notice','kuky-moment']){const item=document.getElementById(id);if(item)item.hidden=true;}}
 export function initExperience() {
  const controls=document.createElement('div');controls.className='experience-controls';
  controls.innerHTML='<button id="sound-toggle" aria-pressed="false">Activar sonido</button><button id="motion-toggle" aria-pressed="false">Pausar efectos</button>';
  const dialog=document.createElement('dialog');dialog.id='experience-settings';
- dialog.innerHTML='<h2>Ajustes y ayuda</h2><p>Sonidos de interfaz, sin alarmas del equipo.</p>';
+ dialog.setAttribute('aria-labelledby','experience-settings-title');
+ dialog.innerHTML='<h2 id="experience-settings-title">Ajustes y ayuda</h2><p>Sonidos de interfaz, sin alarmas del equipo.</p>';
  controls.className='settings-options';dialog.append(controls);
  const help=document.createElement('p');help.textContent='Toca los elementos o utiliza la lista accesible. En Descubre, los números explican la escena después de tu decisión. Los efectos cambian el encuadre y los resaltados; no simulan movimiento del equipo.';dialog.append(help);
- const privacy=document.createElement('p');privacy.textContent='El avance se guarda en este navegador. En una tablet compartida, otra persona puede retomarlo. No es un registro empresarial.';dialog.append(privacy);
+ const privacy=document.createElement('p');privacy.textContent='El avance se guarda en este navegador. Continúa solo tu participación o inicia otra para una persona distinta. Cerrar el recorrido no elimina los PDF de Descargas. No es un registro empresarial.';dialog.append(privacy);
  const finish=document.createElement('button');finish.className='back';finish.id='close-journey';finish.textContent='Cerrar recorrido en esta tablet';finish.onclick=()=>{dialog.close();window.dispatchEvent(new Event('decidobien:close-journey'));};dialog.append(finish);
  const close=document.createElement('button');close.className='primary';close.textContent='Volver a la escena';close.onclick=()=>dialog.close();dialog.append(close);const install=document.querySelector('#install');if(install)dialog.insertBefore(install,close);document.body.append(dialog);
  const settings=document.createElement('button');settings.id='settings-toggle';settings.textContent='Ajustes';settings.setAttribute('aria-haspopup','dialog');settings.onclick=()=>dialog.showModal();document.querySelector('.tools').append(settings);
