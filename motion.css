@@ -97,11 +97,13 @@ body.phaser-active{overflow:auto}
 @media(max-height:720px) and (orientation:portrait){
  .phaser-active main,.demo-experience:not(.demo-home){min-height:calc(100dvh - 61px)}
  .demo-home{height:calc(100dvh - 61px)}
+ .demo-experience.comic-shot{grid-template-rows:52px auto auto minmax(140px,1fr) auto auto}
+ .demo-experience.comic-shot .scene-window{min-height:140px}
 }
 @media(orientation:landscape) and (max-height:600px){
  .phaser-active main,.demo-experience:not(.demo-home){min-height:calc(100dvh - 56px)}
  .demo-home{height:calc(100dvh - 56px)}
- .demo-experience:not(.demo-home){grid-template-columns:minmax(0,1fr) minmax(270px,40%);grid-template-rows:49px auto auto minmax(180px,1fr) auto auto}
+ .demo-experience:not(.demo-home){grid-template-columns:minmax(0,1fr) minmax(270px,40%);grid-template-rows:49px auto auto minmax(0,1fr) auto auto}
  .demo-experience:not(.demo-home) .scene-flow{grid-column:1;grid-row:2;margin-bottom:3px}
  .demo-experience:not(.demo-home)>h1{grid-column:1;font-size:14px;margin-bottom:5px}
  .demo-experience:not(.demo-home) .scene-window{grid-column:1;grid-row:4/7;min-height:180px}

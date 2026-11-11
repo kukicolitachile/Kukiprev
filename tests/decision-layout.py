@@ -20,6 +20,6 @@ with sync_playwright() as p:
   assert q.locator('#experience-settings #install').count()==1
   if width==390:
    q.set_viewport_size({'width':1900,'height':988});q.wait_for_timeout(250);verify();q.set_viewport_size({'width':844,'height':390});q.wait_for_timeout(250);verify()
-   q.locator('.decision-tray [data-decision="alt-a"]').focus();q.keyboard.press('Enter');q.locator('#confirm-decision').focus();q.keyboard.press('Enter');q.locator('.demo-experience[data-stage="discover"]').wait_for()
+   q.locator('.decision-tray [data-decision="alt-a"]').focus();q.keyboard.press('Enter');q.wait_for_function("()=>!document.querySelector('#app[aria-busy]')");q.locator('#confirm-decision:not([disabled])').wait_for();q.locator('#confirm-decision').focus();q.keyboard.press('Enter');q.locator('.demo-experience[data-stage="discover"]').wait_for()
   assert not errors,errors;c.close()
  b.close();(OUT/'responsive-checks.json').write_text(json.dumps({'viewports':evidence,'resize_and_keyboard':'passed','mechanical_animation':'none'},indent=2));print(json.dumps({'viewports':len(evidence),'face_clipped_or_covered':False,'resize_and_keyboard':'passed','errors':[]}))

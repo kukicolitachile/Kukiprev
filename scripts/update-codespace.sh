@@ -8,7 +8,7 @@ from pathlib import Path
 
 PORT=4173
 EXPECTED_RELEASE='2.7.0-review.1'
-EXPECTED_SOURCE_HASH='2f1321a289e11d4c'
+EXPECTED_SOURCE_HASH='4676a4426acebc39'
 REVIEW_BRANCH='implementation/correa-phaser-demo'
 START_COMMAND=['npm','start']
 ROOT=Path.cwd().resolve()

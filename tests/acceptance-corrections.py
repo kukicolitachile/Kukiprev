@@ -147,6 +147,29 @@ with sync_playwright() as pw:
         case('A2-detail-390',detail_geometry)
         case('A2-detail-1366',detail_geometry,1366,768)
         case('A2-detail-844-horizontal',detail_geometry,844,390)
+        def decide_rotation(c,q):
+            identify(q);click(q,'#observe-next');click(q,'[data-open-options]');click(q,'#scene-options [data-zone="zona-a"]');click(q,'#explore-next')
+            assert read_state(q)['journey']['stage']=='decide';q.set_viewport_size({'width':844,'height':390});q.wait_for_timeout(240)
+            assert q.evaluate('scrollY')==0,'Rotation must expose the four decision actions without scrolling'
+            measurements=[]
+            for selector in ['.decision-tray [data-decision="alt-a"]','.decision-tray [data-decision="alt-b"]','.decision-tray [data-decision="alt-c"]','#confirm-decision']:
+                item=q.locator(selector);r=item.bounding_box();hit=item.evaluate('''e=>{const r=e.getBoundingClientRect(),n=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {own:e===n||e.contains(n),id:n?.closest('button')?.id||null,decision:n?.closest('button')?.dataset.decision||null}}''')
+                measurements.append({'selector':selector,'rect':r,'center_hit':hit});assert r['width']>=44 and r['height']>=44 and r['x']>=0 and r['y']>=0 and r['x']+r['width']<=844 and r['y']+r['height']<=390 and hit['own'],measurements
+            q.screenshot(path=str(OUT/'decide-after-rotation-844.png'));selected=center_press(q,'.decision-tray [data-decision="alt-a"]');assert read_state(q)['journey']['pending']=='alt-a';assert q.evaluate('scrollY')==0
+            confirmed=center_press(q,'#confirm-decision');assert read_state(q)['journey']['stage']=='discover'
+            return {'rotation':[[390,844],[844,390]],'no_scroll':True,'four_actions':measurements,'physical_selection':selected,'physical_confirmation':confirmed}
+        case('A2-decide-rotation-844',decide_rotation)
+        def decide_phone(c,q):
+            identify(q);click(q,'#observe-next');click(q,'[data-open-options]');click(q,'#scene-options [data-zone="zona-a"]');click(q,'#explore-next');q.wait_for_timeout(180)
+            assert read_state(q)['journey']['stage']=='decide' and q.evaluate('scrollY')==0
+            face=q.locator('#phaser-host').evaluate('''e=>{const r=e.getBoundingClientRect(),s=JSON.parse(e.dataset.portrait),f={x:r.x+s.face.x,y:r.y+s.face.y,width:s.face.width,height:s.face.height};const overlaps=[];for(const selector of ['header','#mission-title','.demo-guide','.demo-bottom']){const b=document.querySelector(selector).getBoundingClientRect();if(f.x<b.right&&f.x+f.width>b.left&&f.y<b.bottom&&f.y+f.height>b.top)overlaps.push(selector)}return {rect:f,scale:s.scale,overlaps}}''');f=face['rect'];assert face['overlaps']==[] and face['scale']<=1.65 and f['x']>=0 and f['y']>=0 and f['x']+f['width']<=360 and f['y']+f['height']<=640,face
+            measurements=[]
+            for selector in ['.decision-tray [data-decision="alt-a"]','.decision-tray [data-decision="alt-b"]','.decision-tray [data-decision="alt-c"]','#confirm-decision']:
+                item=q.locator(selector);r=item.bounding_box();own=item.evaluate('''e=>{const r=e.getBoundingClientRect(),n=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return e===n||e.contains(n)}''');measurements.append({'selector':selector,'rect':r,'center_hit_own':own});assert r['width']>=44 and r['height']>=44 and r['x']>=0 and r['y']>=0 and r['x']+r['width']<=360 and r['y']+r['height']<=640 and own,measurements
+            assert not q.evaluate('document.documentElement.scrollWidth>innerWidth');q.screenshot(path=str(OUT/'decide-phone-360x640.png'));selected=center_press(q,'.decision-tray [data-decision="alt-a"]');assert read_state(q)['journey']['pending']=='alt-a' and q.evaluate('scrollY')==0
+            confirmed=center_press(q,'#confirm-decision');assert read_state(q)['journey']['stage']=='discover'
+            return {'viewport':[360,640],'no_scroll':True,'face':face,'four_actions':measurements,'physical_selection':selected,'physical_confirmation':confirmed}
+        case('A2-decide-phone-360',decide_phone,360,640)
         def assessment(c,q):
             evaluation(q,keyboard=True);snapshots=[];tab_activate(q,'#exit-evaluation');exit_dialog=dialog_name(q);tab_activate(q,'#stay')
             for answer in ['ev1-b','ev2-b','ev3-c']:

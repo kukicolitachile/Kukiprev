@@ -41,6 +41,7 @@ function updateDebug(){
 }
 function viewFor(id){
  const c=plant.cameras.main,w=c.width,h=c.height;
+ if(!id&&current.mode==='decide'&&h<230)return {x:470.5,y:750,zoom:w/941};
  if(!id)return current.mode==='explore'?{x:WORLD.width/2,y:WORLD.height/2,zoom:Math.min(w/WORLD.width,h/WORLD.height)}:{x:470.5,y:840,zoom:Math.min(w/941,h/1120)};
  const t=targets[id];return {x:t.x,y:t.y,zoom:Math.min(w/(t.width*1.7),h/(t.height*2.1),1.8)};
 }
@@ -137,6 +138,7 @@ export async function mountScene(element,settings,onAction){
    this.portrait.setVisible(decision);this.edge.clear();if(!decision){if(plant?.detailRect){const r=plant.detailRect;this.edge.lineStyle(7,0x062a36,1);this.edge.strokeRoundedRect(r.x-5,r.y-5,r.width+10,r.height+10,17);this.edge.lineStyle(4,0xffca30,1);this.edge.strokeRoundedRect(r.x-2,r.y-2,r.width+4,r.height+4,14);this.edge.lineStyle(3,0xf0fff8,1);const l=19;for(const [x,y,sx,sy] of [[r.x+12,r.y+12,1,1],[r.x+r.width-12,r.y+12,-1,1],[r.x+12,r.y+r.height-12,1,-1],[r.x+r.width-12,r.y+r.height-12,-1,-1]]){this.edge.beginPath();this.edge.moveTo(x,y+sy*l);this.edge.lineTo(x,y);this.edge.lineTo(x+sx*l,y);this.edge.strokePath();}}return;}
    // Comic foreground is a change of shot, not an action by the operator.
    const shot=portraitLayout(area.width,area.height,{compact:true});
+   if(area.height<230){const scale=Math.min(area.width*.56*.94/243,Math.max(60,area.height-24)/180,1.65);shot.scale=scale;shot.x=area.width*.56*.57-243*scale/2;shot.y=12;shot.face={x:shot.x+60*scale,y:shot.y+95*scale,width:120*scale,height:85*scale};}
    const centerOffset=area.width*.57*.44;
    shot.x+=area.x+centerOffset;shot.y+=area.y;shot.face.x+=area.x+centerOffset;shot.face.y+=area.y;
    const {scale,x:px,y:py}=shot;host.dataset.portrait=JSON.stringify(shot);
