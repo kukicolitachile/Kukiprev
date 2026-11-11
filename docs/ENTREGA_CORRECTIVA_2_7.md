@@ -12,7 +12,7 @@ Base auditada `0def89f`, rama `implementation/correa-phaser-demo`. Julisa autori
 | A4 Coherencia | Ejemplo hipotético visible; rótulo de retomar; dos devoluciones aprobadas; mensaje offline sin cola ficticia; aviso de PDF en Descargas. Guía por estado, original atento al explicar cualquier decisión. | Comparación literal: solo versión de contenido, síntesis Observa y dos devoluciones; preguntas, alternativas, respuestas correctas, zonas, imágenes y política sin cambios. |
 | A5 Candidata y QA | Una candidata, pruebas dirigidas contra fallos de la base y regresión afectada; versión verificable y evidencia de ruta real. | Catorce casos independientes; resultados y límites junto a video/capturas. |
 
-[Video del recorrido completo](correctiva-2.7/DecidoBien-2.7-recorrido.mp4) · [QA independiente](correctiva-2.7/INFORME_QA_INDEPENDIENTE.md) · [Resultados](correctiva-2.7/accepted-checks.json) · [Capturas y comprobaciones](correctiva-2.7/README.md).
+[Video del recorrido completo](correctiva-2.7/DecidoBien-2.7-recorrido.mp4) · [QA independiente](correctiva-2.7/qa/INFORME_QA_INDEPENDIENTE.md) · [Resultados](correctiva-2.7/accepted-checks.json) · [Capturas y comprobaciones](correctiva-2.7/README.md).
 
 ## Límites explícitos
 

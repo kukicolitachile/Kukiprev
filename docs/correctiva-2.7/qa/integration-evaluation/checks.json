@@ -1,0 +1,55 @@
+{
+  "url": "http://127.0.0.1:4173",
+  "baseline": false,
+  "scope": "Chromium automated, isolated contexts, fictitious names; no human, physical device or Safari validation",
+  "cases": [
+    {
+      "id": "A3-evaluation-zero-offline-keyboard",
+      "viewport": [
+        1366,
+        768
+      ],
+      "evidence": {
+        "input": "real Tab and Enter route",
+        "confirmed_answers": [
+          {
+            "eval-condiciones": "ev1-b"
+          },
+          {
+            "eval-condiciones": "ev1-b",
+            "eval-comunicacion": "ev2-b"
+          },
+          {
+            "eval-condiciones": "ev1-b",
+            "eval-comunicacion": "ev2-b",
+            "eval-proceso": "ev3-c"
+          }
+        ],
+        "zero_of_three_completes_without_approval": true,
+        "offline_reload_and_online_recovery": true,
+        "exit_dialog": {
+          "id": "",
+          "label": null,
+          "labelledby": "dialog-title-1",
+          "name": "Salir de la evaluación"
+        },
+        "retry_dialog": {
+          "id": "",
+          "label": null,
+          "labelledby": "dialog-title-1",
+          "name": "Repetir evaluación"
+        }
+      },
+      "status": "pass"
+    }
+  ],
+  "runtime": {
+    "release": "2.7.0-review.1",
+    "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+    "branch": "implementation/correa-phaser-demo",
+    "modified": true,
+    "source_hash": "37a61fdfa56b735c"
+  },
+  "passed": 1,
+  "failed": 0
+}

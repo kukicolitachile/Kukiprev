@@ -1,0 +1,149 @@
+{
+  "url": "http://127.0.0.1:4186",
+  "baseline": true,
+  "scope": "Chromium automated, isolated contexts, fictitious names; no human, physical device or Safari validation",
+  "cases": [
+    {
+      "id": "UX01-partial-name-settings",
+      "viewport": [
+        390,
+        844
+      ],
+      "status": "fail",
+      "error": "{'before': ['Persona QA parcial', 'Ficticia parcial'], 'after': ['', '']}",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 21, in case\n    row['evidence']=fn(c,q) or {};row['status']='pass'\n                    ^^^^^^^\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 33, in name_preserved\n    assert before==after,{'before':before,'after':after}\n           ^^^^^^^^^^^^^\nAssertionError: {'before': ['Persona QA parcial', 'Ficticia parcial'], 'after': ['', '']}\n"
+    },
+    {
+      "id": "JG01-all-foci-1366",
+      "viewport": [
+        1366,
+        768
+      ],
+      "status": "fail",
+      "error": "[{'rect': {'x': 481, 'y': 226.390625, 'width': 46, 'height': 46}, 'hit': {'tag': 'BUTTON', 'classes': 'scene-focus  ', 'focus': '1'}, 'wanted': 1, 'actual': 1}, {'rect': {'x': 802.40625, 'y': 500.796875, 'width': 46, 'height': 46}, 'hit': {'tag': 'DIV', 'classes': 'demo-response', 'focus': None}, 'wanted': 0, 'actual': 1}]",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 21, in case\n    row['evidence']=fn(c,q) or {};row['status']='pass'\n                    ^^^^^^^\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 41, in focis\n    assert event['hit']['focus']==str(i) and event['actual']==i,events\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: [{'rect': {'x': 481, 'y': 226.390625, 'width': 46, 'height': 46}, 'hit': {'tag': 'BUTTON', 'classes': 'scene-focus  ', 'focus': '1'}, 'wanted': 1, 'actual': 1}, {'rect': {'x': 802.40625, 'y': 500.796875, 'width': 46, 'height': 46}, 'hit': {'tag': 'DIV', 'classes': 'demo-response', 'focus': None}, 'wanted': 0, 'actual': 1}]\n"
+    },
+    {
+      "id": "JG01-all-foci-390",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "input": "physical center pointer/touch, no force",
+        "events": [
+          {
+            "rect": {
+              "x": 26.984375,
+              "y": 283.671875,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  ",
+              "focus": "1"
+            },
+            "wanted": 1,
+            "actual": 1
+          },
+          {
+            "rect": {
+              "x": 287.875,
+              "y": 506.421875,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "0"
+            },
+            "wanted": 0,
+            "actual": 0
+          },
+          {
+            "rect": {
+              "x": 133.234375,
+              "y": 362.84375,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  ",
+              "focus": "2"
+            },
+            "wanted": 2,
+            "actual": 2
+          },
+          {
+            "rect": {
+              "x": 26.984375,
+              "y": 283.671875,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "1"
+            },
+            "wanted": 1,
+            "actual": 1
+          },
+          {
+            "rect": {
+              "x": 133.234375,
+              "y": 362.84375,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "2"
+            },
+            "wanted": 2,
+            "actual": 2
+          },
+          {
+            "rect": {
+              "x": 287.875,
+              "y": 506.421875,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "0"
+            },
+            "wanted": 0,
+            "actual": 0
+          }
+        ]
+      },
+      "status": "pass"
+    },
+    {
+      "id": "SG01-AR01-stale-close",
+      "viewport": [
+        390,
+        844
+      ],
+      "status": "fail",
+      "error": "{'before': 1, 'cleared': {'version': 1, 'view': 'home', 'practice': {'found': False, 'attempts': 0, 'selected': None, 'order': []}, 'evaluation': {'answers': {}, 'orders': {}, 'current': 0}, 'reflection': [], 'studyRead': False}, 'after_stale': {'version': 1, 'view': 'practice', 'practice': {'found': False, 'attempts': 1, 'selected': None, 'order': ['alt-c', 'alt-b', 'alt-a']}, 'evaluation': {'answers': {}, 'orders': {}, 'current': 0}, 'reflection': [], 'studyRead': False, 'journey': {'stage': 'explore', 'pending': None, 'hint': True, 'focus': 0, 'applied': None, 'appliedConfirmed': False, 'studyIndex': 0, 'cameraFocus': 'zona-c', 'explored': ['zona-c'], 'lastTouch': {'x': 117.625, 'y': 635.36}, 'exploreEvent': 'hint'}, 'resumeView': 'practice'}}",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 21, in case\n    row['evidence']=fn(c,q) or {};row['status']='pass'\n                    ^^^^^^^\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 58, in stale_close\n    assert not after or after['practice']['attempts']==0,{'before':before,'cleared':cleared,'after_stale':after}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'before': 1, 'cleared': {'version': 1, 'view': 'home', 'practice': {'found': False, 'attempts': 0, 'selected': None, 'order': []}, 'evaluation': {'answers': {}, 'orders': {}, 'current': 0}, 'reflection': [], 'studyRead': False}, 'after_stale': {'version': 1, 'view': 'practice', 'practice': {'found': False, 'attempts': 1, 'selected': None, 'order': ['alt-c', 'alt-b', 'alt-a']}, 'evaluation': {'answers': {}, 'orders': {}, 'current': 0}, 'reflection': [], 'studyRead': False, 'journey': {'stage': 'explore', 'pending': None, 'hint': True, 'focus': 0, 'applied': None, 'appliedConfirmed': False, 'studyIndex': 0, 'cameraFocus': 'zona-c', 'explored': ['zona-c'], 'lastTouch': {'x': 117.625, 'y': 635.36}, 'exploreEvent': 'hint'}, 'resumeView': 'practice'}}\n"
+    }
+  ],
+  "runtime": {
+    "release": "2.6.1-review.1",
+    "commit": "unavailable",
+    "branch": "unavailable",
+    "modified": true,
+    "source_hash": "d903e9099f971e16"
+  },
+  "passed": 1,
+  "failed": 3
+}

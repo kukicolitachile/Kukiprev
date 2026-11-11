@@ -1,0 +1,184 @@
+{
+  "url": "http://127.0.0.1:4173",
+  "baseline": false,
+  "scope": "Chromium automated, isolated contexts, fictitious names; no human, physical device or Safari validation",
+  "cases": [
+    {
+      "id": "A2-detail-844-horizontal",
+      "viewport": [
+        844,
+        390
+      ],
+      "evidence": {
+        "full_image_before_finding": {
+          "window": {
+            "x": 2,
+            "y": 168.1875,
+            "right": 506,
+            "bottom": 388
+          },
+          "image": {
+            "x": 192.10100179425837,
+            "y": 168.1875,
+            "right": 315.8112664473684,
+            "bottom": 388
+          }
+        },
+        "no_DOM_target_markers_before_attempt": true,
+        "no_detail_before_finding": true,
+        "initial_detail_rect": {
+          "x": 14,
+          "y": 180.1875,
+          "width": 480,
+          "height": 195.8125
+        },
+        "reachable_detail_rect": {
+          "x": 14,
+          "y": 180.1875,
+          "width": 480,
+          "height": 195.8125
+        },
+        "document_scroll": 0,
+        "intersections": [
+          {
+            "selector": "#mission-title",
+            "area": 0.0
+          },
+          {
+            "selector": ".flow-location",
+            "area": 0
+          },
+          {
+            "selector": ".demo-guide",
+            "area": 0.0
+          },
+          {
+            "selector": ".demo-bottom",
+            "area": 0.0
+          },
+          {
+            "selector": ".camera-tools",
+            "area": 0.0
+          }
+        ],
+        "no_internal_response_scroll": true,
+        "CTA_center_reached": {
+          "rect": {
+            "x": 515,
+            "y": 336.109375,
+            "width": 318,
+            "height": 44.890625
+          },
+          "hit": {
+            "tag": "BUTTON",
+            "classes": "primary",
+            "focus": null
+          }
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "id": "A2-decide-phone-360",
+      "viewport": [
+        360,
+        640
+      ],
+      "evidence": {
+        "viewport": [
+          360,
+          640
+        ],
+        "no_scroll": true,
+        "face": {
+          "rect": {
+            "x": 187.08499999999998,
+            "y": 264.89375,
+            "width": 34.8,
+            "height": 24.65
+          },
+          "scale": 0.29,
+          "overlaps": []
+        },
+        "four_actions": [
+          {
+            "selector": ".decision-tray [data-decision=\"alt-a\"]",
+            "rect": {
+              "x": 21,
+              "y": 473.34375,
+              "width": 101.328125,
+              "height": 82
+            },
+            "center_hit_own": true
+          },
+          {
+            "selector": ".decision-tray [data-decision=\"alt-b\"]",
+            "rect": {
+              "x": 129.328125,
+              "y": 473.34375,
+              "width": 101.328125,
+              "height": 82
+            },
+            "center_hit_own": true
+          },
+          {
+            "selector": ".decision-tray [data-decision=\"alt-c\"]",
+            "rect": {
+              "x": 237.65625,
+              "y": 473.34375,
+              "width": 101.34375,
+              "height": 82
+            },
+            "center_hit_own": true
+          },
+          {
+            "selector": "#confirm-decision",
+            "rect": {
+              "x": 14,
+              "y": 587.84375,
+              "width": 332,
+              "height": 44.890625
+            },
+            "center_hit_own": true
+          }
+        ],
+        "physical_selection": {
+          "rect": {
+            "x": 21,
+            "y": 473.34375,
+            "width": 101.328125,
+            "height": 82
+          },
+          "hit": {
+            "tag": "svg",
+            "classes": "[object SVGAnimatedString]",
+            "focus": null
+          }
+        },
+        "physical_confirmation": {
+          "rect": {
+            "x": 14,
+            "y": 587.84375,
+            "width": 332,
+            "height": 44.890625
+          },
+          "hit": {
+            "tag": "BUTTON",
+            "classes": "primary",
+            "focus": null
+          }
+        }
+      },
+      "status": "pass"
+    }
+  ],
+  "runtime": {
+    "release": "2.7.0-review.1",
+    "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+    "branch": "implementation/correa-phaser-demo",
+    "modified": true,
+    "source_hash": "73a6a0ff4f16e403"
+  },
+  "passed": 2,
+  "failed": 0
+}

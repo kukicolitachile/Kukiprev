@@ -1,0 +1,417 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "lens": {
+      "rect": {
+        "x": 14,
+        "y": 249.59375,
+        "width": 362,
+        "height": 250
+      },
+      "intersections": [
+        {
+          "selector": "#mission-title",
+          "area": 0
+        },
+        {
+          "selector": ".scene-flow",
+          "area": 0
+        },
+        {
+          "selector": ".demo-guide",
+          "area": 0
+        },
+        {
+          "selector": ".demo-bottom",
+          "area": 0
+        }
+      ]
+    },
+    "realPointerRevisit": true,
+    "metrics": {
+      "response": {
+        "height": 126,
+        "scrollHeight": 126,
+        "overflow": "visible"
+      },
+      "why": {
+        "x": 83,
+        "y": 702.609375,
+        "width": 287,
+        "height": 36
+      },
+      "header": {
+        "width": 390,
+        "settingsRight": 380
+      },
+      "documentWidth": 390,
+      "innerWidth": 390,
+      "description": "scene-description",
+      "kuky": "./assets/kuky/atento.png"
+    },
+    "expanded": {
+      "responseHeight": 602,
+      "scrollHeight": 602,
+      "overflow": "visible",
+      "decision": "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+      "paragraphs": [
+        "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+        "Comunicar gestiona la anomalía, pero no elimina el peligro. Mantener las manos fuera del acceso representado no autoriza otra tarea. Falta validar la respuesta del proceso.",
+        "Deben aclararse los accesos previstos, los resguardos o dispositivos que correspondan al diseño, el método de trabajo y las responsabilidades para esta tarea. No se confirma que esos controles existan o funcionen en la planta. No hay información suficiente para enseñar una intervención: el caso se limita a reconocer la exposición y los límites de actuación.",
+        "No introducir las manos ni intentar acomodar la banda o retirar la acumulación representada. No asumir que observar el equipo detenido permite intervenirlo. No interpretar la comunicación de la anomalía como confirmación de que el peligro está controlado. No continuar una tarea que implique aproximar las manos al movimiento peligroso sin condiciones y método definidos para esa tarea."
+      ]
+    },
+    "listStates": [
+      {
+        "focus": "0",
+        "pressed": "true",
+        "text": "1. Acceso al movimiento, explorado"
+      },
+      {
+        "focus": "1",
+        "pressed": "false",
+        "text": "2. La tarea que lleva a acercarse, explorado"
+      },
+      {
+        "focus": "2",
+        "pressed": "false",
+        "text": "3. Controles y método"
+      }
+    ]
+  },
+  {
+    "viewport": [
+      1366,
+      768
+    ],
+    "lens": {
+      "rect": {
+        "x": 147,
+        "y": 231.390625,
+        "width": 732,
+        "height": 250
+      },
+      "intersections": [
+        {
+          "selector": "#mission-title",
+          "area": 0
+        },
+        {
+          "selector": ".scene-flow",
+          "area": 0
+        },
+        {
+          "selector": ".demo-guide",
+          "area": 0
+        },
+        {
+          "selector": ".demo-bottom",
+          "area": 0
+        }
+      ]
+    },
+    "realPointerRevisit": true,
+    "metrics": {
+      "response": {
+        "height": 148,
+        "scrollHeight": 148,
+        "overflow": "visible"
+      },
+      "why": {
+        "x": 969,
+        "y": 270.375,
+        "width": 237,
+        "height": 36
+      },
+      "header": {
+        "width": 1366,
+        "settingsRight": 1350
+      },
+      "documentWidth": 1366,
+      "innerWidth": 1366,
+      "description": "scene-description",
+      "kuky": "./assets/kuky/atento.png"
+    },
+    "expanded": {
+      "responseHeight": 696,
+      "scrollHeight": 696,
+      "overflow": "visible",
+      "decision": "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+      "paragraphs": [
+        "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+        "Comunicar gestiona la anomalía, pero no elimina el peligro. Mantener las manos fuera del acceso representado no autoriza otra tarea. Falta validar la respuesta del proceso.",
+        "Deben aclararse los accesos previstos, los resguardos o dispositivos que correspondan al diseño, el método de trabajo y las responsabilidades para esta tarea. No se confirma que esos controles existan o funcionen en la planta. No hay información suficiente para enseñar una intervención: el caso se limita a reconocer la exposición y los límites de actuación.",
+        "No introducir las manos ni intentar acomodar la banda o retirar la acumulación representada. No asumir que observar el equipo detenido permite intervenirlo. No interpretar la comunicación de la anomalía como confirmación de que el peligro está controlado. No continuar una tarea que implique aproximar las manos al movimiento peligroso sin condiciones y método definidos para esa tarea."
+      ]
+    },
+    "listStates": [
+      {
+        "focus": "0",
+        "pressed": "true",
+        "text": "1. Acceso al movimiento, explorado"
+      },
+      {
+        "focus": "1",
+        "pressed": "false",
+        "text": "2. La tarea que lleva a acercarse, explorado"
+      },
+      {
+        "focus": "2",
+        "pressed": "false",
+        "text": "3. Controles y método"
+      }
+    ]
+  },
+  {
+    "viewport": [
+      320,
+      568
+    ],
+    "lens": {
+      "rect": {
+        "x": 14,
+        "y": 237.34375,
+        "width": 292,
+        "height": 206
+      },
+      "intersections": [
+        {
+          "selector": "#mission-title",
+          "area": 0
+        },
+        {
+          "selector": ".scene-flow",
+          "area": 0
+        },
+        {
+          "selector": ".demo-guide",
+          "area": 0
+        },
+        {
+          "selector": ".demo-bottom",
+          "area": 0
+        }
+      ]
+    },
+    "realPointerRevisit": true,
+    "metrics": {
+      "response": {
+        "height": 144,
+        "scrollHeight": 144,
+        "overflow": "visible"
+      },
+      "why": {
+        "x": 83,
+        "y": 558.71875,
+        "width": 217,
+        "height": 36
+      },
+      "header": {
+        "width": 320,
+        "settingsRight": 310
+      },
+      "documentWidth": 320,
+      "innerWidth": 320,
+      "description": "scene-description",
+      "kuky": "./assets/kuky/atento.png"
+    },
+    "expanded": {
+      "responseHeight": 728,
+      "scrollHeight": 728,
+      "overflow": "visible",
+      "decision": "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+      "paragraphs": [
+        "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+        "Comunicar gestiona la anomalía, pero no elimina el peligro. Mantener las manos fuera del acceso representado no autoriza otra tarea. Falta validar la respuesta del proceso.",
+        "Deben aclararse los accesos previstos, los resguardos o dispositivos que correspondan al diseño, el método de trabajo y las responsabilidades para esta tarea. No se confirma que esos controles existan o funcionen en la planta. No hay información suficiente para enseñar una intervención: el caso se limita a reconocer la exposición y los límites de actuación.",
+        "No introducir las manos ni intentar acomodar la banda o retirar la acumulación representada. No asumir que observar el equipo detenido permite intervenirlo. No interpretar la comunicación de la anomalía como confirmación de que el peligro está controlado. No continuar una tarea que implique aproximar las manos al movimiento peligroso sin condiciones y método definidos para esa tarea."
+      ]
+    },
+    "listStates": [
+      {
+        "focus": "0",
+        "pressed": "true",
+        "text": "1. Acceso al movimiento, explorado"
+      },
+      {
+        "focus": "1",
+        "pressed": "false",
+        "text": "2. La tarea que lleva a acercarse, explorado"
+      },
+      {
+        "focus": "2",
+        "pressed": "false",
+        "text": "3. Controles y método"
+      }
+    ]
+  },
+  {
+    "viewport": [
+      844,
+      390
+    ],
+    "lens": {
+      "rect": {
+        "x": 14,
+        "y": 180.1875,
+        "width": 480,
+        "height": 234.390625
+      },
+      "intersections": [
+        {
+          "selector": "#mission-title",
+          "area": 0
+        },
+        {
+          "selector": ".scene-flow",
+          "area": 0
+        },
+        {
+          "selector": ".demo-guide",
+          "area": 0
+        },
+        {
+          "selector": ".demo-bottom",
+          "area": 0
+        }
+      ]
+    },
+    "realPointerRevisit": true,
+    "metrics": {
+      "response": {
+        "height": 125,
+        "scrollHeight": 125,
+        "overflow": "visible"
+      },
+      "why": {
+        "x": 571,
+        "y": 131.171875,
+        "width": 250,
+        "height": 36
+      },
+      "header": {
+        "width": 844,
+        "settingsRight": 828
+      },
+      "documentWidth": 844,
+      "innerWidth": 844,
+      "description": "scene-description",
+      "kuky": "./assets/kuky/atento.png"
+    },
+    "expanded": {
+      "responseHeight": 655,
+      "scrollHeight": 655,
+      "overflow": "visible",
+      "decision": "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+      "paragraphs": [
+        "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+        "Comunicar gestiona la anomalía, pero no elimina el peligro. Mantener las manos fuera del acceso representado no autoriza otra tarea. Falta validar la respuesta del proceso.",
+        "Deben aclararse los accesos previstos, los resguardos o dispositivos que correspondan al diseño, el método de trabajo y las responsabilidades para esta tarea. No se confirma que esos controles existan o funcionen en la planta. No hay información suficiente para enseñar una intervención: el caso se limita a reconocer la exposición y los límites de actuación.",
+        "No introducir las manos ni intentar acomodar la banda o retirar la acumulación representada. No asumir que observar el equipo detenido permite intervenirlo. No interpretar la comunicación de la anomalía como confirmación de que el peligro está controlado. No continuar una tarea que implique aproximar las manos al movimiento peligroso sin condiciones y método definidos para esa tarea."
+      ]
+    },
+    "listStates": [
+      {
+        "focus": "0",
+        "pressed": "true",
+        "text": "1. Acceso al movimiento, explorado"
+      },
+      {
+        "focus": "1",
+        "pressed": "false",
+        "text": "2. La tarea que lleva a acercarse, explorado"
+      },
+      {
+        "focus": "2",
+        "pressed": "false",
+        "text": "3. Controles y método"
+      }
+    ]
+  },
+  {
+    "viewport": [
+      360,
+      640
+    ],
+    "lens": {
+      "rect": {
+        "x": 14,
+        "y": 237.34375,
+        "width": 332,
+        "height": 206
+      },
+      "intersections": [
+        {
+          "selector": "#mission-title",
+          "area": 0
+        },
+        {
+          "selector": ".scene-flow",
+          "area": 0
+        },
+        {
+          "selector": ".demo-guide",
+          "area": 0
+        },
+        {
+          "selector": ".demo-bottom",
+          "area": 0
+        }
+      ]
+    },
+    "realPointerRevisit": true,
+    "metrics": {
+      "response": {
+        "height": 126,
+        "scrollHeight": 126,
+        "overflow": "visible"
+      },
+      "why": {
+        "x": 83,
+        "y": 539.875,
+        "width": 257,
+        "height": 36
+      },
+      "header": {
+        "width": 360,
+        "settingsRight": 350
+      },
+      "documentWidth": 360,
+      "innerWidth": 360,
+      "description": "scene-description",
+      "kuky": "./assets/kuky/atento.png"
+    },
+    "expanded": {
+      "responseHeight": 638,
+      "scrollHeight": 638,
+      "overflow": "visible",
+      "decision": "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+      "paragraphs": [
+        "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+        "Comunicar gestiona la anomalía, pero no elimina el peligro. Mantener las manos fuera del acceso representado no autoriza otra tarea. Falta validar la respuesta del proceso.",
+        "Deben aclararse los accesos previstos, los resguardos o dispositivos que correspondan al diseño, el método de trabajo y las responsabilidades para esta tarea. No se confirma que esos controles existan o funcionen en la planta. No hay información suficiente para enseñar una intervención: el caso se limita a reconocer la exposición y los límites de actuación.",
+        "No introducir las manos ni intentar acomodar la banda o retirar la acumulación representada. No asumir que observar el equipo detenido permite intervenirlo. No interpretar la comunicación de la anomalía como confirmación de que el peligro está controlado. No continuar una tarea que implique aproximar las manos al movimiento peligroso sin condiciones y método definidos para esa tarea."
+      ]
+    },
+    "listStates": [
+      {
+        "focus": "0",
+        "pressed": "true",
+        "text": "1. Acceso al movimiento, explorado"
+      },
+      {
+        "focus": "1",
+        "pressed": "false",
+        "text": "2. La tarea que lleva a acercarse, explorado"
+      },
+      {
+        "focus": "2",
+        "pressed": "false",
+        "text": "3. Controles y método"
+      }
+    ]
+  }
+]

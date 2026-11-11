@@ -1,0 +1,120 @@
+{
+  "url": "http://127.0.0.1:4173",
+  "baseline": false,
+  "scope": "Chromium automated, isolated contexts, fictitious names; no human, physical device or Safari validation",
+  "cases": [
+    {
+      "id": "A1-owner-transfer-new-person",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "owner_transfer": true,
+        "latest_preserved": {
+          "version": 1,
+          "view": "practice",
+          "practice": {
+            "found": false,
+            "attempts": 1,
+            "selected": null,
+            "order": [
+              "alt-a",
+              "alt-c",
+              "alt-b"
+            ]
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2",
+          "journey": {
+            "stage": "explore",
+            "pending": null,
+            "hint": true,
+            "focus": 0,
+            "applied": null,
+            "appliedConfirmed": false,
+            "studyIndex": 0,
+            "cameraFocus": "zona-c",
+            "explored": [
+              "zona-c"
+            ],
+            "lastTouch": {
+              "x": 117.625,
+              "y": 635.36
+            },
+            "exploreEvent": "hint"
+          },
+          "resumeView": "practice"
+        },
+        "new_person_fresh": {
+          "version": 1,
+          "view": "practice",
+          "practice": {
+            "found": false,
+            "attempts": 0,
+            "selected": null,
+            "order": [
+              "alt-b",
+              "alt-c",
+              "alt-a"
+            ]
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2",
+          "journey": {
+            "stage": "observe",
+            "pending": null,
+            "hint": false,
+            "focus": 0,
+            "applied": null,
+            "appliedConfirmed": false,
+            "studyIndex": 0
+          },
+          "resumeView": "practice"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "id": "AC-dialogs-state-description",
+      "viewport": [
+        1366,
+        768
+      ],
+      "status": "fail",
+      "error": "",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 29, in case\n    row['evidence']=fn(c,q) or {};row['status']='pass'\n                    ^^^^^^^\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 95, in accessibility\n    click(q,'[data-open-options]');chosen=q.locator('#scene-options [data-zone=\"zona-c\"]');assert chosen.get_attribute('aria-pressed')=='true' or 'explor' in (chosen.get_attribute('aria-label') or chosen.inner_text()).lower();click(q,'[data-close-options]')\n                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "id": "A3-evaluation-zero-offline-keyboard",
+      "viewport": [
+        1366,
+        768
+      ],
+      "status": "fail",
+      "error": "Locator.wait_for: Error: strict mode violation: locator(\"#result-answers summary\") resolved to 4 elements:\n    1) <summary>Revisar las 3 respuestas</summary> aka get_by_text(\"Revisar las 3 respuestas\")\n    2) <summary>↻ La correa parece detenida. El método de retirad…</summary> aka get_by_text(\"↻ La correa parece detenida.\")\n    3) <summary>↻ La anomalía fue comunicada. ¿Qué sabes con cert…</summary> aka get_by_text(\"↻ La anomalía fue comunicada\")\n    4) <summary>↻ El material se acumula repetidamente. ¿Qué conv…</summary> aka get_by_text(\"↻ El material se acumula\")\n\nCall log:\n  - waiting for locator(\"#result-answers summary\") to be visible\n",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 29, in case\n    row['evidence']=fn(c,q) or {};row['status']='pass'\n                    ^^^^^^^\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 144, in assessment\n    click(q,'#result-certificate summary');assert q.locator('.certificate-panel .primary').is_disabled();click(q,'#result-answers summary');click(q,'#retry-evaluation');retry_dialog=dialog_name(q);click(q,'#cancel-retry');q.wait_for_function('navigator.serviceWorker.controller!==null');c.set_offline(True);q.reload();q.locator('.compact-summary').wait_for();assert read_state(q)['evaluation']['answers']==snapshots[-1]\n                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nplaywright._impl._errors.Error: Locator.wait_for: Error: strict mode violation: locator(\"#result-answers summary\") resolved to 4 elements:\n    1) <summary>Revisar las 3 respuestas</summary> aka get_by_text(\"Revisar las 3 respuestas\")\n    2) <summary>↻ La correa parece detenida. El método de retirad…</summary> aka get_by_text(\"↻ La correa parece detenida.\")\n    3) <summary>↻ La anomalía fue comunicada. ¿Qué sabes con cert…</summary> aka get_by_text(\"↻ La anomalía fue comunicada\")\n    4) <summary>↻ El material se acumula repetidamente. ¿Qué conv…</summary> aka get_by_text(\"↻ El material se acumula\")\n\nCall log:\n  - waiting for locator(\"#result-answers summary\") to be visible\n\n"
+    }
+  ],
+  "runtime": {
+    "release": "2.7.0-review.1",
+    "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+    "branch": "implementation/correa-phaser-demo",
+    "modified": true,
+    "source_hash": "37a61fdfa56b735c"
+  },
+  "passed": 1,
+  "failed": 2
+}

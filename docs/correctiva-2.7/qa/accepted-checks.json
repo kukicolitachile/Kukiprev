@@ -1,0 +1,1107 @@
+{
+  "status": "independent PASS",
+  "scope": "Chromium automated, isolated contexts, fictitious names; no human, physical device or Safari validation",
+  "url": "http://127.0.0.1:4173",
+  "runtime": {
+    "release": "2.7.0-review.1",
+    "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+    "branch": "implementation/correa-phaser-demo",
+    "modified": true,
+    "source_hash": "4676a4426acebc39"
+  },
+  "cases": [
+    {
+      "id": "UX01-partial-name-settings",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "before": [
+          "Persona QA parcial",
+          "Ficticia parcial"
+        ],
+        "after": [
+          "Persona QA parcial",
+          "Ficticia parcial"
+        ],
+        "name_absent_localStorage": true
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "JG01-all-foci-1366",
+      "viewport": [
+        1366,
+        768
+      ],
+      "evidence": {
+        "input": "physical center pointer/touch, no force",
+        "events": [
+          {
+            "rect": {
+              "x": 317.453125,
+              "y": 369.640625,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  ",
+              "focus": "1"
+            },
+            "wanted": 1,
+            "actual": 1
+          },
+          {
+            "rect": {
+              "x": 627.859375,
+              "y": 634.640625,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "0"
+            },
+            "wanted": 0,
+            "actual": 0
+          },
+          {
+            "rect": {
+              "x": 443.859375,
+              "y": 463.828125,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  ",
+              "focus": "2"
+            },
+            "wanted": 2,
+            "actual": 2
+          },
+          {
+            "rect": {
+              "x": 317.453125,
+              "y": 369.640625,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "1"
+            },
+            "wanted": 1,
+            "actual": 1
+          },
+          {
+            "rect": {
+              "x": 443.859375,
+              "y": 463.828125,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "2"
+            },
+            "wanted": 2,
+            "actual": 2
+          },
+          {
+            "rect": {
+              "x": 627.859375,
+              "y": 634.640625,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "0"
+            },
+            "wanted": 0,
+            "actual": 0
+          }
+        ]
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "JG01-all-foci-390",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "input": "physical center pointer/touch, no force",
+        "events": [
+          {
+            "rect": {
+              "x": 45.28125,
+              "y": 320.984375,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  ",
+              "focus": "1"
+            },
+            "wanted": 1,
+            "actual": 1
+          },
+          {
+            "rect": {
+              "x": 273.140625,
+              "y": 515.53125,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "0"
+            },
+            "wanted": 0,
+            "actual": 0
+          },
+          {
+            "rect": {
+              "x": 138.078125,
+              "y": 390.125,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  ",
+              "focus": "2"
+            },
+            "wanted": 2,
+            "actual": 2
+          },
+          {
+            "rect": {
+              "x": 45.28125,
+              "y": 320.984375,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "1"
+            },
+            "wanted": 1,
+            "actual": 1
+          },
+          {
+            "rect": {
+              "x": 138.078125,
+              "y": 390.125,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "2"
+            },
+            "wanted": 2,
+            "actual": 2
+          },
+          {
+            "rect": {
+              "x": 273.140625,
+              "y": 515.53125,
+              "width": 46,
+              "height": 46
+            },
+            "hit": {
+              "tag": "BUTTON",
+              "classes": "scene-focus  visited",
+              "focus": "0"
+            },
+            "wanted": 0,
+            "actual": 0
+          }
+        ]
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "SG01-AR01-stale-close",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "attempts_before": 1,
+        "cleared": {
+          "version": 1,
+          "view": "home",
+          "practice": {
+            "found": false,
+            "attempts": 0,
+            "selected": null,
+            "order": []
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2"
+        },
+        "after_stale": {
+          "version": 1,
+          "view": "home",
+          "practice": {
+            "found": false,
+            "attempts": 0,
+            "selected": null,
+            "order": []
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2"
+        },
+        "guard": "closed",
+        "simulated_legacy_KEY_write_ignored_by_authority": true,
+        "legacy_limit": "No claim that old bundles can display guards they never implemented"
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "A1-owner-transfer-new-person",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "owner_transfer": true,
+        "latest_preserved": {
+          "version": 1,
+          "view": "practice",
+          "practice": {
+            "found": false,
+            "attempts": 1,
+            "selected": null,
+            "order": [
+              "alt-c",
+              "alt-a",
+              "alt-b"
+            ]
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2",
+          "journey": {
+            "stage": "explore",
+            "pending": null,
+            "hint": true,
+            "focus": 0,
+            "applied": null,
+            "appliedConfirmed": false,
+            "studyIndex": 0,
+            "cameraFocus": "zona-c",
+            "explored": [
+              "zona-c"
+            ],
+            "lastTouch": {
+              "x": 117.625,
+              "y": 635.36
+            },
+            "exploreEvent": "hint"
+          },
+          "resumeView": "practice"
+        },
+        "new_person_fresh": {
+          "version": 1,
+          "view": "practice",
+          "practice": {
+            "found": false,
+            "attempts": 0,
+            "selected": null,
+            "order": [
+              "alt-b",
+              "alt-c",
+              "alt-a"
+            ]
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2",
+          "journey": {
+            "stage": "observe",
+            "pending": null,
+            "hint": false,
+            "focus": 0,
+            "applied": null,
+            "appliedConfirmed": false,
+            "studyIndex": 0
+          },
+          "resumeView": "practice"
+        }
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "AC-dialogs-state-description",
+      "viewport": [
+        1366,
+        768
+      ],
+      "evidence": {
+        "settings_dialog": {
+          "id": "experience-settings",
+          "label": null,
+          "labelledby": "experience-settings-title",
+          "name": "Ajustes y ayuda"
+        },
+        "scene_dialog": {
+          "id": "scene-options",
+          "label": null,
+          "labelledby": "scene-options-title",
+          "name": "Elementos y acciones"
+        },
+        "explanation_dialog": {
+          "id": "scene-explanation",
+          "label": null,
+          "labelledby": "scene-explanation-title",
+          "name": "Para comprender la tarea"
+        },
+        "equivalent_choices": "Elementos y acciones\nBanda junto a la polea del extremo\nTramo central de la banda\nEstuches acumulados\nVolver a la escena",
+        "discover_states": [
+          {
+            "focus": 0,
+            "label": "1. Acceso al movimiento, explorado",
+            "pressed": "false"
+          },
+          {
+            "focus": 1,
+            "label": "2. La tarea que lleva a acercarse, explorado",
+            "pressed": "false"
+          },
+          {
+            "focus": 2,
+            "label": "3. Controles y método, explorado",
+            "pressed": "true"
+          }
+        ],
+        "apply_included": true,
+        "description": [
+          "Ilustración conceptual de una sala de empaque: una correa transportadora en diagonal, estuches agrupados en un extremo y una persona de pie junto al equipo, sin tocarlo."
+        ],
+        "focus_style": {
+          "outline": "rgb(255, 248, 212)",
+          "width": "3px",
+          "background": "rgb(6, 51, 65)",
+          "header": "linear-gradient(115deg, rgb(1, 26, 39), rgb(6, 61, 74))"
+        }
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "AC-844-horizontal-whitespace",
+      "viewport": [
+        844,
+        390
+      ],
+      "evidence": {
+        "error": "Revisa nombre y apellido.",
+        "rect": {
+          "x": 115,
+          "y": 266.5625,
+          "width": 614,
+          "height": 18
+        },
+        "associated_both_fields": true
+      },
+      "status": "pass",
+      "source": "candidate-landscape-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "43fdbabc3b611da1"
+      },
+      "retained_after_landscape_rule": false,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "AC-320-header",
+      "viewport": [
+        320,
+        640
+      ],
+      "evidence": {
+        "settings_rect": {
+          "x": 274,
+          "y": 12,
+          "width": 36,
+          "height": 36
+        },
+        "no_horizontal_overflow": true
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "A2-detail-390",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "full_image_before_finding": {
+          "window": {
+            "x": 2,
+            "y": 237.59375,
+            "right": 388,
+            "bottom": 644.078125
+          },
+          "image": {
+            "x": 80.525390625,
+            "y": 237.59375,
+            "right": 309.2944078947368,
+            "bottom": 644.078125
+          }
+        },
+        "no_DOM_target_markers_before_attempt": true,
+        "no_detail_before_finding": true,
+        "initial_detail_rect": {
+          "x": 14,
+          "y": 249.59375,
+          "width": 362,
+          "height": 250
+        },
+        "reachable_detail_rect": {
+          "x": 14,
+          "y": 249.59375,
+          "width": 362,
+          "height": 250
+        },
+        "document_scroll": 0,
+        "intersections": [
+          {
+            "selector": "#mission-title",
+            "area": 0
+          },
+          {
+            "selector": ".flow-location",
+            "area": 0
+          },
+          {
+            "selector": ".demo-guide",
+            "area": 0
+          },
+          {
+            "selector": ".demo-bottom",
+            "area": 0
+          },
+          {
+            "selector": ".camera-tools",
+            "area": 0.0
+          }
+        ],
+        "no_internal_response_scroll": true,
+        "CTA_center_reached": {
+          "rect": {
+            "x": 14,
+            "y": 787.109375,
+            "width": 362,
+            "height": 44.890625
+          },
+          "hit": {
+            "tag": "BUTTON",
+            "classes": "primary",
+            "focus": null
+          }
+        }
+      },
+      "status": "pass",
+      "source": "candidate-detail-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "A2-detail-1366",
+      "viewport": [
+        1366,
+        768
+      ],
+      "evidence": {
+        "full_image_before_finding": {
+          "window": {
+            "x": 135,
+            "y": 219.390625,
+            "right": 891,
+            "bottom": 766
+          },
+          "image": {
+            "x": 358.93984561901914,
+            "y": 219.390625,
+            "right": 666.5710787978469,
+            "bottom": 766
+          }
+        },
+        "no_DOM_target_markers_before_attempt": true,
+        "no_detail_before_finding": true,
+        "initial_detail_rect": {
+          "x": 147,
+          "y": 231.390625,
+          "width": 732,
+          "height": 250
+        },
+        "reachable_detail_rect": {
+          "x": 147,
+          "y": 231.390625,
+          "width": 732,
+          "height": 250
+        },
+        "document_scroll": 0,
+        "intersections": [
+          {
+            "selector": "#mission-title",
+            "area": 0.0
+          },
+          {
+            "selector": ".flow-location",
+            "area": 0
+          },
+          {
+            "selector": ".demo-guide",
+            "area": 0.0
+          },
+          {
+            "selector": ".demo-bottom",
+            "area": 0
+          },
+          {
+            "selector": ".camera-tools",
+            "area": 0
+          }
+        ],
+        "no_internal_response_scroll": true,
+        "CTA_center_reached": {
+          "rect": {
+            "x": 904,
+            "y": 711.109375,
+            "width": 315,
+            "height": 44.890625
+          },
+          "hit": {
+            "tag": "BUTTON",
+            "classes": "primary",
+            "focus": null
+          }
+        }
+      },
+      "status": "pass",
+      "source": "candidate-detail-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "A2-detail-844-horizontal",
+      "viewport": [
+        844,
+        390
+      ],
+      "evidence": {
+        "full_image_before_finding": {
+          "window": {
+            "x": 2,
+            "y": 168.1875,
+            "right": 506,
+            "bottom": 388
+          },
+          "image": {
+            "x": 192.10100179425837,
+            "y": 168.1875,
+            "right": 315.8112664473684,
+            "bottom": 388
+          }
+        },
+        "no_DOM_target_markers_before_attempt": true,
+        "no_detail_before_finding": true,
+        "initial_detail_rect": {
+          "x": 14,
+          "y": 180.1875,
+          "width": 480,
+          "height": 195.8125
+        },
+        "reachable_detail_rect": {
+          "x": 14,
+          "y": 180.1875,
+          "width": 480,
+          "height": 195.8125
+        },
+        "document_scroll": 0,
+        "intersections": [
+          {
+            "selector": "#mission-title",
+            "area": 0.0
+          },
+          {
+            "selector": ".flow-location",
+            "area": 0
+          },
+          {
+            "selector": ".demo-guide",
+            "area": 0.0
+          },
+          {
+            "selector": ".demo-bottom",
+            "area": 0.0
+          },
+          {
+            "selector": ".camera-tools",
+            "area": 0.0
+          }
+        ],
+        "no_internal_response_scroll": true,
+        "CTA_center_reached": {
+          "rect": {
+            "x": 515,
+            "y": 336.109375,
+            "width": 318,
+            "height": 44.890625
+          },
+          "hit": {
+            "tag": "BUTTON",
+            "classes": "primary",
+            "focus": null
+          }
+        }
+      },
+      "status": "pass",
+      "source": "candidate-phone-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "73a6a0ff4f16e403"
+      },
+      "retained_after_short_portrait_rule": false,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "A3-evaluation-zero-offline-keyboard",
+      "viewport": [
+        1366,
+        768
+      ],
+      "evidence": {
+        "input": "real Tab and Enter route",
+        "confirmed_answers": [
+          {
+            "eval-condiciones": "ev1-b"
+          },
+          {
+            "eval-condiciones": "ev1-b",
+            "eval-comunicacion": "ev2-b"
+          },
+          {
+            "eval-condiciones": "ev1-b",
+            "eval-comunicacion": "ev2-b",
+            "eval-proceso": "ev3-c"
+          }
+        ],
+        "zero_of_three_completes_without_approval": true,
+        "offline_reload_and_online_recovery": true,
+        "exit_dialog": {
+          "id": "",
+          "label": null,
+          "labelledby": "dialog-title-1",
+          "name": "Salir de la evaluación"
+        },
+        "retry_dialog": {
+          "id": "",
+          "label": null,
+          "labelledby": "dialog-title-1",
+          "name": "Repetir evaluación"
+        }
+      },
+      "status": "pass",
+      "source": "candidate-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "2f1321a289e11d4c"
+      },
+      "retained_after_landscape_rule": true,
+      "retained_after_short_portrait_rule": true,
+      "retained_after_decide_framing": true
+    },
+    {
+      "id": "A2-decide-rotation-844",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "rotation": [
+          [
+            390,
+            844
+          ],
+          [
+            844,
+            390
+          ]
+        ],
+        "no_scroll": true,
+        "four_actions": [
+          {
+            "selector": ".decision-tray [data-decision=\"alt-a\"]",
+            "rect": {
+              "x": 521,
+              "y": 235.609375,
+              "width": 99.328125,
+              "height": 69
+            },
+            "center_hit": {
+              "own": true,
+              "id": null,
+              "decision": "alt-a"
+            }
+          },
+          {
+            "selector": ".decision-tray [data-decision=\"alt-b\"]",
+            "rect": {
+              "x": 624.328125,
+              "y": 235.609375,
+              "width": 99.328125,
+              "height": 69
+            },
+            "center_hit": {
+              "own": true,
+              "id": null,
+              "decision": "alt-b"
+            }
+          },
+          {
+            "selector": ".decision-tray [data-decision=\"alt-c\"]",
+            "rect": {
+              "x": 727.65625,
+              "y": 235.609375,
+              "width": 99.34375,
+              "height": 69
+            },
+            "center_hit": {
+              "own": true,
+              "id": null,
+              "decision": "alt-c"
+            }
+          },
+          {
+            "selector": "#confirm-decision",
+            "rect": {
+              "x": 515,
+              "y": 336.109375,
+              "width": 318,
+              "height": 44.890625
+            },
+            "center_hit": {
+              "own": true,
+              "id": "confirm-decision",
+              "decision": null
+            }
+          }
+        ],
+        "physical_selection": {
+          "rect": {
+            "x": 521,
+            "y": 235.609375,
+            "width": 99.328125,
+            "height": 69
+          },
+          "hit": {
+            "tag": "svg",
+            "classes": "[object SVGAnimatedString]",
+            "focus": null
+          }
+        },
+        "physical_confirmation": {
+          "rect": {
+            "x": 515,
+            "y": 336.109375,
+            "width": 318,
+            "height": 44.890625
+          },
+          "hit": {
+            "tag": "BUTTON",
+            "classes": "primary",
+            "focus": null
+          }
+        }
+      },
+      "status": "pass",
+      "source": "candidate-framing-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "4676a4426acebc39"
+      },
+      "retained_after_decide_framing": false
+    },
+    {
+      "id": "A2-decide-phone-360",
+      "viewport": [
+        360,
+        640
+      ],
+      "evidence": {
+        "viewport": [
+          360,
+          640
+        ],
+        "no_scroll": true,
+        "face": {
+          "rect": {
+            "x": 165.28666666666663,
+            "y": 298.56597222222223,
+            "width": 77.33333333333334,
+            "height": 54.77777777777778
+          },
+          "scale": 0.6444444444444445,
+          "overlaps": []
+        },
+        "four_actions": [
+          {
+            "selector": ".decision-tray [data-decision=\"alt-a\"]",
+            "rect": {
+              "x": 21,
+              "y": 473.34375,
+              "width": 101.328125,
+              "height": 82
+            },
+            "center_hit_own": true
+          },
+          {
+            "selector": ".decision-tray [data-decision=\"alt-b\"]",
+            "rect": {
+              "x": 129.328125,
+              "y": 473.34375,
+              "width": 101.328125,
+              "height": 82
+            },
+            "center_hit_own": true
+          },
+          {
+            "selector": ".decision-tray [data-decision=\"alt-c\"]",
+            "rect": {
+              "x": 237.65625,
+              "y": 473.34375,
+              "width": 101.34375,
+              "height": 82
+            },
+            "center_hit_own": true
+          },
+          {
+            "selector": "#confirm-decision",
+            "rect": {
+              "x": 14,
+              "y": 587.84375,
+              "width": 332,
+              "height": 44.890625
+            },
+            "center_hit_own": true
+          }
+        ],
+        "physical_selection": {
+          "rect": {
+            "x": 21,
+            "y": 473.34375,
+            "width": 101.328125,
+            "height": 82
+          },
+          "hit": {
+            "tag": "svg",
+            "classes": "[object SVGAnimatedString]",
+            "focus": null
+          }
+        },
+        "physical_confirmation": {
+          "rect": {
+            "x": 14,
+            "y": 587.84375,
+            "width": 332,
+            "height": 44.890625
+          },
+          "hit": {
+            "tag": "BUTTON",
+            "classes": "primary",
+            "focus": null
+          }
+        }
+      },
+      "status": "pass",
+      "source": "candidate-framing-final/checks.json",
+      "validated_runtime": {
+        "release": "2.7.0-review.1",
+        "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+        "branch": "implementation/correa-phaser-demo",
+        "modified": true,
+        "source_hash": "4676a4426acebc39"
+      },
+      "retained_after_decide_framing": false
+    }
+  ],
+  "passed": 14,
+  "failed": 0,
+  "baseline": "baseline/checks.json",
+  "retained_coverage_reason": "The last public change adjusts only the short Decide camera/portrait framing, without changes to Explore, foci, detector, texts, guards or storage. Phone360 and rotation844 were rerun with real center touch against4676a4426acebc39. The12 other case scopes remain applicable; each row records its original source/runtime. Earlier conditional CSS corrections and their reruns remain preserved in previous reports.",
+  "explanations": [
+    "Original evidence files remain unmodified, including initial harness expectation failures and rechecks.",
+    "The final 844x390 scene image, found detail, CTA and four Decide buttons fit their viewport without scrolling.",
+    "Legacy test writes obsolete KEY while authority remains byte-identical and closed; no claim that legacy UI acquires guards absent from its code."
+  ],
+  "previous_runtimes": [
+    {
+      "release": "2.7.0-review.1",
+      "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+      "branch": "implementation/correa-phaser-demo",
+      "modified": true,
+      "source_hash": "2f1321a289e11d4c"
+    },
+    {
+      "release": "2.7.0-review.1",
+      "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+      "branch": "implementation/correa-phaser-demo",
+      "modified": true,
+      "source_hash": "43fdbabc3b611da1"
+    },
+    {
+      "release": "2.7.0-review.1",
+      "commit": "f4d9fbf465a575b3a2bc8089b9bdb9183eee2e62",
+      "branch": "implementation/correa-phaser-demo",
+      "modified": true,
+      "source_hash": "73a6a0ff4f16e403"
+    }
+  ]
+}

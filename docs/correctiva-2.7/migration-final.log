@@ -1,0 +1,22 @@
+MIGRATION old
+CACHE_AFTER_RELOAD True
+RECOVERY_ACTUAL old {'handler': False, 'scripts': ['http://127.0.0.1:4175/recovery.js?release=2.7.0-review.1']} True
+MIGRATION v6
+CACHE_AFTER_RELOAD True
+RECOVERY_ACTUAL v6 {'handler': False, 'scripts': ['http://127.0.0.1:4175/recovery.js?release=2.7.0-review.1']} True
+MIGRATION review
+CACHE_AFTER_RELOAD True
+RECOVERY_ACTUAL review {'handler': False, 'scripts': ['http://127.0.0.1:4175/recovery.js?release=2.7.0-review.1']} True
+MIGRATION demo1
+CACHE_AFTER_RELOAD True
+RECOVERY_ACTUAL demo1 {'handler': False, 'scripts': ['http://127.0.0.1:4175/recovery.js?release=2.7.0-review.1']} True
+MIGRATION reviewed
+CACHE_AFTER_RELOAD True
+RECOVERY_ACTUAL reviewed {'handler': False, 'scripts': ['http://127.0.0.1:4175/recovery.js?release=2.7.0-review.1']} True
+MIGRATION motion
+CACHE_AFTER_RELOAD True
+RECOVERY_ACTUAL motion {'handler': False, 'scripts': ['http://127.0.0.1:4175/recovery.js?release=2.7.0-review.1']} True
+MIGRATION flow
+CACHE_AFTER_RELOAD True
+RECOVERY_ACTUAL flow {'handler': False, 'scripts': ['http://127.0.0.1:4175/recovery.js?release=2.7.0-review.1']} True
+[{"fixture": "old", "preserved": true, "explicit_resume_after_migration": false, "offline_recovery": true, "foreign_cache_preserved": true, "errors": []}, {"fixture": "v6", "preserved": true, "explicit_resume_after_migration": true, "offline_recovery": true, "foreign_cache_preserved": true, "errors": []}, {"fixture": "review", "preserved": true, "explicit_resume_after_migration": true, "offline_recovery": true, "foreign_cache_preserved": true, "errors": []}, {"fixture": "demo1", "preserved": true, "explicit_resume_after_migration": true, "offline_recovery": true, "foreign_cache_preserved": true, "errors": []}, {"fixture": "reviewed", "preserved": true, "explicit_resume_after_migration": true, "offline_recovery": true, "foreign_cache_preserved": true, "errors": []}, {"fixture": "motion", "preserved": true, "explicit_resume_after_migration": true, "offline_recovery": true, "foreign_cache_preserved": true, "errors": []}, {"fixture": "flow", "preserved": true, "explicit_resume_after_migration": true, "offline_recovery": true, "foreign_cache_preserved": true, "errors": []}]

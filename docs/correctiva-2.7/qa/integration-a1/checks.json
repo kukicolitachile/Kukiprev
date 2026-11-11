@@ -1,0 +1,128 @@
+{
+  "url": "http://127.0.0.1:4173",
+  "baseline": false,
+  "scope": "Chromium automated, isolated contexts, fictitious names; no human, physical device or Safari validation",
+  "cases": [
+    {
+      "id": "UX01-partial-name-settings",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "before": [
+          "Persona QA parcial",
+          "Ficticia parcial"
+        ],
+        "after": [
+          "Persona QA parcial",
+          "Ficticia parcial"
+        ],
+        "name_absent_localStorage": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "SG01-AR01-stale-close",
+      "viewport": [
+        390,
+        844
+      ],
+      "evidence": {
+        "attempts_before": 1,
+        "cleared": {
+          "version": 1,
+          "view": "home",
+          "practice": {
+            "found": false,
+            "attempts": 0,
+            "selected": null,
+            "order": []
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2"
+        },
+        "after_stale": {
+          "version": 1,
+          "view": "home",
+          "practice": {
+            "found": false,
+            "attempts": 0,
+            "selected": null,
+            "order": []
+          },
+          "evaluation": {
+            "answers": {},
+            "orders": {},
+            "current": 0
+          },
+          "reflection": [],
+          "studyRead": false,
+          "contentRevision": "2.1-interaccion-2"
+        },
+        "guard": "closed"
+      },
+      "status": "pass"
+    },
+    {
+      "id": "A1-owner-transfer-new-person",
+      "viewport": [
+        390,
+        844
+      ],
+      "status": "fail",
+      "error": "Locator.wait_for: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#attempt-guard[data-reason=\\\"other-tab\\\"]\") to be visible\n",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 29, in case\n    row['evidence']=fn(c,q) or {};row['status']='pass'\n                    ^^^^^^^\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 74, in ownership\n    t=c.new_page();t.goto(args.url);t.locator('#attempt-guard[data-reason=\"other-tab\"]').wait_for();assert read_state(t)==old\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nplaywright._impl._errors.TimeoutError: Locator.wait_for: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#attempt-guard[data-reason=\\\"other-tab\\\"]\") to be visible\n\n"
+    },
+    {
+      "id": "AC-844-horizontal-whitespace",
+      "viewport": [
+        844,
+        390
+      ],
+      "evidence": {
+        "error": "Revisa nombre y apellido.",
+        "rect": {
+          "x": 115,
+          "y": 266.5625,
+          "width": 614,
+          "height": 18
+        },
+        "associated_both_fields": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "AC-320-header",
+      "viewport": [
+        320,
+        640
+      ],
+      "evidence": {
+        "settings_rect": {
+          "x": 274,
+          "y": 12,
+          "width": 36,
+          "height": 36
+        },
+        "no_horizontal_overflow": true
+      },
+      "status": "pass"
+    }
+  ],
+  "runtime": {
+    "release": "2.7.0-review.1",
+    "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+    "branch": "implementation/correa-phaser-demo",
+    "modified": true,
+    "source_hash": "37a61fdfa56b735c"
+  },
+  "passed": 4,
+  "failed": 1
+}

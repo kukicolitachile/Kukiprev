@@ -1,0 +1,26 @@
+{
+  "url": "http://127.0.0.1:4173",
+  "baseline": false,
+  "scope": "Chromium automated, isolated contexts, fictitious names; no human, physical device or Safari validation",
+  "cases": [
+    {
+      "id": "A2-detail-844-horizontal",
+      "viewport": [
+        844,
+        390
+      ],
+      "status": "fail",
+      "error": "Detail below fold must be reachable with document wheel scrolling",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 29, in case\n    row['evidence']=fn(c,q) or {};row['status']='pass'\n                    ^^^^^^^\n  File \"/workspace/Kukiprev/tests/acceptance-corrections.py\", line 138, in detail_geometry\n    assert q.evaluate('scrollY')>scroll_before,'Detail below fold must be reachable with document wheel scrolling'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Detail below fold must be reachable with document wheel scrolling\n"
+    }
+  ],
+  "runtime": {
+    "release": "2.7.0-review.1",
+    "commit": "0def89f778fe16fcac2fe9d3b6adcec0f92528ae",
+    "branch": "implementation/correa-phaser-demo",
+    "modified": true,
+    "source_hash": "2f1321a289e11d4c"
+  },
+  "passed": 0,
+  "failed": 1
+}

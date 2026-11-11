@@ -1,0 +1,161 @@
+{
+  "approved_changes_only": [
+    {
+      "path": "/version",
+      "before": "2.1-interaccion-1",
+      "after": "2.1-interaccion-2"
+    },
+    {
+      "path": "/evaluacion/0/alternativas/0/feedback",
+      "before": "La falta de movimiento visible no confirma todos esos puntos. Prevención y los responsables técnicos deben validar la tarea y sus condiciones; este caso no habilita una intervención.",
+      "after": "La falta de movimiento visible no confirma las condiciones de la tarea, su método ni las responsabilidades. Prevención y los responsables técnicos deben revisar esos puntos; este caso no habilita una intervención."
+    },
+    {
+      "path": "/evaluacion/2/alternativas/2/feedback",
+      "before": "La ilustración plantea una situación hipotética. La causa, la frecuencia y el método de respuesta necesitan datos y revisión del equipo real.",
+      "after": "La rapidez no controla el acceso de las manos al peligro. Deben revisarse causa, controles y método; faltan datos del equipo real para confirmarlos."
+    },
+    {
+      "path": "/interaccion/observa",
+      "before": "La correa avanza a tirones. Se acumulan estuches.",
+      "after": "Situación hipotética. La correa avanza a tirones. Se acumulan estuches."
+    }
+  ],
+  "protected": [
+    {
+      "path": "scene-layers.js",
+      "sha256": "0f9fd631a6d91c88d9495a5f06ec28b5fabc3b0b2cff0eea1e293974362cc67d",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "certificate-policy.json",
+      "sha256": "f130ddd978cecfc7be99bc1533cd766de7a19004c4dd187c4d2b308a7fb90ad5",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "participant.js",
+      "sha256": "34c20cbe46434d02724193a8348db5b98a3cf28e23255c46acaf0d330db7b380",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/icon-192.png",
+      "sha256": "395e4767f00d838e009f3aec9ef3f1186e8f4d7a20ef02a49371ecc2132fcbf6",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/icon.svg",
+      "sha256": "831e3ea32c8d560f149087a09d61ff6112016e3222e497b658c16ca7ca4ff1cc",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/icon-512.png",
+      "sha256": "87d8185b5aa06d3f20f4798f1ce93126726647130861104409afb12b458adf5d",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenarios.json",
+      "sha256": "6b5744b94858ff9c62966b13051302ed0804c8ee94904e6f694a1f01491bacc6",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/kuky.png",
+      "sha256": "19733258c851b16b25140ae54fb38c518a7b3ad647c5f39682a939bc34e7ed81",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-03-base.webp",
+      "sha256": "c2ecb820df18ff74a6eba062436050b5cd919d7422fcb0c07f9f67b29a930511",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-06-consecuencia.webp",
+      "sha256": "a6bc9b52e1c89bf40642c6d9cb86b62b0c95c4fe9b43c6bdd7a75fe1f65fd709",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-01-base.webp",
+      "sha256": "78372e33181b3deba3a1ee13eb9fb73d161645ee5d3ce2007e680713e5ad4910",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-05-consecuencia.webp",
+      "sha256": "2720829fbc2b741b317440cc1d74b98efc9411011e9106e4f89675fe05890540",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-05-base.webp",
+      "sha256": "1a88f622b99dba2f3e8ae7c8e5ca8b0b8bd92b50a3a27d28a00a292a6a738fcc",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-03-consecuencia.webp",
+      "sha256": "90917a877d5bd8ecad112ddd200e8bd9d96493a69dd8069f62135593c9943a79",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-02-base.webp",
+      "sha256": "b9f13ed1fe8852c7c37e25bd0ce8ba5817fb36784117102c93704d084785e675",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-02-consecuencia.webp",
+      "sha256": "450364ddf47ea1c4ad64c00768fd7c2d23dfa980959d92c0ee6deba5a393bb3b",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-01-consecuencia.webp",
+      "sha256": "55fedc4a2e5d3bb9c9217fa129d71d9d47ae5d5553a1d91ae73c0039aba18209",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-06-base.webp",
+      "sha256": "8cc932a0c37cf8b5b9f5345a7bb1c60327b7ed12d07664e6c9ff5efd12472902",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-04-base.webp",
+      "sha256": "3ca54037ae16ff0adcf2f3d8a84098456e1e0e9f0487240c3dfcaf6032f8fe54",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/escenas/esc-04-consecuencia.webp",
+      "sha256": "64b9003e8cfc63b31dbc743534657a7299213bea0478b8fb50e488ef998ba022",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/kuky/feliz.png",
+      "sha256": "0ef62f8ec2ee9420d7afe194ae4a4b0f4a40772c3d33c275ccd9a188477c82f7",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/kuky/motivador.png",
+      "sha256": "f81ebc55e33e91a6fbf6f207b6e9809676f4c57ffec5b90bbf975ed6fe49829c",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/kuky/atento.png",
+      "sha256": "2572322da1418f25f50f4fc5a8445145163ee7b716fd71258043cf8b29f637e1",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/audio/confirm.wav",
+      "sha256": "79bacd44f303c722136369caf9a09c9e8f89ca12459aece6f760fa3374ab3259",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/audio/complete.wav",
+      "sha256": "3a314ddb6501212e55f509ba3dde14e73747de762959ebb806a2d1fe0429855c",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/audio/discover.wav",
+      "sha256": "5db5b89f7266a0da0256b37ab79f850d873ced9fd96444f853d50284d51cebc8",
+      "byte_identical_to_0def89f": true
+    },
+    {
+      "path": "assets/audio/select.wav",
+      "sha256": "43990559340563284525bde61acaf57422be88b378640db6c7cb61ed92138936",
+      "byte_identical_to_0def89f": true
+    }
+  ]
+}

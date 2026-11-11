@@ -1,0 +1,177 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "alternative": "alt-a",
+    "allPointerFocuses": true,
+    "kukyAtento": true,
+    "confirmedDecision": "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+    "applyList": [
+      {
+        "id": "method",
+        "pressed": "true",
+        "text": "¿Qué método está definido para retirar los estuches?, incluido · asunto actual"
+      },
+      {
+        "id": "condition",
+        "pressed": "false",
+        "text": "¿Qué condiciones y controles deben verificarse antes de esa tarea?"
+      },
+      {
+        "id": "roles",
+        "pressed": "false",
+        "text": "¿A quién corresponde aclarar la tarea y confirmar la respuesta?"
+      }
+    ],
+    "explanationNamed": true
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "alternative": "alt-b",
+    "allPointerFocuses": true,
+    "kukyAtento": true,
+    "confirmedDecision": "Tu decisión confirmada: Retiro los estuches con la mano.",
+    "applyList": [
+      {
+        "id": "method",
+        "pressed": "true",
+        "text": "¿Qué método está definido para retirar los estuches?, incluido · asunto actual"
+      },
+      {
+        "id": "condition",
+        "pressed": "false",
+        "text": "¿Qué condiciones y controles deben verificarse antes de esa tarea?"
+      },
+      {
+        "id": "roles",
+        "pressed": "false",
+        "text": "¿A quién corresponde aclarar la tarea y confirmar la respuesta?"
+      }
+    ],
+    "explanationNamed": true
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "alternative": "alt-c",
+    "allPointerFocuses": true,
+    "kukyAtento": true,
+    "confirmedDecision": "Tu decisión confirmada: Acomodo la banda si parece detenida.",
+    "applyList": [
+      {
+        "id": "method",
+        "pressed": "true",
+        "text": "¿Qué método está definido para retirar los estuches?, incluido · asunto actual"
+      },
+      {
+        "id": "condition",
+        "pressed": "false",
+        "text": "¿Qué condiciones y controles deben verificarse antes de esa tarea?"
+      },
+      {
+        "id": "roles",
+        "pressed": "false",
+        "text": "¿A quién corresponde aclarar la tarea y confirmar la respuesta?"
+      }
+    ],
+    "explanationNamed": true
+  },
+  {
+    "viewport": [
+      1366,
+      768
+    ],
+    "alternative": "alt-a",
+    "allPointerFocuses": true,
+    "kukyAtento": true,
+    "confirmedDecision": "Tu decisión confirmada: Comunico la anomalía sin acceder a la zona peligrosa.",
+    "applyList": [
+      {
+        "id": "method",
+        "pressed": "true",
+        "text": "¿Qué método está definido para retirar los estuches?, incluido · asunto actual"
+      },
+      {
+        "id": "condition",
+        "pressed": "false",
+        "text": "¿Qué condiciones y controles deben verificarse antes de esa tarea?"
+      },
+      {
+        "id": "roles",
+        "pressed": "false",
+        "text": "¿A quién corresponde aclarar la tarea y confirmar la respuesta?"
+      }
+    ],
+    "explanationNamed": true
+  },
+  {
+    "viewport": [
+      1366,
+      768
+    ],
+    "alternative": "alt-b",
+    "allPointerFocuses": true,
+    "kukyAtento": true,
+    "confirmedDecision": "Tu decisión confirmada: Retiro los estuches con la mano.",
+    "applyList": [
+      {
+        "id": "method",
+        "pressed": "true",
+        "text": "¿Qué método está definido para retirar los estuches?, incluido · asunto actual"
+      },
+      {
+        "id": "condition",
+        "pressed": "false",
+        "text": "¿Qué condiciones y controles deben verificarse antes de esa tarea?"
+      },
+      {
+        "id": "roles",
+        "pressed": "false",
+        "text": "¿A quién corresponde aclarar la tarea y confirmar la respuesta?"
+      }
+    ],
+    "explanationNamed": true
+  },
+  {
+    "viewport": [
+      1366,
+      768
+    ],
+    "alternative": "alt-c",
+    "allPointerFocuses": true,
+    "kukyAtento": true,
+    "confirmedDecision": "Tu decisión confirmada: Acomodo la banda si parece detenida.",
+    "applyList": [
+      {
+        "id": "method",
+        "pressed": "true",
+        "text": "¿Qué método está definido para retirar los estuches?, incluido · asunto actual"
+      },
+      {
+        "id": "condition",
+        "pressed": "false",
+        "text": "¿Qué condiciones y controles deben verificarse antes de esa tarea?"
+      },
+      {
+        "id": "roles",
+        "pressed": "false",
+        "text": "¿A quién corresponde aclarar la tarea y confirmar la respuesta?"
+      }
+    ],
+    "explanationNamed": true
+  },
+  {
+    "horizontalErrorVisible": "Revisa nombre y apellido.",
+    "focus": {
+      "outline": "rgb(255, 248, 212) solid 3px",
+      "boxShadow": "rgb(3, 43, 59) 0px 0px 0px 6px"
+    }
+  }
+]
