@@ -61,7 +61,7 @@ bash /tmp/decidobien-update.sh
 
 El actualizador verifica candidato, requisitos, divergencias y colisiones antes de parar un servicio reconocido. Conserva commits locales de main, cambios registrados/sin seguimiento en stash sin reaplicarlo, archivos ignorados y procesos desconocidos. Si falla después de parar, intenta recuperar el HEAD y comando anterior e informa el estado real; las ediciones locales siguen en stash, no se afirma haber restaurado ese árbol modificado exacto.
 
-Abrir la misma dirección reenviada/perfil con `/recovery.html` y pulsar «Actualizar recursos conservando el avance». No borrar datos del sitio. La migración con avance exige una elección explícita de reanudar, seguida de identificación cuando corresponda. Consultar Ajustes o Revisión técnica → Comprobar versión, servidor y caché: cliente/servidor se distinguen, release `2.7.0-review.1`, rama actual, commit y caché `decidobien-v17-corrective`. La huella allí leída es del servidor, no una medición del bundle cliente.
+Abrir la misma dirección reenviada/perfil con `/recovery.html?release=2.7.0-review.1` y pulsar «Actualizar recursos conservando el avance». No borrar datos del sitio. La migración con avance exige una elección explícita de reanudar, seguida de identificación cuando corresponda. Consultar Ajustes o Revisión técnica → Comprobar versión, servidor y caché: cliente/servidor se distinguen, release `2.7.0-review.1`, rama actual, commit y caché `decidobien-v17-corrective`. La huella allí leída es del servidor, no una medición del bundle cliente.
 
 ## Verificar
 

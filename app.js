@@ -4,7 +4,7 @@ import {mountScene,unmountScene,projectTargets,projectScenePoint,pauseScene,resu
 import {loadParticipant,saveParticipant,clearParticipant,normalizeParticipant} from './participant.js';
 import {certificateStatus,downloadPreview} from './certificate.js';
 import {inquiries,artwork} from './mission-scene.js';
-import {initVersion} from './version-client.js';
+import {initVersion,RELEASE} from './version-client.js';
 import {initExperience,motionAllowed,feedback,clearFeedback,animateMoment} from './experience.js';
 import { KEY, fresh, shuffle, validState, evaluateAnswers, savedDestination, hasMissionProgress, canAdvance } from './model.js';
 import { sceneMarkup } from './scenes.js';
@@ -38,7 +38,7 @@ function guardView(){
 }
 async function takeOverAttempt(){
  try{await writeQueue;const current=await attemptStore.load();if(current.status==='closed'){showAttemptGuard('closed',current);return;}
- attempt=await attemptStore.claim(current,{identityToken,takeOver:true,resumeIdentity:true});canWrite=true;attemptGuard=null;state=structuredClone(attempt.state);
+ attempt=await attemptStore.claim(current,{identityToken,takeOver:true,resumeIdentity:true});canWrite=true;attemptGuard=null;state=structuredClone(attempt.state);state.contentRevision??='2.1-interaccion-1';
  if(!participant&&['practice','evaluation','summary'].includes(state.view)){state.identityReturn=state.view;state.view='identify';}
  render();app.focus();}catch(error){persistenceError(error);}
 }
@@ -146,7 +146,7 @@ function certificatePanel(){
 }
 function reviewView() {
   return `<div class="learning-top"><button class="back" data-go="home">← Inicio</button><span>Revisión del contenido · ${escape(content.version)}</span></div>
-    <section class="review-panel"><p><a href="./recovery.html">Comprobar versión, servidor y caché</a></p><p class="eyebrow">Pendiente de validación por prevención</p><h1>Lo que todavía necesitamos conocer.</h1>
+    <section class="review-panel"><p><a href="./recovery.html?release=${encodeURIComponent(RELEASE)}">Comprobar versión, servidor y caché</a></p><p class="eyebrow">Pendiente de validación por prevención</p><h1>Lo que todavía necesitamos conocer.</h1>
       <p class="lead">Los datos siguientes no están confirmados para el equipo real. Esta pantalla no permite aprobar el caso ni liberar una tarea.</p>
       <ul class="validation-list">${content.validacion.map(item => `<li><span class="tag">Pendiente</span><h2>${escape(item.tema)}</h2><p>${escape(item.pendiente)}</p><p><strong>Quién debe aclararlo:</strong> ${escape(item.responsable)}</p></li>`).join('')}</ul>
       <section class="notice"><h2>Referencias y condición del material</h2><p>${escape(content.fuentes.nota)}</p><p>La ilustración es genérica y el relato es hipotético. No se presenta ninguna característica del equipo de la empresa como verificada.</p></section>

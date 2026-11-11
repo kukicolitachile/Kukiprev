@@ -13,6 +13,6 @@ self.addEventListener('fetch',event=>{
  const url=new URL(event.request.url);if(event.request.method!=='GET'||url.origin!==self.location.origin)return;
  if(url.pathname.endsWith('/__runtime.json'))return;
  // Recovery is network-first, including for a page controlled by a previous release.
- if(url.pathname.endsWith('/recovery.html')||url.pathname.endsWith('/recovery.js')){event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)));return;}
+ if(url.pathname.endsWith('/recovery.html')||url.pathname.endsWith('/recovery.js')){event.respondWith(fetch(event.request).catch(()=>caches.match(event.request,{ignoreSearch:true})));return;}
  event.respondWith(caches.open(CACHE).then(async cache=>{const hit=await cache.match(event.request,{ignoreSearch:event.request.mode==='navigate'});if(hit)return hit;return fetch(event.request);}));
 });
